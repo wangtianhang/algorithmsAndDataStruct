@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinarySearch.cs" />
+    <Compile Include="LinkedListADT.cs" />
+    <Compile Include="ListADT.cs" />
     <Compile Include="Math.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Program.cs" />
