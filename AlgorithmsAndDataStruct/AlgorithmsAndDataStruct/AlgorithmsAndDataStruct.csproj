@@ -48,6 +48,7 @@
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeparateChainingHashTable.cs" />
     <Compile Include="UndirectedGraph\BreadFirst.cs" />
     <Compile Include="UndirectedGraph\ConnectedComponent.cs" />
     <Compile Include="UndirectedGraph\Cycle.cs" />
