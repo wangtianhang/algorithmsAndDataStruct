@@ -5,20 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class BinarySearch
+class BinarySearch<T>
 {
-    public static int rank(int key, int[] a)
+    static Comparer<T> m_comparer;
+
+    public BinarySearch(Comparer<T> comparer)
+    {
+        m_comparer = comparer;
+    }
+
+    public static int rank(T key, T[] a)
     {
         int lo = 0;
         int hi = a.Length - 1;
         while(lo <= hi)
         {
             int mid = lo + (hi - lo) / 2;
-            if(key < a[mid])
+            if (Less(key, a[mid]))
             {
                 hi = mid - 1;
             }
-            else if(key > a[mid])
+            else if (Less(a[mid], key))
             {
                 lo = mid + 1;
             }
@@ -28,6 +35,19 @@ class BinarySearch
             }
         }
         return -1;
+    }
+
+    static bool Less(T a, T b)
+    {
+        int ret = m_comparer.Compare(a, b);
+        if (ret > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
