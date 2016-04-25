@@ -124,5 +124,13 @@ class MathCollection
         temp = GCD(a, b);  /*调用自定义函数，求出最大公约数*/
         return (a * b / temp); /*返回最小公倍数到主调函数处进行输出*/
     }
+
+    public static Vector3 GetIntersectionPoint(Vector3 rayOrigin, Vector3 rayDir, Vector3 planeNormal, Vector3 planeOnePoint)
+    {
+        float t = (Vector3.Dot(planeNormal, planeOnePoint) - Vector3.Dot(planeNormal, rayOrigin))
+            / (Vector3.Dot(planeNormal, rayDir));
+        Vector3 intersectionPoint = rayOrigin + rayDir * t;
+        return intersectionPoint;
+    }
 }
 
