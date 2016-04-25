@@ -48,6 +48,8 @@
     <Compile Include="CommonDataStruct\ListADT.cs" />
     <Compile Include="3dMath\CRSpline.cs" />
     <Compile Include="CommonDataStruct\RedBlackBST.cs" />
+    <Compile Include="DirectedGraph\DirectedGraph.cs" />
+    <Compile Include="DirectedGraph\Topological.cs" />
     <Compile Include="Math.cs" />
     <Compile Include="CommonDataStruct\PriorityQueue.cs" />
     <Compile Include="MergeBUSort.cs" />
