@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
-    <Compile Include="BinarySearch.cs" />
+    <Compile Include="SortAndSearch\BinarySearch.cs" />
     <Compile Include="CommonDataStruct\LinkedListADT.cs" />
     <Compile Include="CommonDataStruct\ListADT.cs" />
     <Compile Include="3dMath\CRSpline.cs" />
@@ -52,13 +52,13 @@
     <Compile Include="DirectedGraph\Topological.cs" />
     <Compile Include="Math.cs" />
     <Compile Include="CommonDataStruct\PriorityQueue.cs" />
-    <Compile Include="MergeBUSort.cs" />
+    <Compile Include="SortAndSearch\MergeBUSort.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonDataStruct\QueueADT.cs" />
     <Compile Include="CommonDataStruct\SeparateChainingHashTable.cs" />
     <Compile Include="CommonDataStruct\StackADT.cs" />
-    <Compile Include="QuickSort.cs" />
+    <Compile Include="SortAndSearch\QuickSort.cs" />
     <Compile Include="Random2.cs" />
     <Compile Include="UndirectedGraph\BreadFirst.cs" />
     <Compile Include="UndirectedGraph\ConnectedComponent.cs" />
