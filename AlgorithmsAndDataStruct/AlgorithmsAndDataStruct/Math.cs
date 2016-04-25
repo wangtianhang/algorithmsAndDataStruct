@@ -132,5 +132,16 @@ class MathCollection
         Vector3 intersectionPoint = rayOrigin + rayDir * t;
         return intersectionPoint;
     }
+
+    /// <summary>
+    /// sin（泰勒级数）
+    /// </summary>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    public static float Sin(float x)
+    {
+        float ret = x - x * x * x / (3 * 2 * 1) + x * x * x * x * x / (5 * 4 * 3 * 2 * 1);
+        return ret;
+    }
 }
 
