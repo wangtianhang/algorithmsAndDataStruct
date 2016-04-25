@@ -64,8 +64,8 @@ class MathCollection
     /// </summary>
     /// <param name="x"></param>
     /// <returns></returns>
-    public delegate float Function(float x);
-    public static float Derivative(Function function, float x, float delta = 0.0001f)
+    public delegate float FunctionOfOneVariable(float x);
+    public static float Derivative(FunctionOfOneVariable function, float x, float delta = 0.0001f)
     {
         return (function(x + delta) - function(x)) / delta;
     }
