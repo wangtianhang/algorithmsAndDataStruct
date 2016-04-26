@@ -58,9 +58,34 @@ class DepthFirstOrder
         return m_post;
     }
 
-    IEnumerable<int> ReversePost()
+    public IEnumerable<int> ReversePost()
     {
         return m_reversePost;
+    }
+}
+
+public class Topological
+{
+    IEnumerable<int> m_order = null;
+
+    public Topological(DirectedGraph g)
+    {
+        DirectedCycle cycleFinder = new DirectedCycle(g);
+        if(!cycleFinder.HasCycle())
+        {
+            DepthFirstOrder dfs = new DepthFirstOrder(g);
+            m_order = dfs.ReversePost();
+        }
+    }
+
+    public IEnumerable<int> Order()
+    {
+        return m_order;
+    }
+
+    public bool IsDAG()
+    {
+        return m_order != null;
     }
 }
 
