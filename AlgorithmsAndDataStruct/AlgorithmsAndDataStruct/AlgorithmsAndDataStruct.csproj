@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
+    <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
+    <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DirectedCycle.cs" />
     <Compile Include="DirectedGraph\DirectedDFS.cs" />
     <Compile Include="KMP.cs" />
@@ -64,10 +66,10 @@
     <Compile Include="CommonDataStruct\StackADT.cs" />
     <Compile Include="SortAndSearch\QuickSort.cs" />
     <Compile Include="Random2.cs" />
-    <Compile Include="UndirectedGraph\BreadFirst.cs" />
+    <Compile Include="UndirectedGraph\BreadFirstPath.cs" />
     <Compile Include="UndirectedGraph\ConnectedComponent.cs" />
     <Compile Include="UndirectedGraph\Cycle.cs" />
-    <Compile Include="UndirectedGraph\DepthFirst.cs" />
+    <Compile Include="UndirectedGraph\DepthFirstPath.cs" />
     <Compile Include="UndirectedGraph\EdgeWeightedGraph.cs" />
     <Compile Include="UndirectedGraph\Graph.cs" />
   </ItemGroup>

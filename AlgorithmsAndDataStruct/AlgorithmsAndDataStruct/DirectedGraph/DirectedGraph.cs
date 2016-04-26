@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class DirectedGraph
+public class DirectedGraph
 {
     int m_v;
     int m_e;
