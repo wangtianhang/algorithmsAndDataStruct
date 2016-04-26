@@ -54,8 +54,46 @@ class NFA
     public bool Recognizes(string txt)
     {
         List<int> pc = new List<int>();
+        DirectedDFS dfs = new DirectedDFS(m_g, 0);
+        for (int v = 0; v < m_g.V(); v++ )
+        {
+            if(dfs.Marked(v))
+            {
+                pc.Add(v);
+            }
+        }
 
-        // todo 参考算法4
+        for (int i = 0; i < txt.Length; ++i )
+        {
+            List<int> match = new List<int>();
+            foreach(var v in pc)
+            {
+                if(v < m_m)
+                {
+                    if(m_re[v] == txt[i] || m_re[v] == '.')
+                    {
+                        match.Add(v + 1);
+                    }
+                }
+            }
+            pc = new List<int>();
+            dfs = new DirectedDFS(m_g, match);
+            for (int v = 0; v < m_g.V(); ++v )
+            {
+                if(dfs.Marked(v))
+                {
+                    pc.Add(v);
+                }
+            }
+        }
+
+        foreach(var v in pc)
+        {
+            if(v == m_m)
+            {
+                return true;
+            }
+        }
 
         return false;
     }

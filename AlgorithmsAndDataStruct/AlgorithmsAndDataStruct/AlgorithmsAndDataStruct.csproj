@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
+    <Compile Include="DirectedGraph\DirectedDFS.cs" />
     <Compile Include="KMP.cs" />
+    <Compile Include="NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />
     <Compile Include="CommonDataStruct\LinkedListADT.cs" />
     <Compile Include="CommonDataStruct\ListADT.cs" />
