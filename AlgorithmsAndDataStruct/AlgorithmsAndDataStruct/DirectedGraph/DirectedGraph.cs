@@ -32,7 +32,7 @@ class DirectedGraph
         return m_e;
     }
 
-    void AddEdge(int v, int w)
+    public void AddEdge(int v, int w)
     {
         m_adj[v].Add(w);
         m_e++;
