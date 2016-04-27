@@ -47,6 +47,7 @@
     <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DirectedCycle.cs" />
     <Compile Include="DirectedGraph\DirectedDFS.cs" />
+    <Compile Include="DirectedGraph\KosarajuSCC.cs" />
     <Compile Include="KMP.cs" />
     <Compile Include="NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />
