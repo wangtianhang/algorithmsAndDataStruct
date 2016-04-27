@@ -15,7 +15,18 @@ class KruskaMST
         MinPQ<Edge> pq = new MinPQ<Edge>(g.Edges());
         UnionFind uf = new UnionFind(g.V());
 
-
+        while(!pq.IsEmpty() && m_mst.Count < g.V() - 1)
+        {
+            Edge e = pq.DeleteTop();
+            int v = e.Either();
+            int w = e.Other(v);
+            if(uf.Connected(v, w))
+            {
+                continue;
+            }
+            uf.Union(v, w);
+            m_mst.Enqueue(e);
+        }
     }
 
     public IEnumerable<Edge> Edges()

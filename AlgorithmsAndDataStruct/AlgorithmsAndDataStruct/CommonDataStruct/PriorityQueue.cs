@@ -50,7 +50,7 @@ public class PriorityQueue<T>
 // 
 //     }
 
-    T DeleteTop()
+    public T DeleteTop()
     {
         T top = m_pq[1];
         Exch(1, m_n--);
@@ -59,7 +59,7 @@ public class PriorityQueue<T>
         return top;
     }
 
-    bool IsEmpty()
+    public bool IsEmpty()
     {
         return m_n == 0;
     }

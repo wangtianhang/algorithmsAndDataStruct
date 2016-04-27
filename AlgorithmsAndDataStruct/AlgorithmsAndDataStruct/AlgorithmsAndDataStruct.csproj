@@ -46,8 +46,10 @@
     <Compile Include="CommonDataStruct\IndexMinPQ.cs" />
     <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
+    <Compile Include="DirectedGraph\DijkstraSP.cs" />
     <Compile Include="DirectedGraph\DirectedCycle.cs" />
     <Compile Include="DirectedGraph\DirectedDFS.cs" />
+    <Compile Include="DirectedGraph\EdgeWeightDirectedGraph.cs" />
     <Compile Include="DirectedGraph\KosarajuSCC.cs" />
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
     <Compile Include="KMP.cs" />

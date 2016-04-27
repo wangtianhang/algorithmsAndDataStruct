@@ -70,6 +70,25 @@ class MathCollection
         return (function(x + delta) - function(x)) / delta;
     }
 
+    public static Vector3 GetIntersectionPoint(Vector3 rayOrigin, Vector3 rayDir, Vector3 planeNormal, Vector3 planeOnePoint)
+    {
+        float t = (Vector3.Dot(planeNormal, planeOnePoint) - Vector3.Dot(planeNormal, rayOrigin))
+            / (Vector3.Dot(planeNormal, rayDir));
+        Vector3 intersectionPoint = rayOrigin + rayDir * t;
+        return intersectionPoint;
+    }
+
+    /// <summary>
+    /// sin（泰勒级数）
+    /// </summary>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    public static float Sin(float x)
+    {
+        float ret = x - x * x * x / (3 * 2 * 1) + x * x * x * x * x / (5 * 4 * 3 * 2 * 1);
+        return ret;
+    }
+
     /// <summary>
     /// 最大公约数（递归），辗转相除法
     /// </summary>
@@ -125,23 +144,40 @@ class MathCollection
         return (a * b / temp); /*返回最小公倍数到主调函数处进行输出*/
     }
 
-    public static Vector3 GetIntersectionPoint(Vector3 rayOrigin, Vector3 rayDir, Vector3 planeNormal, Vector3 planeOnePoint)
+    /// <summary>
+    /// 下一个素数
+    /// </summary>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    int nextPrime(int n)
     {
-        float t = (Vector3.Dot(planeNormal, planeOnePoint) - Vector3.Dot(planeNormal, rayOrigin))
-            / (Vector3.Dot(planeNormal, rayDir));
-        Vector3 intersectionPoint = rayOrigin + rayDir * t;
-        return intersectionPoint;
+        if (n % 2 == 0)
+            n++;
+
+        for (; !isPrime(n); n += 2)
+            ;
+
+        return n;
     }
 
     /// <summary>
-    /// sin（泰勒级数）
+    /// 判断是否为素数
     /// </summary>
-    /// <param name="x"></param>
+    /// <param name="n"></param>
     /// <returns></returns>
-    public static float Sin(float x)
+    bool isPrime(int n)
     {
-        float ret = x - x * x * x / (3 * 2 * 1) + x * x * x * x * x / (5 * 4 * 3 * 2 * 1);
-        return ret;
+        if (n == 2 || n == 3)
+            return true;
+
+        if (n == 1 || n % 2 == 0)
+            return false;
+
+        for (int i = 3; i * i <= n; i += 2)
+            if (n % i == 0)
+                return false;
+
+        return true;
     }
 }
 
