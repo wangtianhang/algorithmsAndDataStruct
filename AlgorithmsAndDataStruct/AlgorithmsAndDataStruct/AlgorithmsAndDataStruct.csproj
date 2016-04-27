@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
+    <Compile Include="CommonDataStruct\IndexMinPQ.cs" />
     <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DirectedCycle.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="UndirectedGraph\DepthFirstPath.cs" />
     <Compile Include="UndirectedGraph\EdgeWeightedGraph.cs" />
     <Compile Include="UndirectedGraph\Graph.cs" />
+    <Compile Include="UndirectedGraph\PrimMST.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

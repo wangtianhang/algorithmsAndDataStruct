@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 public class PriorityQueue<T> 
 {
-    T[] m_pq = null;
+    protected T[] m_pq = null;
     int m_n = 0;
 
-    Comparer<T> m_comparer = null;
+    protected Comparer<T> m_comparer = null;
 
 //     public PriorityQueue(Comparer<T> comparer)
 //     {
@@ -58,17 +58,9 @@ public class PriorityQueue<T>
         return m_n;
     }
 
-    bool less(int i, int j)
+    protected virtual bool less(int i, int j)
     {
-        int ret = m_comparer.Compare(m_pq[i], m_pq[j]);
-        if(ret > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     void Swim(int k)
@@ -103,6 +95,52 @@ public class PriorityQueue<T>
         T t = m_pq[i];
         m_pq[i] = m_pq[j];
         m_pq[j] = t;
+    }
+}
+
+public class MinPQ<T> : PriorityQueue<T> 
+{
+    public MinPQ(int max, Comparer<T> comparer)
+        : base(max, comparer)
+    {
+        m_pq = new T[max];
+        m_comparer = comparer;
+    }
+
+    protected override bool less(int i, int j)
+    {
+        int ret = m_comparer.Compare(m_pq[i], m_pq[j]);
+        if (ret > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+public class MaxPQ<T> : PriorityQueue<T>
+{
+    public MaxPQ(int max, Comparer<T> comparer)
+        : base(max, comparer)
+    {
+        m_pq = new T[max];
+        m_comparer = comparer;
+    }
+
+    protected override bool less(int i, int j)
+    {
+        int ret = m_comparer.Compare(m_pq[i], m_pq[j]);
+        if (ret > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
 
