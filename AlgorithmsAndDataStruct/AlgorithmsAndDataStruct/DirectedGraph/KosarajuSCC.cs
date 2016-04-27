@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+/// <summary>
+/// 有向图强联通
+/// </summary>
 class KosarajuSCC
 {
     bool[] m_marked;
