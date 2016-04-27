@@ -100,5 +100,29 @@ class EdgeWeightedGraph
     {
         return m_adj[v];
     }
+
+    public IList<Edge> Edges() 
+    {
+        List<Edge> list = new List<Edge>();
+        for (int v = 0; v < V(); v++) 
+        {
+            int selfLoops = 0;
+            foreach (var e in Adj(v)) 
+            {
+                if (e.Other(v) > v) 
+                {
+                    list.Add(e);
+                }
+                // only add one copy of each self loop (self loops will be consecutive)
+                else if (e.Other(v) == v) 
+                {
+                    if (selfLoops % 2 == 0) 
+                        list.Add(e);
+                    selfLoops++;
+                }
+            }
+        }
+        return list;
+    }
 }
 

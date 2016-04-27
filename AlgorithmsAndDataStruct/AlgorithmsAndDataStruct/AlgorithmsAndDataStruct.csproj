@@ -75,7 +75,9 @@
     <Compile Include="UndirectedGraph\DepthFirstPath.cs" />
     <Compile Include="UndirectedGraph\EdgeWeightedGraph.cs" />
     <Compile Include="UndirectedGraph\Graph.cs" />
+    <Compile Include="UndirectedGraph\KruskaMST.cs" />
     <Compile Include="UndirectedGraph\PrimMST.cs" />
+    <Compile Include="UnionFind.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

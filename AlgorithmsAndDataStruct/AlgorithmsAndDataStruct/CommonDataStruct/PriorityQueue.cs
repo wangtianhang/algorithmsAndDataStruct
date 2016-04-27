@@ -21,12 +21,23 @@ public class PriorityQueue<T>
     {
         m_pq = new T[max];
         m_comparer = comparer;
+
+        //m_pq.Length
     }
 
 //     public PriorityQueue(T[] a, Comparer<T> comparer)
 //     {
 // 
 //     }
+    public PriorityQueue(IList<T> keys) 
+    {
+        m_n = keys.Count;
+        m_pq = new T[keys.Count + 1];
+        for (int i = 0; i < m_n; i++)
+            m_pq[i + 1] = keys[i];
+        for (int k = m_n / 2; k >= 1; k--)
+            Sink(k);
+    }
 
     void Insert(T a)
     {
@@ -105,6 +116,12 @@ public class MinPQ<T> : PriorityQueue<T>
     {
         m_pq = new T[max];
         m_comparer = comparer;
+    }
+
+    public MinPQ(IList<T> keys)
+        : base(keys)
+    {
+
     }
 
     protected override bool less(int i, int j)
