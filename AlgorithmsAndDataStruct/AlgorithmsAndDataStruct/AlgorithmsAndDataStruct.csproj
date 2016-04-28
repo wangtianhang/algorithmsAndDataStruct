@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="31Next Permutation.cs" />
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
+    <Compile Include="combineTeplate.cs" />
     <Compile Include="CommonDataStruct\IndexMinPQ.cs" />
     <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
