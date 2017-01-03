@@ -29,37 +29,6 @@ class MathCollection
     }
 
     /// <summary>
-    /// 找到一组数中第k小元素
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="a"></param>
-    /// <param name="k"></param>
-    /// <returns></returns>
-    public static T Select<T>(T[] a, int k)
-    {
-        Random2.Shuffle<T>(a);
-        int lo = 0, hi = a.Length - 1;
-        while(hi > lo)
-        {
-            int j = QuickSort<T>.Partition(a, lo, hi);
-            if(j == k)
-            {
-                return a[k];
-            }
-            else if(j > k)
-            {
-                hi = j - 1;
-            }
-            else if(j < k)
-            {
-                lo = j + 1;
-            }
-        }
-
-        return a[k];
-    }
-
-    /// <summary>
     /// 求导数
     /// </summary>
     /// <param name="x"></param>
@@ -68,14 +37,6 @@ class MathCollection
     public static float Derivative(FunctionOfOneVariable function, float x, float delta = 0.0001f)
     {
         return (function(x + delta) - function(x)) / delta;
-    }
-
-    public static Vector3 GetIntersectionPoint(Vector3 rayOrigin, Vector3 rayDir, Vector3 planeNormal, Vector3 planeOnePoint)
-    {
-        float t = (Vector3.Dot(planeNormal, planeOnePoint) - Vector3.Dot(planeNormal, rayOrigin))
-            / (Vector3.Dot(planeNormal, rayDir));
-        Vector3 intersectionPoint = rayOrigin + rayDir * t;
-        return intersectionPoint;
     }
 
     /// <summary>
