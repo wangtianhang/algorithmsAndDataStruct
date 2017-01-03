@@ -37,5 +37,31 @@ class Algorithms
 
         return a[k];
     }
+
+    /// <summary>
+    /// 最大子序列和
+    /// </summary>
+    /// <param name="a"></param>
+    /// <returns></returns>
+    public static int maxSubSum4(int[] a)
+    {
+        int maxSum = 0;
+        int thisSum = 0;
+        for (int j = 0; j < a.Length; ++j )
+        {
+            thisSum += a[j];
+
+            if(thisSum > maxSum)
+            {
+                maxSum = thisSum;
+            }
+            else if(thisSum < 0)
+            {
+                thisSum = 0;
+            }
+        }
+
+        return maxSum;
+    }
 }
 
