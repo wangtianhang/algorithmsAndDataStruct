@@ -56,6 +56,7 @@
     <Compile Include="DirectedGraph\EdgeWeightDirectedGraph.cs" />
     <Compile Include="DirectedGraph\KosarajuSCC.cs" />
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
+    <Compile Include="Other\CpuUsage.cs" />
     <Compile Include="String\KMP.cs" />
     <Compile Include="String\NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />
