@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// 小顶堆，求海量元素的前n个大元素
 public class IndexMinPQ<Key> {
     private int maxN;        // maximum number of elements on PQ
     private int N;           // number of elements on PQ
