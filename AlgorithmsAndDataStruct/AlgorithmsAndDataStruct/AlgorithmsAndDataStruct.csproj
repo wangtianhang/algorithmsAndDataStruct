@@ -46,6 +46,7 @@
     <Compile Include="CombineMath\31Next Permutation.cs" />
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
+    <Compile Include="CombineMath\CombineIterator.cs" />
     <Compile Include="CombineMath\combineTeplate.cs" />
     <Compile Include="CommonDataStruct\IndexMinPQ.cs" />
     <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
