@@ -10,7 +10,7 @@ namespace AlgorithmsAndDataStruct
     {
         static void Main(string[] args)
         {
-            TestCombineIterator.Test();
+            PermutationTest.Test();
         }
     }
 }

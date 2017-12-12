@@ -48,6 +48,7 @@
     <Compile Include="3dMath\Vector3.cs" />
     <Compile Include="CombineMath\CombineIterator.cs" />
     <Compile Include="CombineMath\combineTeplate.cs" />
+    <Compile Include="CombineMath\PermutationIterator.cs" />
     <Compile Include="CommonDataStruct\IndexMinPQ.cs" />
     <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
