@@ -36,8 +36,26 @@ class Point24
             }
         }
 
-        Console.WriteLine("total " + totalResult.Count);
-        File.WriteAllLines("total24PointResult.txt", totalResult.ToArray(), Encoding.UTF8);
+        Dictionary<string, int> resultDic = new Dictionary<string, int>();
+        foreach (var iter in totalResult)
+        {
+            if (resultDic.ContainsKey(iter))
+            {
+                resultDic[iter] += 1;
+            }
+            else
+            {
+                resultDic.Add(iter, 1);
+            }
+        }
+        List<string> noRepeatResult = new List<string>();
+        foreach (var iter in resultDic)
+        {
+            noRepeatResult.Add(iter.Key);
+        }
+
+        Console.WriteLine("total " + noRepeatResult.Count);
+        File.WriteAllLines("total24PointResult.txt", noRepeatResult.ToArray(), Encoding.UTF8);
         Console.ReadLine();
     }
     
