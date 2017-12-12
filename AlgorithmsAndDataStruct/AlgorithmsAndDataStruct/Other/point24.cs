@@ -4,17 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO;
+
 class Point24
 {
     public static void Test()
     {
         //List<int> test = new List<int>();
-        Point24 point24 = new Point24();
-        List<string> results = point24.IsCanPoint24(6, 6, 6, 6);
-        foreach (var result in results)
+        List<string> totalResult = new List<string>();
+
+        //int count = 0;
+        for (int a = 1; a <= 13; ++a )
         {
-            Console.WriteLine(result);
+            for (int b = 1; b <= 13; ++b )
+            {
+                for (int c = 1; c <= 13; ++c )
+                {
+                    for (int d = 1; d <= 13; ++d )
+                    {
+                        Point24 point24 = new Point24();
+                        List<string> results = point24.IsCanPoint24(a, b, c, d);
+                        foreach (var result in results)
+                        {
+                            Console.WriteLine(result);
+                            //count++;
+                        }
+
+                        totalResult.AddRange(results);
+                    }
+                }
+            }
         }
+
+        Console.WriteLine("total " + totalResult.Count);
+        File.WriteAllLines("total24PointResult.txt", totalResult.ToArray(), Encoding.UTF8);
         Console.ReadLine();
     }
     
@@ -49,10 +72,23 @@ class Point24
         public Param(float param, string source = "")
         {
             m_param = param;
-            m_paramSource = source;
+            _m_paramSource = source;
         }
         public float m_param = 0;
-        public string m_paramSource = "";
+
+        string _m_paramSource = "";
+        public string m_paramSource 
+        {
+            get { return _m_paramSource; }
+            set 
+            {
+                _m_paramSource = value;
+                if(value.Contains("12"))
+                {
+                    int test = 0;
+                }
+            }
+        }
     }
 
     public List<string> IsCanPoint24(int a, int b, int c, int d)
@@ -188,7 +224,7 @@ class Point24
                         }
                     }
 
-                    result.m_paramSource = "(" + oneSet[0].m_param + operatorStr + oneSet[1].m_param + ")";
+                    result.m_paramSource = "(" + oneSet[0].m_paramSource + operatorStr + oneSet[1].m_paramSource + ")";
                     //m_calculateList.Add(oneCalculate);
 
                     List<Param> newSet = new List<Param>();
