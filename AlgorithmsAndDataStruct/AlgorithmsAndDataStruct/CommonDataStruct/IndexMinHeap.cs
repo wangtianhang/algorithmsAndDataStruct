@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 // 小顶堆，求海量元素的前n个大元素
-public class IndexMinPQ<Key> {
+public class IndexMinHeap<Key> {
     private int maxN;        // maximum number of elements on PQ
     private int N;           // number of elements on PQ
     private int[] pq;        // binary heap using 1-based indexing
@@ -20,7 +20,7 @@ public class IndexMinPQ<Key> {
      *         <tt>maxN - 1</tt>
      * @throws IllegalArgumentException if <tt>maxN</tt> &lt; <tt>0</tt>
      */
-    public IndexMinPQ(int maxN) {
+    public IndexMinHeap(int maxN) {
         if (maxN < 0) throw new Exception();
         this.maxN = maxN;
         keys = new Key[maxN + 1];    // make this of length maxN??

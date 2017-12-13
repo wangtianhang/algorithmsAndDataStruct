@@ -9,13 +9,13 @@ class DijkstraSP
 {
     DirectedEdge[] m_edgeTo;
     double[] m_distTo;
-    IndexMinPQ<double> m_pq;
+    IndexMinHeap<double> m_pq;
 
     public DijkstraSP(EdgeWeightDirectedGraph g, int s)
     {
         m_edgeTo = new DirectedEdge[g.V()];
         m_distTo = new double[g.V()];
-        m_pq = new IndexMinPQ<double>(g.V());
+        m_pq = new IndexMinHeap<double>(g.V());
         for (int v = 0; v < g.V(); ++v )
         {
             m_distTo[v] = Double.PositiveInfinity;

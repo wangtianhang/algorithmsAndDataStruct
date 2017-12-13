@@ -10,7 +10,7 @@ namespace AlgorithmsAndDataStruct
     {
         static void Main(string[] args)
         {
-            Point24.Test();
+            //Point24.Test();
         }
     }
 }

@@ -10,7 +10,7 @@ class PrimMST
     Edge[] m_edgeTo;
     double[] m_distTo;
     bool[] m_marked;
-    IndexMinPQ<double> m_pq;
+    IndexMinHeap<double> m_pq;
 
     public PrimMST(EdgeWeightedGraph g)
     {
@@ -21,7 +21,7 @@ class PrimMST
         {
             m_distTo[v] = Double.PositiveInfinity;
         }
-        m_pq = new IndexMinPQ<double>(g.V());
+        m_pq = new IndexMinHeap<double>(g.V());
 
         m_distTo[0] = 0.0d;
         m_pq.insert(0, 0.0d);

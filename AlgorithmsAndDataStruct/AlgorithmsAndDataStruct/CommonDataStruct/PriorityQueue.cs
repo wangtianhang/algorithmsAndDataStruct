@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+// 优先队列概念
 public class PriorityQueue<T> 
 {
     protected T[] m_pq = null;
