@@ -30,7 +30,7 @@ struct Quaternion
         Quaternion slerp = Quaternion.Slerp(rotate, rotate2, 0.5f);
         Console.WriteLine("测试slerp \n" + slerp);
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     public const float kEpsilon = 1e-006f;

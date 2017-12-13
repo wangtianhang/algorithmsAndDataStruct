@@ -11,12 +11,12 @@ struct Matrix4x4
 {
     public static void Test()
     {
-        Vector3 pos = new Vector3(0, 0, 0);
+        Vector3 pos = new Vector3(100, 200, 300);
         Quaternion rotate = Quaternion.identity;
         rotate.eulerAngles = new Vector3(40, 50, 60);
         //Console.WriteLine("测试Quaternion " + rotate);
 
-        Vector3 scale = new Vector3(1, 1, 1);
+        Vector3 scale = new Vector3(7, 8, 9);
         Matrix4x4 trs = TRS(pos, rotate, scale);
         Console.WriteLine("测试trs\n" + trs.ToString());
 
@@ -25,6 +25,13 @@ struct Matrix4x4
 
         Matrix4x4 inverse = Inverse(trs);
         Console.WriteLine("测试逆矩阵\n" + inverse.ToString());
+
+        Matrix4x4 posMatrix = Matrix4x4.identity;
+        posMatrix.m03 = pos.x;
+        posMatrix.m13 = pos.y;
+        posMatrix.m23 = pos.z;
+        Vector4 point = new Vector4(0, 0, 0, 1);
+        Vector4 newPoint = posMatrix * point; 
 
         Console.ReadLine();
     }
@@ -102,6 +109,16 @@ struct Matrix4x4
             m32 = lhs.m30 * rhs.m02 + lhs.m31 * rhs.m12 + lhs.m32 * rhs.m22 + lhs.m33 * rhs.m32,
             m33 = lhs.m30 * rhs.m03 + lhs.m31 * rhs.m13 + lhs.m32 * rhs.m23 + lhs.m33 * rhs.m33
         };
+    }
+
+    public static Vector4 operator *(Matrix4x4 lhs, Vector4 v)
+    {
+        Vector4 result = new Vector4();
+        result.x = lhs.m00 * v.x + lhs.m01 * v.y + lhs.m02 * v.z + lhs.m03 * v.w;
+        result.y = lhs.m10 * v.x + lhs.m11 * v.y + lhs.m12 * v.z + lhs.m13 * v.w;
+        result.z = lhs.m20 * v.x + lhs.m21 * v.y + lhs.m22 * v.z + lhs.m23 * v.w;
+        result.w = lhs.m30 * v.x + lhs.m31 * v.y + lhs.m32 * v.z + lhs.m33 * v.w;
+        return result;
     }
 
     public static Matrix4x4 identity
@@ -332,25 +349,25 @@ struct Matrix4x4
         float[][] inverseMat = _MatrixInverse(mat);
 
         Matrix4x4 ret = new Matrix4x4();
-        ret.m00 = mat[0][0];
-        ret.m01 = mat[0][1];
-        ret.m02 = mat[0][2];
-        ret.m03 = mat[0][3];
+        ret.m00 = inverseMat[0][0];
+        ret.m01 = inverseMat[0][1];
+        ret.m02 = inverseMat[0][2];
+        ret.m03 = inverseMat[0][3];
 
-        ret.m10 = mat[1][0];
-        ret.m11 = mat[1][1];
-        ret.m12 = mat[1][2];
-        ret.m13 = mat[1][3];
+        ret.m10 = inverseMat[1][0];
+        ret.m11 = inverseMat[1][1];
+        ret.m12 = inverseMat[1][2];
+        ret.m13 = inverseMat[1][3];
 
-        ret.m20 = mat[2][0];
-        ret.m21 = mat[2][1];
-        ret.m22 = mat[2][2];
-        ret.m23 = mat[2][3];
+        ret.m20 = inverseMat[2][0];
+        ret.m21 = inverseMat[2][1];
+        ret.m22 = inverseMat[2][2];
+        ret.m23 = inverseMat[2][3];
 
-        ret.m30 = mat[3][0];
-        ret.m31 = mat[3][1];
-        ret.m32 = mat[3][2];
-        ret.m33 = mat[3][3];
+        ret.m30 = inverseMat[3][0];
+        ret.m31 = inverseMat[3][1];
+        ret.m32 = inverseMat[3][2];
+        ret.m33 = inverseMat[3][3];
 
         return ret;
     }
@@ -414,26 +431,26 @@ struct Matrix4x4
     public static Matrix4x4 TRS(Vector3 pos, Quaternion q, Vector3 s)
     {
         Matrix4x4 posMatrix = Matrix4x4.identity;
-        posMatrix.m30 = -pos.x;
-        posMatrix.m31 = -pos.y;
-        posMatrix.m32 = -pos.z;
+        posMatrix.m03 = pos.x;
+        posMatrix.m13 = pos.y;
+        posMatrix.m23 = pos.z;
 
         Matrix4x4 rotateMatrix = Matrix4x4.identity;
-        rotateMatrix.m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
-        rotateMatrix.m01 = 2 * q.x * q.y + 2 * q.w * q.z;
-        rotateMatrix.m02 = 2 * q.x * q.z - 2 * q.w * q.y;
+        rotateMatrix.m00 = 1 - 2 * q.y * q.y - 2 * q.z * q.z; 
+        rotateMatrix.m10 = 2 * q.x * q.y + 2 * q.w * q.z; 
+        rotateMatrix.m20 = 2 * q.x * q.z - 2 * q.w * q.y;
 
-        rotateMatrix.m10 = 2 * q.x * q.y - 2 * q.w * q.z;
+        rotateMatrix.m01 = 2 * q.x * q.y - 2 * q.w * q.z;
         rotateMatrix.m11 = 1 - 2 * q.x * q.x - 2 * q.z * q.z;
-        rotateMatrix.m12 = 2 * q.y * q.z + 2 * q.w * q.x;
+        rotateMatrix.m21 = 2 * q.y * q.z + 2 * q.w * q.x;
 
-        rotateMatrix.m20 = 2 * q.x * q.z + 2 * q.w * q.y;
-        rotateMatrix.m21 = 2 * q.y * q.z - 2 * q.w * q.x;
+        rotateMatrix.m02 = 2 * q.x * q.z + 2 * q.w * q.y;
+        rotateMatrix.m12 = 2 * q.y * q.z - 2 * q.w * q.x;
         rotateMatrix.m22 = 1 - 2 * q.x * q.x - 2 * q.y * q.y;
 
         Matrix4x4 scaleMatrix = Scale(s);
 
-        Matrix4x4 ret = scaleMatrix * rotateMatrix * posMatrix;
+        Matrix4x4 ret = posMatrix * rotateMatrix * scaleMatrix;
         return ret;
     }
 
