@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 坐标系与unity保持一致 为左手坐标系
+/// </summary>
+/// 
 public struct Vector3
 {
     public float x;
@@ -84,5 +88,10 @@ public struct Vector3
     public static float Dot(Vector3 lhs, Vector3 rhs)
     {
         return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+    }
+
+    public static Vector3 forward
+    {
+        get { return new Vector3(0, 0, 1); }
     }
 }
