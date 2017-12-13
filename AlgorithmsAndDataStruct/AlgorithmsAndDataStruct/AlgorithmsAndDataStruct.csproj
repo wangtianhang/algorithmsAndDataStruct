@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="3dMath\Math3d.cs" />
+    <Compile Include="3dMath\Quaternion.cs" />
     <Compile Include="Algorithms.cs" />
     <Compile Include="CombineMath\31Next Permutation.cs" />
     <Compile Include="3dMath\BezierCurve.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="DirectedGraph\EdgeWeightDirectedGraph.cs" />
     <Compile Include="DirectedGraph\KosarajuSCC.cs" />
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
+    <Compile Include="Other\BillBorad.cs" />
     <Compile Include="Other\CpuUsage.cs" />
     <Compile Include="Other\Point24.cs" />
     <Compile Include="Other\QueryPerfCounter.cs" />
