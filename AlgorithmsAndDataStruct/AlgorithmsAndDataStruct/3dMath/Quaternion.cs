@@ -14,21 +14,23 @@ struct Quaternion
     {
         Quaternion rotate = Quaternion.identity;
         rotate.eulerAngles = new Vector3(40, 50, 60);
-        Console.WriteLine("测试euler to Quaternion " + rotate);
+        Console.WriteLine("测试euler to Quaternion \n" + rotate);
 
         Vector3 euler = rotate.eulerAngles;
-        Console.WriteLine("测试quaternion to euler " + rotate);
+        Console.WriteLine("测试quaternion to euler \n" + euler);
 
         Vector3 dir = new Vector3(0.3f, 0.4f, 0.5f);
         dir.Normalize();
         Quaternion lookRotation = Quaternion.LookRotation(dir, Vector3.up);
-        Console.WriteLine("测试look rotation " + rotate);
+        Console.WriteLine("测试look rotation \n" + lookRotation);
 
         Quaternion rotate2 = Quaternion.identity;
         rotate2.eulerAngles = new Vector3(70, 80, 90);
 
         Quaternion slerp = Quaternion.Slerp(rotate, rotate2, 0.5f);
-        Console.WriteLine("测试slerp " + slerp);
+        Console.WriteLine("测试slerp \n" + slerp);
+
+        Console.ReadLine();
     }
 
     public const float kEpsilon = 1e-006f;
@@ -185,7 +187,7 @@ struct Quaternion
         v.y = (float)System.Math.Atan2(2f * q.x * q.w + 2f * q.y * q.z, 1 - 2f * (q.z * q.z + q.w * q.w));     // Yaw
         v.x = (float)System.Math.Asin(2f * (q.x * q.z - q.w * q.y));                             // Pitch
         v.z = (float)System.Math.Atan2(2f * q.x * q.y + 2f * q.z * q.w, 1 - 2f * (q.y * q.y + q.z * q.z));      // Roll
-        return NormalizeAngles(v * Math3d.Rad2Deg);
+        return NormalizeAngles(v * Math3d.Rad2Deg) * Math3d.Deg2Rad;
     }
 
     static Vector3 NormalizeAngles(Vector3 angles)
@@ -208,23 +210,27 @@ struct Quaternion
     // 欧拉角转四元数
     public static Quaternion FromEulerRad(Vector3 euler)
     {
-        var yaw = euler.x;
-        var pitch = euler.y;
-        var roll = euler.z;
-        float rollOver2 = roll * 0.5f;
-        float sinRollOver2 = (float)System.Math.Sin((float)rollOver2);
-        float cosRollOver2 = (float)System.Math.Cos((float)rollOver2);
-        float pitchOver2 = pitch * 0.5f;
-        float sinPitchOver2 = (float)System.Math.Sin((float)pitchOver2);
-        float cosPitchOver2 = (float)System.Math.Cos((float)pitchOver2);
+        var yaw = euler.z;
+        var pitch = euler.x;
+        var roll = euler.y;
+
         float yawOver2 = yaw * 0.5f;
         float sinYawOver2 = (float)System.Math.Sin((float)yawOver2);
         float cosYawOver2 = (float)System.Math.Cos((float)yawOver2);
+
+        float pitchOver2 = pitch * 0.5f;
+        float sinPitchOver2 = (float)System.Math.Sin((float)pitchOver2);
+        float cosPitchOver2 = (float)System.Math.Cos((float)pitchOver2);
+
+        float rollOver2 = roll * 0.5f;
+        float sinRollOver2 = (float)System.Math.Sin((float)rollOver2);
+        float cosRollOver2 = (float)System.Math.Cos((float)rollOver2);
+
         Quaternion result;
-        result.x = cosYawOver2 * cosPitchOver2 * cosRollOver2 + sinYawOver2 * sinPitchOver2 * sinRollOver2;
+        result.w = cosYawOver2 * cosPitchOver2 * cosRollOver2 + sinYawOver2 * sinPitchOver2 * sinRollOver2;
+        result.x = cosYawOver2 * sinPitchOver2 * cosRollOver2 + sinYawOver2 * cosPitchOver2 * sinRollOver2;
         result.y = cosYawOver2 * cosPitchOver2 * sinRollOver2 - sinYawOver2 * sinPitchOver2 * cosRollOver2;
-        result.z = cosYawOver2 * sinPitchOver2 * cosRollOver2 + sinYawOver2 * cosPitchOver2 * sinRollOver2;
-        result.w = sinYawOver2 * cosPitchOver2 * cosRollOver2 - cosYawOver2 * sinPitchOver2 * sinRollOver2;
+        result.z = sinYawOver2 * cosPitchOver2 * cosRollOver2 - cosYawOver2 * sinPitchOver2 * sinRollOver2;
         return result;
     }
 

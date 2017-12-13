@@ -14,7 +14,7 @@ struct Matrix4x4
         Vector3 pos = new Vector3(0, 0, 0);
         Quaternion rotate = Quaternion.identity;
         rotate.eulerAngles = new Vector3(40, 50, 60);
-        Console.WriteLine("测试Quaternion " + rotate);
+        //Console.WriteLine("测试Quaternion " + rotate);
 
         Vector3 scale = new Vector3(1, 1, 1);
         Matrix4x4 trs = TRS(pos, rotate, scale);
