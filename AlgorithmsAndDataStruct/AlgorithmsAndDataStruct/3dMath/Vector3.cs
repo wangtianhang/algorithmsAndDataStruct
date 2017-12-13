@@ -14,6 +14,11 @@ public struct Vector3
     public float y;
     public float z;
 
+    public override string ToString()
+    {
+        return x.ToString("f6") + ",\t" + y.ToString("f6") + ",\t" + z.ToString("f6");
+    }
+
     public Vector3(float x, float y, float z)
     {
         this.x = x;

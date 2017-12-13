@@ -11,10 +11,12 @@ struct Matrix4x4
 {
     public static void Test()
     {
-        Vector3 pos = new Vector3(1, 2, 3);
+        Vector3 pos = new Vector3(0, 0, 0);
         Quaternion rotate = Quaternion.identity;
         rotate.eulerAngles = new Vector3(40, 50, 60);
-        Vector3 scale = new Vector3(7, 8, 9);
+        Console.WriteLine("测试Quaternion " + rotate);
+
+        Vector3 scale = new Vector3(1, 1, 1);
         Matrix4x4 trs = TRS(pos, rotate, scale);
         Console.WriteLine("测试trs\n" + trs.ToString());
 

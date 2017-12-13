@@ -10,12 +10,38 @@ using System.Xml.Serialization;
 /// </summary>
 struct Quaternion
 {
+    public static void Test()
+    {
+        Quaternion rotate = Quaternion.identity;
+        rotate.eulerAngles = new Vector3(40, 50, 60);
+        Console.WriteLine("测试euler to Quaternion " + rotate);
+
+        Vector3 euler = rotate.eulerAngles;
+        Console.WriteLine("测试quaternion to euler " + rotate);
+
+        Vector3 dir = new Vector3(0.3f, 0.4f, 0.5f);
+        dir.Normalize();
+        Quaternion lookRotation = Quaternion.LookRotation(dir, Vector3.up);
+        Console.WriteLine("测试look rotation " + rotate);
+
+        Quaternion rotate2 = Quaternion.identity;
+        rotate2.eulerAngles = new Vector3(70, 80, 90);
+
+        Quaternion slerp = Quaternion.Slerp(rotate, rotate2, 0.5f);
+        Console.WriteLine("测试slerp " + slerp);
+    }
+
     public const float kEpsilon = 1e-006f;
 
     public float x;
     public float y;
     public float z;
     public float w;
+
+    public override string ToString()
+    {
+        return x.ToString("f6") + ",\t" + y.ToString("f6") + ",\t" + z.ToString("f6") + ",\t" + w.ToString("f6");
+    }
 
     public Quaternion(float x, float y, float z, float w)
     {
