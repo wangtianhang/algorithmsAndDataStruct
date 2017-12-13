@@ -65,6 +65,7 @@
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
     <Compile Include="Other\BillBorad.cs" />
     <Compile Include="Other\CpuUsage.cs" />
+    <Compile Include="Other\MyQuaternion.cs" />
     <Compile Include="Other\Point24.cs" />
     <Compile Include="Other\QueryPerfCounter.cs" />
     <Compile Include="Other\ObjectPool.cs" />

@@ -137,4 +137,12 @@ public struct Vector3
     {
         return new Vector3(lhs.y * rhs.z - lhs.z * rhs.y, lhs.z * rhs.x - lhs.x * rhs.z, lhs.x * rhs.y - lhs.y * rhs.x);
     }
+
+    public float sqrMagnitude
+    {
+        get
+        {
+            return this.x * this.x + this.y * this.y + this.z * this.z;
+        }
+    }
 }

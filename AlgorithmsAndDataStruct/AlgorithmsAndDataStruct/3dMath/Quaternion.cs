@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 /// <summary>
 /// 坐标系与unity保持一致 为左手坐标系
@@ -23,6 +24,8 @@ struct Quaternion
         this.z = z;
         this.w = w;
     }
+
+
 
     public static bool operator ==(Quaternion lhs, Quaternion rhs)
     {
@@ -60,7 +63,7 @@ struct Quaternion
         return result;
     }
 
-    public static Quaternion idendity
+    public static Quaternion identity
     {
         get
         {
@@ -254,6 +257,127 @@ struct Quaternion
         quaternion.z = 0.5f * num5;
         quaternion.w = (m01 - m10) * num2;
         return quaternion;
+    }
+
+    /// <summary>
+    /// Construct a new MyQuaternion from vector and w components
+    /// </summary>
+    /// <param name="v">The vector part</param>
+    /// <param name="w">The w part</param>
+    public Quaternion(Vector3 v, float w)
+    {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        this.w = w;
+    }
+
+    [XmlIgnore]
+    public Vector3 xyz
+    {
+        set
+        {
+            x = value.x;
+            y = value.y;
+            z = value.z;
+        }
+        get
+        {
+            return new Vector3(x, y, z);
+        }
+    }
+
+    /// <summary>
+    /// Gets the square of the quaternion length (magnitude).
+    /// </summary>
+    [XmlIgnore]
+    public float LengthSquared
+    {
+        get
+        {
+            return x * x + y * y + z * z + w * w;
+        }
+    }
+
+    /// <summary>
+    /// Gets the length (magnitude) of the quaternion.
+    /// </summary>
+    /// <seealso cref="LengthSquared"/>
+    [XmlIgnore]
+    public float Length
+    {
+        get
+        {
+            return (float)System.Math.Sqrt(x * x + y * y + z * z + w * w);
+        }
+    }
+
+    public static Quaternion Slerp(Quaternion a, Quaternion b, float t)
+    {
+        // if either input is zero, return the other.
+        if (a.LengthSquared == 0.0f)
+        {
+            if (b.LengthSquared == 0.0f)
+            {
+                return identity;
+            }
+            return b;
+        }
+        else if (b.LengthSquared == 0.0f)
+        {
+            return a;
+        }
+
+
+        float cosHalfAngle = a.w * b.w + Vector3.Dot(a.xyz, b.xyz);
+
+        if (cosHalfAngle >= 1.0f || cosHalfAngle <= -1.0f)
+        {
+            // angle = 0.0f, so just return one input.
+            return a;
+        }
+        else if (cosHalfAngle < 0.0f)
+        {
+            b.xyz = -b.xyz;
+            b.w = -b.w;
+            cosHalfAngle = -cosHalfAngle;
+        }
+
+        float blendA;
+        float blendB;
+        if (cosHalfAngle < 0.99f)
+        {
+            // do proper slerp for big angles
+            float halfAngle = (float)System.Math.Acos(cosHalfAngle);
+            float sinHalfAngle = (float)System.Math.Sin(halfAngle);
+            float oneOverSinHalfAngle = 1.0f / sinHalfAngle;
+            blendA = (float)System.Math.Sin(halfAngle * (1.0f - t)) * oneOverSinHalfAngle;
+            blendB = (float)System.Math.Sin(halfAngle * t) * oneOverSinHalfAngle;
+        }
+        else
+        {
+            // do lerp if angle is really small.
+            blendA = 1.0f - t;
+            blendB = t;
+        }
+
+        Quaternion result = new Quaternion(blendA * a.xyz + blendB * b.xyz, blendA * a.w + blendB * b.w);
+        if (result.LengthSquared > 0.0f)
+            return Normalize(result);
+        else
+            return identity;
+    }
+
+    /// <summary>
+    /// Scale the given quaternion to unit length
+    /// </summary>
+    /// <param name="q">The quaternion to normalize</param>
+    /// <returns>The normalized quaternion</returns>
+    public static Quaternion Normalize(Quaternion q)
+    {
+        float scale = 1.0f / q.Length;
+        Quaternion result = new Quaternion(q.xyz * scale, q.w * scale);
+        return result;
     }
 }
 
