@@ -94,4 +94,9 @@ public struct Vector3
     {
         get { return new Vector3(0, 0, 1); }
     }
+
+    public static Vector3 zero
+    {
+        get { return new Vector3(0, 0, 0); }
+    }
 }
