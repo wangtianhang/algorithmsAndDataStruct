@@ -62,6 +62,7 @@
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
     <Compile Include="Other\CpuUsage.cs" />
     <Compile Include="Other\Point24.cs" />
+    <Compile Include="Other\QueryPerfCounter.cs" />
     <Compile Include="String\KMP.cs" />
     <Compile Include="String\NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />
