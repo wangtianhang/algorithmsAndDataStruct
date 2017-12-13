@@ -16,6 +16,16 @@ class Transform
 
     Quaternion m_rotation;
 
+    Vector3 m_scale;
+
+    public Matrix4x4 localToWorldMatrix
+    {
+        get 
+        {
+            return Matrix4x4.TRS(m_position, m_rotation, m_scale);
+        }
+    }
+
     // 旋转转朝向
     public static Vector3 GetForward(Quaternion rotation)
     {

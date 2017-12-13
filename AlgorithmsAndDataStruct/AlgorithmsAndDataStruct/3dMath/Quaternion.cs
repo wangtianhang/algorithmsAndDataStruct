@@ -14,23 +14,36 @@ struct Quaternion
     {
         Quaternion rotate = Quaternion.identity;
         rotate.eulerAngles = new Vector3(40, 50, 60);
-        Console.WriteLine("测试euler to Quaternion \n" + rotate);
+        Debug.Log("测试euler to Quaternion \n" + rotate);
 
         Vector3 euler = rotate.eulerAngles;
-        Console.WriteLine("测试quaternion to euler \n" + euler);
+        Debug.Log("测试quaternion to euler \n" + euler);
 
         Vector3 dir = new Vector3(0.3f, 0.4f, 0.5f);
         dir.Normalize();
         Quaternion lookRotation = Quaternion.LookRotation(dir, Vector3.up);
-        Console.WriteLine("测试look rotation \n" + lookRotation);
+        Debug.Log("测试look rotation \n" + lookRotation);
 
         Quaternion rotate2 = Quaternion.identity;
         rotate2.eulerAngles = new Vector3(70, 80, 90);
 
         Quaternion slerp = Quaternion.Slerp(rotate, rotate2, 0.5f);
-        Console.WriteLine("测试slerp \n" + slerp);
+        Debug.Log("测试slerp \n" + slerp);
 
         //Console.ReadLine();
+
+        float angle = Angle(rotate, rotate2);
+        Debug.Log("测试angle " + angle);
+
+        Quaternion angleAxis = AngleAxis(10, dir);
+        Debug.Log("测试angleAxis " + angleAxis);
+
+        Vector3 dir2 = new Vector3(0.6f, 0.7f, 0.8f);
+        dir2.Normalize();
+        Quaternion fromToRotation = FromToRotation(dir, dir2);
+        Debug.Log("测试FromToRotation " + fromToRotation);
+
+        Console.ReadLine();
     }
 
     public const float kEpsilon = 1e-006f;
@@ -139,6 +152,30 @@ struct Quaternion
         }
     }
 
+    public static float Angle(Quaternion a, Quaternion b)
+    {
+        float f = Quaternion.Dot(a, b);
+        return (float)Math.Acos(Math.Min(Math.Abs(f), 1f)) * 2f * 57.29578f;
+    }
+
+    public static Quaternion AngleAxis(float degress, Vector3 axis)
+    {
+        if (axis.sqrMagnitude == 0.0f)
+            return identity;
+
+        Quaternion result = identity;
+        var radians = degress * Math3d.Deg2Rad;
+        radians *= 0.5f;
+        axis.Normalize();
+        axis = axis * (float)System.Math.Sin(radians);
+        result.x = axis.x;
+        result.y = axis.y;
+        result.z = axis.z;
+        result.w = (float)System.Math.Cos(radians);
+
+        return Normalize(result);
+    }
+
     public Vector3 eulerAngles
     {
         get
@@ -158,8 +195,35 @@ struct Quaternion
         return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
     }
 
+    public static Quaternion Euler(Vector3 euler)
+    {
+        Vector3 eulerRad = euler * Math3d.Deg2Rad;
+        return FromEulerRad(eulerRad);
+    }
+
+    public static Quaternion Euler(float x, float y, float z)
+    {
+        return Euler(new Vector3(x, y, z));
+    }
+
+    /*static Quaternion FromToRotation(Vector3 fromDiection, Vector3 toDirection)
+根据两个向量计算出旋转量，计算出来的旋转量为从fromDiection,旋转到toDirection的旋转量。
+这句话意思很明显了。就是计算旋转量。
+那么LookRotation(Vector3 forward)计算的是，Z轴旋转到forward的旋转量。
+推出：Quaternion.LookRotation(new Vector3(1,0,0)) == Quaternion.FromToRotation(Vector3.forward, new Vector3(1,0,0));
+因为前者就是计算向前向量到当前向量（1,0,0）的旋转量的，其实现过程就是后者喽。
+     */
+    public static Quaternion FromToRotation(Vector3 fromDirection, Vector3 toDirection)
+    {
+        fromDirection.Normalize();
+        toDirection.Normalize();
+        return RotateTowards(LookRotation(fromDirection), LookRotation(toDirection), float.MaxValue);
+    }
+
+
+
     // 四元数转欧拉角
-    public static Vector3 ToEulerRad(Quaternion rotation)
+    static Vector3 ToEulerRad(Quaternion rotation)
     {
         float sqw = rotation.w * rotation.w;
         float sqx = rotation.x * rotation.x;
@@ -208,7 +272,7 @@ struct Quaternion
     }
 
     // 欧拉角转四元数
-    public static Quaternion FromEulerRad(Vector3 euler)
+    static Quaternion FromEulerRad(Vector3 euler)
     {
         var yaw = euler.z;
         var pitch = euler.x;
@@ -232,6 +296,11 @@ struct Quaternion
         result.y = cosYawOver2 * cosPitchOver2 * sinRollOver2 - sinYawOver2 * sinPitchOver2 * cosRollOver2;
         result.z = sinYawOver2 * cosPitchOver2 * cosRollOver2 - cosYawOver2 * sinPitchOver2 * sinRollOver2;
         return result;
+    }
+
+    public static Quaternion LookRotation(Vector3 forward)
+    {
+        return LookRotation(forward, Vector3.up);
     }
 
     public static Quaternion LookRotation(Vector3 forward, Vector3 up)
@@ -291,60 +360,18 @@ struct Quaternion
         return quaternion;
     }
 
-    /// <summary>
-    /// Construct a new MyQuaternion from vector and w components
-    /// </summary>
-    /// <param name="v">The vector part</param>
-    /// <param name="w">The w part</param>
-    public Quaternion(Vector3 v, float w)
+    public static Quaternion RotateTowards(Quaternion from, Quaternion to, float maxDegreesDelta)
     {
-        this.x = v.x;
-        this.y = v.y;
-        this.z = v.z;
-        this.w = w;
+        float num = Quaternion.Angle(from, to);
+        if (num == 0f)
+        {
+            return to;
+        }
+        float t = Math.Min(1f, maxDegreesDelta / num);
+        return Quaternion.SlerpUnclamped(from, to, t);
     }
 
-    [XmlIgnore]
-    public Vector3 xyz
-    {
-        set
-        {
-            x = value.x;
-            y = value.y;
-            z = value.z;
-        }
-        get
-        {
-            return new Vector3(x, y, z);
-        }
-    }
-
-    /// <summary>
-    /// Gets the square of the quaternion length (magnitude).
-    /// </summary>
-    [XmlIgnore]
-    public float LengthSquared
-    {
-        get
-        {
-            return x * x + y * y + z * z + w * w;
-        }
-    }
-
-    /// <summary>
-    /// Gets the length (magnitude) of the quaternion.
-    /// </summary>
-    /// <seealso cref="LengthSquared"/>
-    [XmlIgnore]
-    public float Length
-    {
-        get
-        {
-            return (float)System.Math.Sqrt(x * x + y * y + z * z + w * w);
-        }
-    }
-
-    public static Quaternion Slerp(Quaternion a, Quaternion b, float t)
+    private static Quaternion SlerpUnclamped(Quaternion a, Quaternion b, float t)
     {
         // if either input is zero, return the other.
         if (a.LengthSquared == 0.0f)
@@ -401,11 +428,71 @@ struct Quaternion
     }
 
     /// <summary>
+    /// Construct a new MyQuaternion from vector and w components
+    /// </summary>
+    /// <param name="v">The vector part</param>
+    /// <param name="w">The w part</param>
+    Quaternion(Vector3 v, float w)
+    {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        this.w = w;
+    }
+
+    [XmlIgnore]
+    public Vector3 xyz
+    {
+        set
+        {
+            x = value.x;
+            y = value.y;
+            z = value.z;
+        }
+        get
+        {
+            return new Vector3(x, y, z);
+        }
+    }
+
+    /// <summary>
+    /// Gets the square of the quaternion length (magnitude).
+    /// </summary>
+    [XmlIgnore]
+    public float LengthSquared
+    {
+        get
+        {
+            return x * x + y * y + z * z + w * w;
+        }
+    }
+
+    /// <summary>
+    /// Gets the length (magnitude) of the quaternion.
+    /// </summary>
+    /// <seealso cref="LengthSquared"/>
+    [XmlIgnore]
+    public float Length
+    {
+        get
+        {
+            return (float)System.Math.Sqrt(x * x + y * y + z * z + w * w);
+        }
+    }
+
+    public static Quaternion Slerp(Quaternion a, Quaternion b, float t)
+    {
+        if (t > 1) t = 1;
+        if (t < 0) t = 0;
+        return SlerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
     /// Scale the given quaternion to unit length
     /// </summary>
     /// <param name="q">The quaternion to normalize</param>
     /// <returns>The normalized quaternion</returns>
-    public static Quaternion Normalize(Quaternion q)
+    static Quaternion Normalize(Quaternion q)
     {
         float scale = 1.0f / q.Length;
         Quaternion result = new Quaternion(q.xyz * scale, q.w * scale);

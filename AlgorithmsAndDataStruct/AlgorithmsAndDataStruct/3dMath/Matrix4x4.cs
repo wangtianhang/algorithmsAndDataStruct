@@ -31,7 +31,14 @@ struct Matrix4x4
         posMatrix.m13 = pos.y;
         posMatrix.m23 = pos.z;
         Vector4 point = new Vector4(0, 0, 0, 1);
-        Vector4 newPoint = posMatrix * point; 
+        Vector4 newPoint = posMatrix * point;
+
+        float fov = 60;
+        float aspect = (float)16 / 9;
+        float zNear = 1;
+        float zFar = 1000;
+        Matrix4x4 perspectiveMat = Matrix4x4.Perspective(fov, aspect, zNear, zFar);
+        Console.WriteLine("测试透视矩阵\n" + perspectiveMat.ToString());
 
         Console.ReadLine();
     }
@@ -394,6 +401,34 @@ struct Matrix4x4
         result.z = this.m20 * v.x + this.m21 * v.y + this.m22 * v.z;
         return result;
     }
+    public static Matrix4x4 Perspective(float fov, float aspect /*纵横比*/, float zNear, float zFar)
+    {
+        // 为什么这里用的是opengl的透视矩阵？
+
+        Matrix4x4 ret = Matrix4x4.zero;
+
+        //ret.m00 = 1 / (float)Math.Tan(fov * 0.5f) / aspect;
+        //ret.m11 = 1 / (float)Math.Tan(fov * 0.5f);
+        //ret.m22 = zFar / (zFar - zNear);
+        //ret.m23 = 1;
+        //ret.m32 = zFar * zNear / (zNear - zFar);
+         float fovRad = Math3d.Deg2Rad * fov;
+// 
+//         float width = (float)Math.Tan(fovRad / 2) * zNear * 2;
+//         float height = width / aspect;
+//         float fovYRad = (float)Math.Atan(height / 2 / zNear) * 2;
+// 
+//         float fovY = Math3d.Rad2Deg * fovYRad;
+
+        ret.m00 = 1 / (float)Math.Tan(fovRad * 0.5f) / aspect;
+        ret.m11 = 1 / (float)Math.Tan(fovRad * 0.5f);
+
+        ret.m22 = -(zFar + zNear) / (zFar - zNear);
+        ret.m23 = -2 * zNear * zFar / (zFar - zNear);
+        ret.m32 = -1;
+
+        return ret;
+    }
 
     public static Matrix4x4 Scale(Vector3 v)
     {
@@ -428,6 +463,13 @@ struct Matrix4x4
         return ret;
     }
 
+    /// <summary>
+    /// 可以用来计算ojbtoworld矩阵
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="q"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
     public static Matrix4x4 TRS(Vector3 pos, Quaternion q, Vector3 s)
     {
         Matrix4x4 posMatrix = Matrix4x4.identity;
