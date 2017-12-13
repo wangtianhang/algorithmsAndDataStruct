@@ -42,8 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="3dMath\Math3d.cs" />
+    <Compile Include="3dMath\Matrix4x4.cs" />
     <Compile Include="3dMath\Quaternion.cs" />
-    <Compile Include="Algorithms.cs" />
+    <Compile Include="3dMath\RotationHelper.cs" />
+    <Compile Include="3dMath\Transformcs.cs" />
+    <Compile Include="CommonAlgorithms\Algorithms.cs" />
     <Compile Include="CombineMath\31Next Permutation.cs" />
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="3dMath\Vector3.cs" />
@@ -76,7 +79,7 @@
     <Compile Include="CommonDataStruct\RedBlackBST.cs" />
     <Compile Include="DirectedGraph\DirectedGraph.cs" />
     <Compile Include="DirectedGraph\Topological.cs" />
-    <Compile Include="Math.cs" />
+    <Compile Include="CommonAlgorithms\MathCollection.cs" />
     <Compile Include="CommonDataStruct\PriorityQueue.cs" />
     <Compile Include="SortAndSearch\MergeBUSort.cs" />
     <Compile Include="Program.cs" />
@@ -85,7 +88,7 @@
     <Compile Include="CommonDataStruct\SeparateChainingHashTable.cs" />
     <Compile Include="CommonDataStruct\StackADT.cs" />
     <Compile Include="SortAndSearch\QuickSort.cs" />
-    <Compile Include="Random2.cs" />
+    <Compile Include="CommonAlgorithms\Random2.cs" />
     <Compile Include="UndirectedGraph\BreadFirstPath.cs" />
     <Compile Include="UndirectedGraph\ConnectedComponent.cs" />
     <Compile Include="UndirectedGraph\Cycle.cs" />
@@ -94,7 +97,7 @@
     <Compile Include="UndirectedGraph\Graph.cs" />
     <Compile Include="UndirectedGraph\KruskaMST.cs" />
     <Compile Include="UndirectedGraph\PrimMST.cs" />
-    <Compile Include="UnionFind.cs" />
+    <Compile Include="CommonDataStruct\UnionFind.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
