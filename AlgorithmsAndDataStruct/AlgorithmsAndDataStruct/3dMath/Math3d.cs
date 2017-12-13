@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 class Math3d
 {
+    public const float Deg2Rad = 0.0174533f;
+    public const float Rad2Deg = 57.2958f;
+
     public static Vector3 GetIntersectionPoint(Vector3 rayOrigin, Vector3 rayDir, Vector3 planeNormal, Vector3 planeOnePoint)
     {
         float t = (Vector3.Dot(planeNormal, planeOnePoint) - Vector3.Dot(planeNormal, rayOrigin))

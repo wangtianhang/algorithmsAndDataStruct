@@ -16,9 +16,16 @@ class Transform
 
     Quaternion m_rotation;
 
+    // 旋转转朝向
     public static Vector3 GetForward(Quaternion rotation)
     {
         return rotation * Vector3.forward;
+    }
+
+    // 朝向转旋转
+    public static Quaternion LookAt(Vector3 dir)
+    {
+        return Quaternion.LookRotation(dir, Vector3.up);
     }
 }
 

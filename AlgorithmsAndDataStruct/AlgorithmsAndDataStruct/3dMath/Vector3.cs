@@ -99,4 +99,42 @@ public struct Vector3
     {
         get { return new Vector3(0, 0, 0); }
     }
+
+    public static Vector3 up
+    {
+        get { return new Vector3(0, 1, 0); }
+    }
+
+    public static float Magnitude(Vector3 a)
+    {
+        return (float)Math.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+    }
+
+    public void Normalize()
+    {
+        float num = Vector3.Magnitude(this);
+        if (num > 1E-05f)
+        {
+            this /= num;
+        }
+        else
+        {
+            this = Vector3.zero;
+        }
+    }
+
+    public static Vector3 Normalize(Vector3 value)
+    {
+        float num = Vector3.Magnitude(value);
+        if (num > 1E-05f)
+        {
+            return value / num;
+        }
+        return Vector3.zero;
+    }
+
+    public static Vector3 Cross(Vector3 lhs, Vector3 rhs)
+    {
+        return new Vector3(lhs.y * rhs.z - lhs.z * rhs.y, lhs.z * rhs.x - lhs.x * rhs.z, lhs.x * rhs.y - lhs.y * rhs.x);
+    }
 }
