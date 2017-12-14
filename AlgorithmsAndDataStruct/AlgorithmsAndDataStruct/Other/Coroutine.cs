@@ -9,8 +9,9 @@ class TestWWW
 {
     public static void Test()
     {
+        TestWWW test = new TestWWW();
         CoroutineMgr coroutineMgr = new CoroutineMgr();
-        coroutineMgr.StartCoroutine(coroutineMgr.TestWWWCoroutine());
+        coroutineMgr.StartCoroutine(test.TestWWWCoroutine());
         while (true)
         {
             coroutineMgr.Update();
@@ -18,11 +19,6 @@ class TestWWW
         }
     }
 
-
-}
-
-class CoroutineMgr
-{
     public IEnumerator TestWWWCoroutine()
     {
         WWW www = new WWW("http://www.baidu.com");
@@ -30,7 +26,10 @@ class CoroutineMgr
 
         Debug.Log("TestWWWCoroutine end");
     }
+}
 
+class CoroutineMgr
+{
     public class CoroutineData
     {
         public IEnumerator m_coroutine = null;
@@ -63,10 +62,10 @@ class CoroutineMgr
             }
             else
             {
-                if (iter.m_current is WWW)
+                if (iter.m_current is AsyncOperation)
                 {
-                    WWW current = iter.m_current as WWW;
-                    if (current.isDone)
+                    AsyncOperation current = iter.m_current as AsyncOperation;
+                    if (current.isDone())
                     {
                         if (iter.m_coroutine.MoveNext())
                         {
@@ -79,20 +78,23 @@ class CoroutineMgr
                     }
                     else
                     {
-                        // 等待www完成
+                        // 等待异步完成
                     }
-                }
-                else
-                {
-                    // 暂时只有www一种
                 }
             }
         }
     }
 }
 
-class WWW
+public interface AsyncOperation
 {
+    bool isDone();
+
+    float progress();
+}
+
+class WWW : AsyncOperation
+{ 
     public class WebCommunication : WebClient
     {
         public int m_editorTimeOut = 3;
@@ -150,12 +152,14 @@ class WWW
         m_isDone = true;
     }
 
-    public bool isDone
+    public bool isDone()
     {
-        get 
-        {
-            return m_isDone;
-        }
+        return m_isDone;
+    }
+
+    public float progress()
+    {
+        return 0;
     }
 
     public string text 
