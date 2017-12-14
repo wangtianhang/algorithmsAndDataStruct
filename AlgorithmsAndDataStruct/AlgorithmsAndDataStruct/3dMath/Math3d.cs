@@ -163,5 +163,89 @@ class Math3d
     }
 
 
+    class Edge
+    {
+        public Vector2 point1;
+        public Vector2 point2;
+    }
+    /// <summary>
+    /// 蛮力法求解凸包
+    /// 对于一个n个点集合中的两个点Pi和Pj，当且仅当该集合中的其他点都位于穿过这两点的直线的同一边时。
+    /// 这两个点组成凸包的一个边
+    /// ax + by = c 对两个点(x1,y1)(x2,y2)
+    /// a = y2-y1 b = x1-x2 c = x1y2-y1x2
+    /// 一个半平面中的点都满足ax+by>c或者ax+by<c
+    /// </summary>
+    /// <param name="allPoint"></param>
+    /// <returns></returns>
+    public static List<Vector2> GetConvexHull(List<Vector2> allPoint)
+    {
+        List<Edge> allSegment = new List<Edge>();
+        for (int i = 0; i < allPoint.Count; ++i )
+        {
+            for (int j = 0; j < allPoint.Count; ++j )
+            {
+                Edge edge = new Edge();
+                edge.point1 = allPoint[i];
+                edge.point2 = allPoint[j];
+                allSegment.Add(edge);
+            }
+        }
+
+        for (int i = allSegment.Count - 1; i >= 0; --i)
+        {
+            if (!IsAllPointAtOneSide(allSegment[i], allPoint))
+            {
+                allSegment.RemoveAt(i);
+            }
+        }
+
+        // 整理绕序
+        List<Vector2> ret = new List<Vector2>();
+        ret.Add(allSegment[0].point1);
+        while (ret.Count != allSegment.Count)
+        {
+            Vector2 findPoint = ret[ret.Count - 1];
+            for (int i = 0; i < allSegment.Count; ++i)
+            {
+                if (allSegment[i].point1 == findPoint)
+                {
+                    ret.Add(allSegment[i].point2);
+                    break;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    static bool IsAllPointAtOneSide(Edge edge, List<Vector2> allPoint)
+    {
+        float a = edge.point2.y - edge.point1.y;
+        float b = edge.point1.x - edge.point2.x;
+        float c = edge.point1.x * edge.point2.y - edge.point1.y * edge.point2.x;
+        int side1Count = 0;
+        int side2Count = 0;
+        foreach(var iter in allPoint)
+        {
+            if(iter != edge.point1
+                && iter != edge.point2)
+            {
+                if(a * iter.x + b * iter.y > c)
+                {
+                    side1Count += 1;
+                }
+                else
+                {
+                    side2Count += 1;
+                }
+                if(side1Count != 0 && side2Count != 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
 
