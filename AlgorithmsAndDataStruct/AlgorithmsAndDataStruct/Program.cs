@@ -11,7 +11,7 @@ namespace AlgorithmsAndDataStruct
         static void Main(string[] args)
         {
             //Point24.Test();
-            Math3d.Test();
+            MathCollection.Test();
             
             //Matrix4x4.Test();
         }
