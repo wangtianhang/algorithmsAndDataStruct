@@ -21,6 +21,8 @@ class MathCollection
         //Debug.Log(CalculatePiFraction().ToString());
         Debug.Log(CalculatePiBBP().ToString());
         Debug.Log(CalculatePiBySuperPi().ToString());
+        Debug.Log(CalculatePiBySuperPi2().ToString());
+        Debug.Log(CalculatePiFraction().ToString());
 
         Console.ReadLine();
     }
@@ -266,7 +268,7 @@ class MathCollection
     public static double CalculatePiBBP()
     {
         double pi = 0;
-        int maxN = 1000;
+        int maxN = 10;
         for (int k = 0; k < maxN; ++k)
         {
             double par1 = 1 / Math.Pow(16, k);
@@ -304,30 +306,46 @@ class MathCollection
         return pi;
     }
 
-    public static double CalculatePiFraction()
+    /// <summary>
+    /// 高斯-勒让德算法 super pi 使用
+    /// </summary>
+    /// <returns></returns>
+    public static decimal CalculatePiBySuperPi2()
     {
-        Fraction ret = Fraction.Zero;
-        int n = 100;
-        for (int i = 0; i <= n; ++i)
+        decimal a = 1;
+        decimal b = 1 / (decimal)Math.Sqrt(2);
+        decimal t = 1 / (decimal)4;
+        decimal p = 1;
+
+        int maxN = 3;
+        for (int n = 0; n < maxN; ++n)
         {
-            if (i % 2 == 0)
-            {
-                //奇数项
-                Fraction tmp = new Fraction(1 , i * 2 + 1);
-                ret += tmp;
-                Debug.Log("CalculatePi " + tmp + " " + ret);
-            }
-            else
-            {
-                //偶数项
-                Fraction tmp = new Fraction(-1, i * 2 + 1);
-                ret += tmp;
-                Debug.Log("CalculatePi " + tmp + " " + ret);
-            }
+            decimal nextA = (a + b) / 2;
+            decimal nextB = (decimal)Math.Sqrt((double)(a * b));
+            decimal nextT = t - p * (a - nextA) * (a - nextA);
+            decimal nextP = 2 * p;
+
+            a = nextA;
+            b = nextB;
+            t = nextT;
+            p = nextP;
         }
 
-        ret *= 4;
-        return ret.ToDouble();
+        decimal pi = (a + b) * (a + b) / (4 * t);
+        return pi;
+    }
+
+    public static double CalculatePiFraction()
+    {
+        Fraction pi = Fraction.Zero;
+        int maxN = 10;
+        for (int k = 0; k < maxN; ++k)
+        {
+            Fraction par1 = new Fraction(1, (long)Math.Pow(16, k));
+            pi += par1 * (new Fraction(4, 8 * k + 1) - new Fraction(2, 8 * k + 4) - new Fraction(1, 8 * k + 5) - new Fraction(1, 8 * k + 6));
+            Debug.Log(pi.ToString());
+        }
+        return pi.ToDouble();
     }
 }
 
