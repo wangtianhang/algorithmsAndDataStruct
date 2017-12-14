@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class Vector4
+struct Vector4
 {
     public const float kEpsilon = 1E-05f;
 
@@ -15,13 +15,13 @@ class Vector4
 
     public float w;
 
-    public Vector4()
-    {
-        x = 0;
-        y = 0;
-        z = 0;
-        w = 0;
-    }
+//     public Vector4()
+//     {
+//         x = 0;
+//         y = 0;
+//         z = 0;
+//         w = 0;
+//     }
 
     public Vector4(float x, float y, float z, float w)
     {

@@ -47,6 +47,7 @@
     <Compile Include="3dMath\Matrix4x4.cs" />
     <Compile Include="3dMath\Quaternion.cs" />
     <Compile Include="3dMath\Transform.cs" />
+    <Compile Include="3dMath\Vector2.cs" />
     <Compile Include="3dMath\Vector4.cs" />
     <Compile Include="CommonAlgorithms\Algorithms.cs" />
     <Compile Include="CombineMath\31Next Permutation.cs" />
