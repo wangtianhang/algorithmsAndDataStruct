@@ -41,9 +41,9 @@ struct Fraction
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static int GCD(int a, int b)
+    public static long GCD(long a, long b)
     {
-        int temp;          /*定义整型变量*/
+        long temp;          /*定义整型变量*/
         if (a < b)             /*通过比较求出两个数中的最大值和最小值*/
         {
             temp = a;
@@ -59,14 +59,29 @@ struct Fraction
         return a;            /*返回最大公约数到调用函数处*/
     }
 
-    public Fraction(int numerator, int denominator)
+//     public Fraction()
+//     {
+//         m_numerator = 0;
+//         m_denominator = 1;
+//     }
+    public static Fraction Zero
     {
-        int GreatestCommonDivisor = GCD(numerator, denominator);
+        get { return new Fraction(0, 1); }
+    }
+
+    public static Fraction Error
+    {
+        get { return new Fraction(long.MinValue, 1); }
+    }
+
+    public Fraction(long numerator, long denominator)
+    {
+        long GreatestCommonDivisor = GCD(numerator, denominator);
         m_numerator = numerator / GreatestCommonDivisor;
         m_denominator = denominator / GreatestCommonDivisor;
     }
-    int m_numerator; // 分子
-    int m_denominator; // 分母
+    long m_numerator; // 分子
+    long m_denominator; // 分母
 
     public static bool operator != (Fraction lhs, Fraction rhs)
     {
@@ -96,108 +111,154 @@ struct Fraction
 
     public static Fraction operator + (Fraction a, Fraction b)
     {
-        int numerator = a.m_numerator * b.m_denominator + a.m_denominator * b.m_numerator;
+        try
+        {
+            checked
+            {
+                long numerator = a.m_numerator * b.m_denominator + a.m_denominator * b.m_numerator;
 
-        int denominator = a.m_denominator * b.m_denominator;
+                long denominator = a.m_denominator * b.m_denominator;
 
-        return new Fraction(numerator, denominator);
+                return new Fraction(numerator, denominator);
+            }
+        }
+        catch(System.OverflowException ex)
+        {
+            Debug.LogException(ex);
+            return Error;
+        }
     }
 
     public static Fraction operator +(Fraction a, int b)
     {
-        int numerator = a.m_numerator + a.m_denominator * b;
+        long numerator = a.m_numerator + a.m_denominator * b;
 
-        int denominator = a.m_denominator;
+        long denominator = a.m_denominator;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator +(int b, Fraction a)
     {
-        int numerator = a.m_denominator * b + a.m_numerator;
+        long numerator = a.m_denominator * b + a.m_numerator;
 
-        int denominator = a.m_denominator;
+        long denominator = a.m_denominator;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator - (Fraction a, Fraction b)
     {
-        int numerator = a.m_numerator * b.m_denominator - a.m_denominator * b.m_numerator;
+        try
+        {
+            checked
+            {
+                long numerator = a.m_numerator * b.m_denominator - a.m_denominator * b.m_numerator;
 
-        int denominator = a.m_denominator * b.m_denominator;
+                long denominator = a.m_denominator * b.m_denominator;
 
-        return new Fraction(numerator, denominator);
+                return new Fraction(numerator, denominator);
+            }
+        }
+        catch(System.OverflowException ex)
+        {
+            Debug.LogException(ex);
+            return Error;
+        }
     }
 
     public static Fraction operator -(Fraction a, int b)
     {
-        int numerator = a.m_numerator - a.m_denominator * b;
+        long numerator = a.m_numerator - a.m_denominator * b;
 
-        int denominator = a.m_denominator;
+        long denominator = a.m_denominator;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator -(int b, Fraction a)
     {
-        int numerator = a.m_denominator * b - a.m_numerator;
+        long numerator = a.m_denominator * b - a.m_numerator;
 
-        int denominator = a.m_denominator;
+        long denominator = a.m_denominator;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator * (Fraction a, Fraction b)
     {
-        int numerator = a.m_numerator * b.m_numerator;
+        try
+        {
+            checked
+            {
+                long numerator = a.m_numerator * b.m_numerator;
 
-        int denominator = a.m_denominator * b.m_denominator;
-        
-        return new Fraction(numerator, denominator);
+                long denominator = a.m_denominator * b.m_denominator;
+
+                return new Fraction(numerator, denominator);
+            }
+        }
+        catch (System.OverflowException ex)
+        {
+            Debug.LogException(ex);
+            return Error;
+        }
+
     }
 
     public static Fraction operator *(Fraction a, int b)
     {
-        int numerator = a.m_numerator * b;
+        long numerator = a.m_numerator * b;
 
-        int denominator = a.m_denominator;
+        long denominator = a.m_denominator;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator *(int b, Fraction a)
     {
-        int numerator = b * a.m_numerator;
+        long numerator = b * a.m_numerator;
 
-        int denominator = a.m_denominator;
+        long denominator = a.m_denominator;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator / (Fraction a, Fraction b)
     {
-        int numerator = a.m_numerator * b.m_denominator;
+        try
+        {
+            checked
+            {
+                long numerator = a.m_numerator * b.m_denominator;
 
-        int denominator = a.m_denominator * b.m_numerator;
+                long denominator = a.m_denominator * b.m_numerator;
 
-        return new Fraction(numerator, denominator);
+                return new Fraction(numerator, denominator);
+            }
+        }
+        catch (System.OverflowException ex)
+        {
+            Debug.LogException(ex);
+            return Error;
+        }
+
     }
 
     public static Fraction operator /(Fraction a, int b)
     {
-        int numerator = a.m_numerator;
+        long numerator = a.m_numerator;
 
-        int denominator = a.m_denominator * b;
+        long denominator = a.m_denominator * b;
 
         return new Fraction(numerator, denominator);
     }
 
     public static Fraction operator /(int b, Fraction a)
     {
-        int numerator = b * a.m_denominator;
+        long numerator = b * a.m_denominator;
 
-        int denominator = a.m_numerator;
+        long denominator = a.m_numerator;
 
         return new Fraction(numerator, denominator);
     }

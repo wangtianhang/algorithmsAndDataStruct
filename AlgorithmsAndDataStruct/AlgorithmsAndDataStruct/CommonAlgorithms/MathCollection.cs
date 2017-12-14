@@ -17,6 +17,9 @@ class MathCollection
         Debug.Log(tmp2);
         Debug.Log(SixteenToTen(tmp2).ToString());
 
+        Debug.Log(CalculatePiFloat().ToString());
+        Debug.Log(CalculatePiFraction().ToString());
+
         Console.ReadLine();
     }
 
@@ -221,6 +224,63 @@ class MathCollection
     public static int SixteenToTen(string s)
     {
         return System.Convert.ToInt32(s, 16);
+    }
+
+    /// <summary>
+    /// 求Pi
+    /// </summary>
+    /// <returns></returns>
+    public static double CalculatePiFloat()
+    {
+        //double x = 1;
+        double ret = 0;
+        int n = 10000 * 10000;
+        for (int i = 0; i <= n; ++i )
+        {
+            if(i % 2 == 0)
+            {
+                //奇数项
+                double tmp = 1 / (double)(i * 2 + 1);
+                ret += tmp;
+                //Debug.Log("CalculatePi " + tmp);
+            }
+            else
+            {
+                //偶数项
+                double tmp = -1 / (double)(i * 2 + 1);
+                ret += tmp;
+                //Debug.Log("CalculatePi " + tmp);
+            }
+        }
+
+        ret *= 4;
+        return ret;
+    }
+
+    public static double CalculatePiFraction()
+    {
+        Fraction ret = Fraction.Zero;
+        int n = 100;
+        for (int i = 0; i <= n; ++i)
+        {
+            if (i % 2 == 0)
+            {
+                //奇数项
+                Fraction tmp = new Fraction(1 , i * 2 + 1);
+                ret += tmp;
+                Debug.Log("CalculatePi " + tmp + " " + ret);
+            }
+            else
+            {
+                //偶数项
+                Fraction tmp = new Fraction(-1, i * 2 + 1);
+                ret += tmp;
+                Debug.Log("CalculatePi " + tmp + " " + ret);
+            }
+        }
+
+        ret *= 4;
+        return ret.ToDouble();
     }
 }
 
