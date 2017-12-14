@@ -40,8 +40,21 @@ struct Quaternion
 
         Vector3 dir2 = new Vector3(0.6f, 0.7f, 0.8f);
         dir2.Normalize();
+
+        Quaternion rotateTowards = Quaternion.RotateTowards(Quaternion.LookRotation(dir), Quaternion.LookRotation(dir2), float.MaxValue);
+        Debug.Log("测试RotateTowards " + rotateTowards);
+
+        Vector3 dir3 = new Vector3(1, 0, 0);
+        Vector3 dir4 = new Vector3(0, 0, 1);
         Quaternion fromToRotation = FromToRotation(dir, dir2);
+        //Quaternion fromToRotation = FromToRotation(dir4, dir3);
         Debug.Log("测试FromToRotation " + fromToRotation);
+
+        Quaternion inverstQua = Quaternion.Inverse(fromToRotation);
+        Debug.Log("测试inverst " + inverstQua);
+
+        Quaternion lerpQua = Quaternion.Lerp(rotate, rotate2, 0.5f);
+        Debug.Log("测试lerp " + lerpQua);
 
         Console.ReadLine();
     }
@@ -213,14 +226,40 @@ struct Quaternion
 推出：Quaternion.LookRotation(new Vector3(1,0,0)) == Quaternion.FromToRotation(Vector3.forward, new Vector3(1,0,0));
 因为前者就是计算向前向量到当前向量（1,0,0）的旋转量的，其实现过程就是后者喽。
      */
-    public static Quaternion FromToRotation(Vector3 fromDirection, Vector3 toDirection)
+    public static Quaternion FromToRotation(Vector3 v1, Vector3 v2)
     {
-        fromDirection.Normalize();
-        toDirection.Normalize();
-        return RotateTowards(LookRotation(fromDirection), LookRotation(toDirection), float.MaxValue);
+//         fromDirection.Normalize();
+//         toDirection.Normalize();
+//         Quaternion fromQua = LookRotation(fromDirection);
+//         Quaternion toQua = LookRotation(toDirection);
+//         fromQua = Normalize(fromQua);
+//         toQua = Normalize(toQua);
+
+        //Vector3 fromDir = fromQua * Vector3.forward;
+        //Vector3 toDir = toQua * Vector3.forward;
+
+        //Quaternion ret = RotateTowards(fromQua, toQua, float.MaxValue);
+        //return ret;
+        return Quaternion.AngleAxis(Vector3.Angle(v1, v2), Vector3.Cross(v1, v2));
     }
 
+    public static Quaternion Inverse(Quaternion rotation)
+    {
+        float lengthSq = rotation.LengthSquared;
+        if (lengthSq != 0.0)
+        {
+            float i = 1.0f / lengthSq;
+            return new Quaternion(rotation.xyz * -i, rotation.w * i);
+        }
+        return rotation;
+    }
 
+    public static Quaternion Lerp(Quaternion from, Quaternion to, float t)
+    {
+        if (t > 1) t = 1;
+        if (t < 0) t = 0;
+        return Slerp(from, to, t);
+    }
 
     // 四元数转欧拉角
     static Vector3 ToEulerRad(Quaternion rotation)
@@ -369,6 +408,14 @@ struct Quaternion
         }
         float t = Math.Min(1f, maxDegreesDelta / num);
         return Quaternion.SlerpUnclamped(from, to, t);
+    }
+
+    public void Set(float new_x, float new_y, float new_z, float new_w)
+    {
+        x = new_x;
+        y = new_y;
+        z = new_z;
+        w = new_w;
     }
 
     private static Quaternion SlerpUnclamped(Quaternion a, Quaternion b, float t)

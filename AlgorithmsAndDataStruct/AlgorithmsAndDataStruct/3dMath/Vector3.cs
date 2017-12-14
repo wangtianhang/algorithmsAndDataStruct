@@ -150,4 +150,17 @@ public struct Vector3
             return this.x * this.x + this.y * this.y + this.z * this.z;
         }
     }
+
+    public static float Angle(Vector3 from, Vector3 to)
+    {
+        return (float)Math.Acos(Math3d.Clamp(Vector3.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
+    }
+
+    public Vector3 normalized
+    {
+        get
+        {
+            return Vector3.Normalize(this);
+        }
+    }
 }
