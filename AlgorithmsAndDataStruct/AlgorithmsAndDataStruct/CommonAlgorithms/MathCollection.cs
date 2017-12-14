@@ -17,8 +17,10 @@ class MathCollection
         Debug.Log(tmp2);
         Debug.Log(SixteenToTen(tmp2).ToString());
 
-        Debug.Log(CalculatePiFloat().ToString());
-        Debug.Log(CalculatePiFraction().ToString());
+        //Debug.Log(CalculatePiSeries().ToString());
+        //Debug.Log(CalculatePiFraction().ToString());
+        Debug.Log(CalculatePiBBP().ToString());
+        Debug.Log(CalculatePiBySuperPi().ToString());
 
         Console.ReadLine();
     }
@@ -230,7 +232,7 @@ class MathCollection
     /// 求Pi
     /// </summary>
     /// <returns></returns>
-    public static double CalculatePiFloat()
+    public static double CalculatePiSeries()
     {
         //double x = 1;
         double ret = 0;
@@ -255,6 +257,51 @@ class MathCollection
 
         ret *= 4;
         return ret;
+    }
+
+    /// <summary>
+    /// 高速求pi bbp公式
+    /// </summary>
+    /// <returns></returns>
+    public static double CalculatePiBBP()
+    {
+        double pi = 0;
+        int maxN = 1000;
+        for (int k = 0; k < maxN; ++k)
+        {
+            double par1 = 1 / Math.Pow(16, k);
+            pi += par1 * (4 / (double)(8 * k + 1) - 2 / (double)(8 * k + 4) - 1 / (double)(8 * k + 5) - 1 / (double)(8 * k + 6));
+        }
+        return pi;
+    }
+
+    /// <summary>
+    /// 高斯-勒让德算法 super pi 使用
+    /// </summary>
+    /// <returns></returns>
+    public static double CalculatePiBySuperPi()
+    {
+        double a = 1;
+        double b = 1 / Math.Sqrt(2);
+        double t = 1 / (double)4;
+        double p = 1;
+
+        int maxN = 3;
+        for (int n = 0; n < maxN; ++ n)
+        {
+            double nextA = (a + b) / 2;
+            double nextB = Math.Sqrt(a * b);
+            double nextT = t - p * (a - nextA) * (a - nextA);
+            double nextP = 2 * p;
+
+            a = nextA;
+            b = nextB;
+            t = nextT;
+            p = nextP;
+        }
+
+        double pi = (a + b) * (a + b) / (4 * t);
+        return pi;
     }
 
     public static double CalculatePiFraction()
