@@ -140,5 +140,38 @@ class MathCollection
 
         return true;
     }
+
+    /// <summary>
+    /// 海伦公式
+    /// </summary>
+    /// <returns></returns>
+    public float GetTriangleArea(float a, float b, float c)
+    {
+        float p = (a + b + c) / 2;
+        return (float)Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+    }
+
+    /// <summary>
+    /// 一元二次方程组 ax2+bx+c=0;
+    /// </summary>
+    /// <returns></returns>
+    public List<float> ResultOfQuadraticEquations(float a, float b, float c)
+    {
+        List<float> ret = new List<float>();
+        float tmp = b * b - 4 * a * c;
+        if(tmp > 0)
+        {
+            float x1 = -b + (float)Math.Sqrt(tmp);
+            float x2 = -b - (float)Math.Sqrt(tmp);
+            ret.Add(x1);
+            ret.Add(x2);
+        }
+        else if (tmp == 0)
+        {
+            float x = -b / (2 * a);
+            ret.Add(x);
+        }
+        return ret;
+    }
 }
 
