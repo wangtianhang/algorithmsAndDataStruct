@@ -148,7 +148,7 @@ public struct Vector3
     {
         get 
         {
-            return (float)Math.Sqrt(sqrMagnitude);
+            return (float)Mathf.Sqrt(sqrMagnitude);
         }
     }
 
@@ -205,7 +205,7 @@ public struct Vector3
 
     public static float Angle(Vector3 from, Vector3 to)
     {
-        return (float)Math.Acos(Mathf.Clamp(Vector3.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
+        return (float)Mathf.Acos(Mathf.Clamp(Vector3.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
     }
 
     public static Vector3 ClampMagnitude(Vector3 vector, float maxLength)
@@ -225,7 +225,7 @@ public struct Vector3
     public static float Distance(Vector3 a, Vector3 b)
     {
         Vector3 vector = new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
-        return (float)Math.Sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+        return (float)Mathf.Sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
     }
 
     public static float Dot(Vector3 lhs, Vector3 rhs)
@@ -241,17 +241,17 @@ public struct Vector3
 
     public static float Magnitude(Vector3 a)
     {
-        return (float)Math.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+        return (float)Mathf.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
     }
 
     public static Vector3 Max(Vector3 lhs, Vector3 rhs)
     {
-        return new Vector3(Math.Max(lhs.x, rhs.x), Math.Max(lhs.y, rhs.y), Math.Max(lhs.z, rhs.z));
+        return new Vector3(Mathf.Max(lhs.x, rhs.x), Mathf.Max(lhs.y, rhs.y), Mathf.Max(lhs.z, rhs.z));
     }
 
     public static Vector3 Min(Vector3 lhs, Vector3 rhs)
     {
-        return new Vector3(Math.Min(lhs.x, rhs.x), Math.Min(lhs.y, rhs.y), Math.Min(lhs.z, rhs.z));
+        return new Vector3(Mathf.Min(lhs.x, rhs.x), Mathf.Min(lhs.y, rhs.y), Mathf.Min(lhs.z, rhs.z));
     }
 
     public static Vector3 MoveTowards(Vector3 current, Vector3 target, float maxDistanceDelta)
@@ -348,7 +348,7 @@ public struct Vector3
 //         Vector3 endDir = endQua * Vector3.forward;
 //         endDir.Normalize();
 // 
-//         float length = Math3d.Lerp(from.magnitude, to.magnitude, t);
+//         float length = Mathf3d.Lerp(from.magnitude, to.magnitude, t);
 //         return endDir.normalized * length;
         if (t <= 0)
         {
@@ -391,9 +391,9 @@ public struct Vector3
         Matrix4x4 rotateMatrix = new Matrix4x4();
 
         //旋转的弧度
-        double radian = angle * Math.PI / 180;
-        float cosAngle = (float)Math.Cos(radian);
-        float sinAngle = (float)Math.Sin(radian);
+        double radian = angle * Mathf.PI / 180;
+        float cosAngle = (float)Mathf.Cos((float)radian);
+        float sinAngle = (float)Mathf.Sin((float)radian);
 
         //矩阵的数据
         //这里看不懂的自行科普矩阵知识

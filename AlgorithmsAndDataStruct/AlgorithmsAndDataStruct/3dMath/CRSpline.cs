@@ -30,7 +30,7 @@ public class CRSpline
     public Vector3 Interp(float t)
     {
         int numSections = pts.Length - 3;
-        int currPt = Math.Min((int)Math.Floor(t * (float)numSections), numSections - 1);
+        int currPt = Mathf.Min((int)Mathf.Floor(t * (float)numSections), numSections - 1);
         float u = t * (float)numSections - (float)currPt;
         Vector3 a = pts[currPt];
         Vector3 b = pts[currPt + 1];

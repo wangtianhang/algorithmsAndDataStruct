@@ -436,8 +436,8 @@ struct Matrix4x4
 // 
 //         float fovY = Math3d.Rad2Deg * fovYRad;
 
-        ret.m00 = 1 / (float)Math.Tan(fovRad * 0.5f) / aspect;
-        ret.m11 = 1 / (float)Math.Tan(fovRad * 0.5f);
+        ret.m00 = 1 / (float)Mathf.Tan(fovRad * 0.5f) / aspect;
+        ret.m11 = 1 / (float)Mathf.Tan(fovRad * 0.5f);
 
         ret.m22 = -(zFar + zNear) / (zFar - zNear);
         ret.m23 = -2 * zNear * zFar / (zFar - zNear);
@@ -578,12 +578,12 @@ struct Matrix4x4
 
         for (int j = 0; j < n - 1; ++j) // process by column. note n-1 
         {
-            float max = Math.Abs(lum[j][j]);
+            float max = Mathf.Abs(lum[j][j]);
             int piv = j;
 
             for (int i = j + 1; i < n; ++i) // find pivot index
             {
-                float xij = Math.Abs(lum[i][j]);
+                float xij = Mathf.Abs(lum[i][j]);
                 if (xij > max)
                 {
                     max = xij;

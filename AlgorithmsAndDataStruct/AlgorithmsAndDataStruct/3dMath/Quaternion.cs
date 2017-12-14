@@ -173,7 +173,7 @@ struct Quaternion
     public static float Angle(Quaternion a, Quaternion b)
     {
         float f = Quaternion.Dot(a, b);
-        return (float)Math.Acos(Math.Min(Math.Abs(f), 1f)) * 2f * 57.29578f;
+        return (float)Mathf.Acos(Mathf.Min(Mathf.Abs(f), 1f)) * 2f * 57.29578f;
     }
 
     public static Quaternion AngleAxis(float degress, Vector3 axis)
@@ -185,11 +185,11 @@ struct Quaternion
         var radians = degress * Mathf.Deg2Rad;
         radians *= 0.5f;
         axis.Normalize();
-        axis = axis * (float)System.Math.Sin(radians);
+        axis = axis * (float)Mathf.Sin(radians);
         result.x = axis.x;
         result.y = axis.y;
         result.z = axis.z;
-        result.w = (float)System.Math.Cos(radians);
+        result.w = (float)Mathf.Cos(radians);
 
         return Normalize(result);
     }
@@ -279,22 +279,22 @@ struct Quaternion
 
         if (test > 0.4995f * unit)
         { // singularity at north pole
-            v.y = 2f * (float)Math.Atan2(rotation.y, rotation.x);
-            v.x = (float)Math.PI / 2;
+            v.y = 2f * (float)Mathf.Atan2(rotation.y, rotation.x);
+            v.x = (float)Mathf.PI / 2;
             v.z = 0;
             return NormalizeAngles(v * Mathf.Rad2Deg);
         }
         if (test < -0.4995f * unit)
         { // singularity at south pole
-            v.y = -2f * (float)Math.Atan2(rotation.y, rotation.x);
-            v.x = -(float)Math.PI / 2;
+            v.y = -2f * (float)Mathf.Atan2(rotation.y, rotation.x);
+            v.x = -(float)Mathf.PI / 2;
             v.z = 0;
             return NormalizeAngles(v * Mathf.Rad2Deg);
         }
         Quaternion q = new Quaternion(rotation.w, rotation.z, rotation.x, rotation.y);
-        v.y = (float)System.Math.Atan2(2f * q.x * q.w + 2f * q.y * q.z, 1 - 2f * (q.z * q.z + q.w * q.w));     // Yaw
-        v.x = (float)System.Math.Asin(2f * (q.x * q.z - q.w * q.y));                             // Pitch
-        v.z = (float)System.Math.Atan2(2f * q.x * q.y + 2f * q.z * q.w, 1 - 2f * (q.y * q.y + q.z * q.z));      // Roll
+        v.y = (float)Mathf.Atan2(2f * q.x * q.w + 2f * q.y * q.z, 1 - 2f * (q.z * q.z + q.w * q.w));     // Yaw
+        v.x = (float)Mathf.Asin(2f * (q.x * q.z - q.w * q.y));                             // Pitch
+        v.z = (float)Mathf.Atan2(2f * q.x * q.y + 2f * q.z * q.w, 1 - 2f * (q.y * q.y + q.z * q.z));      // Roll
         return NormalizeAngles(v * Mathf.Rad2Deg) * Mathf.Deg2Rad;
     }
 
@@ -323,16 +323,16 @@ struct Quaternion
         var roll = euler.y;
 
         float yawOver2 = yaw * 0.5f;
-        float sinYawOver2 = (float)System.Math.Sin((float)yawOver2);
-        float cosYawOver2 = (float)System.Math.Cos((float)yawOver2);
+        float sinYawOver2 = (float)Mathf.Sin((float)yawOver2);
+        float cosYawOver2 = (float)Mathf.Cos((float)yawOver2);
 
         float pitchOver2 = pitch * 0.5f;
-        float sinPitchOver2 = (float)System.Math.Sin((float)pitchOver2);
-        float cosPitchOver2 = (float)System.Math.Cos((float)pitchOver2);
+        float sinPitchOver2 = (float)Mathf.Sin((float)pitchOver2);
+        float cosPitchOver2 = (float)Mathf.Cos((float)pitchOver2);
 
         float rollOver2 = roll * 0.5f;
-        float sinRollOver2 = (float)System.Math.Sin((float)rollOver2);
-        float cosRollOver2 = (float)System.Math.Cos((float)rollOver2);
+        float sinRollOver2 = (float)Mathf.Sin((float)rollOver2);
+        float cosRollOver2 = (float)Mathf.Cos((float)rollOver2);
 
         Quaternion result;
         result.w = cosYawOver2 * cosPitchOver2 * cosRollOver2 + sinYawOver2 * sinPitchOver2 * sinRollOver2;
@@ -367,7 +367,7 @@ struct Quaternion
         var quaternion = new Quaternion();
         if (num8 > 0f)
         {
-            var num = (float)System.Math.Sqrt(num8 + 1f);
+            var num = (float)Mathf.Sqrt(num8 + 1f);
             quaternion.w = num * 0.5f;
             num = 0.5f / num;
             quaternion.x = (m12 - m21) * num;
@@ -377,7 +377,7 @@ struct Quaternion
         }
         if ((m00 >= m11) && (m00 >= m22))
         {
-            var num7 = (float)System.Math.Sqrt(((1f + m00) - m11) - m22);
+            var num7 = (float)Mathf.Sqrt(((1f + m00) - m11) - m22);
             var num4 = 0.5f / num7;
             quaternion.x = 0.5f * num7;
             quaternion.y = (m01 + m10) * num4;
@@ -387,7 +387,7 @@ struct Quaternion
         }
         if (m11 > m22)
         {
-            var num6 = (float)System.Math.Sqrt(((1f + m11) - m00) - m22);
+            var num6 = (float)Mathf.Sqrt(((1f + m11) - m00) - m22);
             var num3 = 0.5f / num6;
             quaternion.x = (m10 + m01) * num3;
             quaternion.y = 0.5f * num6;
@@ -395,7 +395,7 @@ struct Quaternion
             quaternion.w = (m20 - m02) * num3;
             return quaternion;
         }
-        var num5 = (float)System.Math.Sqrt(((1f + m22) - m00) - m11);
+        var num5 = (float)Mathf.Sqrt(((1f + m22) - m00) - m11);
         var num2 = 0.5f / num5;
         quaternion.x = (m20 + m02) * num2;
         quaternion.y = (m21 + m12) * num2;
@@ -411,7 +411,7 @@ struct Quaternion
         {
             return to;
         }
-        float t = Math.Min(1f, maxDegreesDelta / num);
+        float t = Mathf.Min(1f, maxDegreesDelta / num);
         return Quaternion.SlerpUnclamped(from, to, t);
     }
 
@@ -474,11 +474,11 @@ struct Quaternion
         if (cosHalfAngle < 0.99f)
         {
             // do proper slerp for big angles
-            float halfAngle = (float)System.Math.Acos(cosHalfAngle);
-            float sinHalfAngle = (float)System.Math.Sin(halfAngle);
+            float halfAngle = (float)Mathf.Acos(cosHalfAngle);
+            float sinHalfAngle = (float)Mathf.Sin(halfAngle);
             float oneOverSinHalfAngle = 1.0f / sinHalfAngle;
-            blendA = (float)System.Math.Sin(halfAngle * (1.0f - t)) * oneOverSinHalfAngle;
-            blendB = (float)System.Math.Sin(halfAngle * t) * oneOverSinHalfAngle;
+            blendA = (float)Mathf.Sin(halfAngle * (1.0f - t)) * oneOverSinHalfAngle;
+            blendB = (float)Mathf.Sin(halfAngle * t) * oneOverSinHalfAngle;
         }
         else
         {
@@ -543,7 +543,7 @@ struct Quaternion
     {
         get
         {
-            return (float)System.Math.Sqrt(x * x + y * y + z * z + w * w);
+            return (float)Mathf.Sqrt(x * x + y * y + z * z + w * w);
         }
     }
 
@@ -584,10 +584,10 @@ struct Quaternion
 
     static void ToAxisAngleRad(Quaternion q, out Vector3 axis, out float angle)
     {
-        if (System.Math.Abs(q.w) > 1.0f)
+        if (Mathf.Abs(q.w) > 1.0f)
             q.Normalize();
-        angle = 2.0f * (float)System.Math.Acos(q.w); // angle
-        float den = (float)System.Math.Sqrt(1.0 - q.w * q.w);
+        angle = 2.0f * (float)Mathf.Acos(q.w); // angle
+        float den = (float)Mathf.Sqrt(1.0f - q.w * q.w);
         if (den > 0.0001f)
         {
             axis = q.xyz / den;
