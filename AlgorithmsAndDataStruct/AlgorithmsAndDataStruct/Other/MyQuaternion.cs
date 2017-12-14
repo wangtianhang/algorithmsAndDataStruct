@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 /// Version: aeroson 2017-07-11 (author yyyy-MM-dd)
 /// License: ODC Public Domain Dedication & License 1.0 (PDDL-1.0) https://tldrlegal.com/license/odc-public-domain-dedication-&-license-1.0-(pddl-1.0)
 /// </summary>
-[Serializable]
+/*[Serializable]
 public struct MyQuaternion : IEquatable<MyQuaternion>
 {
     const float radToDeg = (float)(180.0 / Math.PI);
@@ -627,83 +627,6 @@ public struct MyQuaternion : IEquatable<MyQuaternion>
             axis = new Vector3(1, 0, 0);
         }
     }
-    #region Obsolete methods
-    /*
-	[Obsolete("Use MyQuaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public static MyQuaternion EulerRotation(float x, float y, float z)
-	{
-		return MyQuaternion.Internal_FromEulerRad(new Vector3(x, y, z));
-	}
-	[Obsolete("Use MyQuaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public static MyQuaternion EulerRotation(Vector3 euler)
-	{
-		return MyQuaternion.Internal_FromEulerRad(euler);
-	}
-	[Obsolete("Use MyQuaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public void SetEulerRotation(float x, float y, float z)
-	{
-		this = Quaternion.Internal_FromEulerRad(new Vector3(x, y, z));
-	}
-	[Obsolete("Use Quaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public void SetEulerRotation(Vector3 euler)
-	{
-		this = Quaternion.Internal_FromEulerRad(euler);
-	}
-	[Obsolete("Use Quaternion.eulerAngles instead. This function was deprecated because it uses radians instead of degrees")]
-	public Vector3 ToEuler()
-	{
-		return Quaternion.Internal_ToEulerRad(this);
-	}
-	[Obsolete("Use Quaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public static Quaternion EulerAngles(float x, float y, float z)
-	{
-		return Quaternion.Internal_FromEulerRad(new Vector3(x, y, z));
-	}
-	[Obsolete("Use Quaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public static Quaternion EulerAngles(Vector3 euler)
-	{
-		return Quaternion.Internal_FromEulerRad(euler);
-	}
-	[Obsolete("Use Quaternion.ToAngleAxis instead. This function was deprecated because it uses radians instead of degrees")]
-	public void ToAxisAngle(out Vector3 axis, out float angle)
-	{
-		Quaternion.Internal_ToAxisAngleRad(this, out axis, out angle);
-	}
-	[Obsolete("Use Quaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public void SetEulerAngles(float x, float y, float z)
-	{
-		this.SetEulerRotation(new Vector3(x, y, z));
-	}
-	[Obsolete("Use Quaternion.Euler instead. This function was deprecated because it uses radians instead of degrees")]
-	public void SetEulerAngles(Vector3 euler)
-	{
-		this = Quaternion.EulerRotation(euler);
-	}
-	[Obsolete("Use Quaternion.eulerAngles instead. This function was deprecated because it uses radians instead of degrees")]
-	public static Vector3 ToEulerAngles(Quaternion rotation)
-	{
-		return Quaternion.Internal_ToEulerRad(rotation);
-	}
-	[Obsolete("Use Quaternion.eulerAngles instead. This function was deprecated because it uses radians instead of degrees")]
-	public Vector3 ToEulerAngles()
-	{
-		return Quaternion.Internal_ToEulerRad(this);
-	}
-	[Obsolete("Use Quaternion.AngleAxis instead. This function was deprecated because it uses radians instead of degrees")]
-	public static Quaternion AxisAngle(Vector3 axis, float angle)
-	{
-		return Quaternion.INTERNAL_CALL_AxisAngle(ref axis, angle);
-	}
-	private static Quaternion INTERNAL_CALL_AxisAngle(ref Vector3 axis, float angle)
-	{
-	}
-	[Obsolete("Use Quaternion.AngleAxis instead. This function was deprecated because it uses radians instead of degrees")]
-	public void SetAxisAngle(Vector3 axis, float angle)
-	{
-		this = Quaternion.AxisAngle(axis, angle);
-	}
-	*/
-    #endregion
     public override int GetHashCode()
     {
         return this.x.GetHashCode() ^ this.y.GetHashCode() << 2 ^ this.z.GetHashCode() >> 2 ^ this.w.GetHashCode() >> 1;
@@ -755,3 +678,4 @@ public struct MyQuaternion : IEquatable<MyQuaternion>
     }
 }
 
+*/
