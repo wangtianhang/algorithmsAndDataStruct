@@ -7,6 +7,23 @@ using System.Text;
 
 class Math3d
 {
+    public static void Test()
+    {
+        List<Vector2> test = new List<Vector2>();
+        test.Add(new Vector2(50, 50));
+        test.Add(new Vector2(0, 0));
+        test.Add(new Vector2(100, 100));
+        test.Add(new Vector2(0, 100));
+        test.Add(new Vector2(100, 0));
+        List<Vector2> ret = GetConvexHull(test);
+        foreach(var iter in ret)
+        {
+            Debug.Log(iter.ToString());
+        }
+
+        Console.ReadLine();
+    }
+
     //public const float Deg2Rad = 0.0174533f;
     //public const float Rad2Deg = 57.2958f;
 
@@ -180,15 +197,26 @@ class Math3d
     /// <returns></returns>
     public static List<Vector2> GetConvexHull(List<Vector2> allPoint)
     {
+        Dictionary<string, int> noRepeatDic = new Dictionary<string, int>();
         List<Edge> allSegment = new List<Edge>();
         for (int i = 0; i < allPoint.Count; ++i )
         {
             for (int j = 0; j < allPoint.Count; ++j )
             {
-                Edge edge = new Edge();
-                edge.point1 = allPoint[i];
-                edge.point2 = allPoint[j];
-                allSegment.Add(edge);
+                if (i != j)
+                {
+                    int min = Mathf.Min(i, j);
+                    int max = Mathf.Max(i, j);
+                    string key = min.ToString() + "_" + max;
+                    if (!noRepeatDic.ContainsKey(key))
+                    {
+                        noRepeatDic.Add(key, 1);
+                        Edge edge = new Edge();
+                        edge.point1 = allPoint[i];
+                        edge.point2 = allPoint[j];
+                        allSegment.Add(edge);
+                    }
+                }
             }
         }
 
@@ -210,8 +238,19 @@ class Math3d
             {
                 if (allSegment[i].point1 == findPoint)
                 {
-                    ret.Add(allSegment[i].point2);
-                    break;
+                    if(!ret.Contains(allSegment[i].point2))
+                    {
+                        ret.Add(allSegment[i].point2);
+                        break;
+                    }
+                }
+                else if (allSegment[i].point2 == findPoint)
+                {
+                    if (!ret.Contains(allSegment[i].point1))
+                    {
+                        ret.Add(allSegment[i].point1);
+                        break;
+                    }
                 }
             }
         }
