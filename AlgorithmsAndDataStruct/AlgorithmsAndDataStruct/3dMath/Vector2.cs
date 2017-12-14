@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-public struct Vector2
+public struct Vector2 : IComparable<Vector2>
 {
     public const float kEpsilon = 1E-05f;
 
@@ -298,6 +298,33 @@ public struct Vector2
     public static implicit operator Vector3(Vector2 v)
     {
         return new Vector3(v.x, v.y, 0f);
+    }
+
+    public int CompareTo(Vector2 other)
+    {
+        if(x > other.x)
+        {
+            return 1;
+        }
+        else if(x < other.x)
+        {
+            return -1;
+        }
+        else
+        {
+            if(y > other.y)
+            {
+                return 1;
+            }
+            else if(y < other.y)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
 

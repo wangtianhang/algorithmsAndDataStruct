@@ -77,6 +77,7 @@
     <Compile Include="Other\ObjectPool.cs" />
     <Compile Include="Other\ThreadSafeQueue.cs" />
     <Compile Include="Other\Coroutine.cs" />
+    <Compile Include="Other\Tuple.cs" />
     <Compile Include="String\KMP.cs" />
     <Compile Include="String\NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />

@@ -179,7 +179,7 @@ class Math3d
         return true;
     }
 
-
+    #region 暴力求解凸包
     class Edge
     {
         public Vector2 point1;
@@ -286,5 +286,98 @@ class Math3d
         }
         return true;
     }
+    #endregion
+
+    #region 尝试使用tuple替代edge求解凸包
+    public static List<Vector2> GetConvexHull2(List<Vector2> allPoint)
+    {
+        Dictionary<string, int> noRepeatDic = new Dictionary<string, int>();
+        List<Tuple<Vector2, Vector2>> allSegment = new List<Tuple<Vector2, Vector2>>();
+        for (int i = 0; i < allPoint.Count; ++i)
+        {
+            for (int j = 0; j < allPoint.Count; ++j)
+            {
+                if (i != j)
+                {
+                    int min = Mathf.Min(i, j);
+                    int max = Mathf.Max(i, j);
+                    string key = min.ToString() + "_" + max;
+                    if (!noRepeatDic.ContainsKey(key))
+                    {
+                        noRepeatDic.Add(key, 1);
+                        Tuple<Vector2, Vector2> edge = new Tuple<Vector2, Vector2>(allPoint[i], allPoint[j]);
+                        allSegment.Add(edge);
+                    }
+                }
+            }
+        }
+
+        for (int i = allSegment.Count - 1; i >= 0; --i)
+        {
+            if (!IsAllPointAtOneSide2(allSegment[i], allPoint))
+            {
+                allSegment.RemoveAt(i);
+            }
+        }
+
+        // 整理绕序
+        List<Vector2> ret = new List<Vector2>();
+        ret.Add(allSegment[0].Item1);
+        while (ret.Count != allSegment.Count)
+        {
+            Vector2 findPoint = ret[ret.Count - 1];
+            for (int i = 0; i < allSegment.Count; ++i)
+            {
+                if (allSegment[i].Item1 == findPoint)
+                {
+                    if (!ret.Contains(allSegment[i].Item2))
+                    {
+                        ret.Add(allSegment[i].Item2);
+                        break;
+                    }
+                }
+                else if (allSegment[i].Item2 == findPoint)
+                {
+                    if (!ret.Contains(allSegment[i].Item1))
+                    {
+                        ret.Add(allSegment[i].Item1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    static bool IsAllPointAtOneSide2(Tuple<Vector2, Vector2> edge, List<Vector2> allPoint)
+    {
+        float a = edge.Item2.y - edge.Item1.y;
+        float b = edge.Item1.x - edge.Item2.x;
+        float c = edge.Item1.x * edge.Item2.y - edge.Item1.y * edge.Item2.x;
+        int side1Count = 0;
+        int side2Count = 0;
+        foreach (var iter in allPoint)
+        {
+            if (iter != edge.Item1
+                && iter != edge.Item2)
+            {
+                if (a * iter.x + b * iter.y > c)
+                {
+                    side1Count += 1;
+                }
+                else
+                {
+                    side2Count += 1;
+                }
+                if (side1Count != 0 && side2Count != 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    #endregion
 }
 
