@@ -56,6 +56,11 @@ struct Quaternion
         Quaternion lerpQua = Quaternion.Lerp(rotate, rotate2, 0.5f);
         Debug.Log("测试lerp " + lerpQua);
 
+        float angle2 = 0;
+        Vector3 axis = Vector3.zero;
+        lerpQua.ToAngleAxis(out angle2, out axis);
+        Debug.Log("测试ToAngleAxis " + angle2 + " " + axis);
+
         Console.ReadLine();
     }
 
@@ -418,6 +423,21 @@ struct Quaternion
         w = new_w;
     }
 
+    public void SetFromToRotation(Vector3 fromDirection, Vector3 toDirection)
+    {
+        this = FromToRotation(fromDirection, toDirection);
+    }
+
+    public void SetLookRotation(Vector3 view)
+    {
+        this = LookRotation(view);
+    }
+
+    public void SetLookRotation(Vector3 view, Vector3 up)
+    {
+        this = LookRotation(view, up);
+    }
+
     private static Quaternion SlerpUnclamped(Quaternion a, Quaternion b, float t)
     {
         // if either input is zero, return the other.
@@ -544,6 +564,40 @@ struct Quaternion
         float scale = 1.0f / q.Length;
         Quaternion result = new Quaternion(q.xyz * scale, q.w * scale);
         return result;
+    }
+
+    public void ToAngleAxis(out float angle, out Vector3 axis)
+    {
+        Quaternion.ToAxisAngleRad(this, out axis, out angle);
+        angle *= Math3d.Rad2Deg;
+    }
+
+    /// <summary>
+    /// Scales the MyQuaternion to unit length.
+    /// </summary>
+    void Normalize()
+    {
+        float scale = 1.0f / this.Length;
+        xyz *= scale;
+        w *= scale;
+    }
+
+    static void ToAxisAngleRad(Quaternion q, out Vector3 axis, out float angle)
+    {
+        if (System.Math.Abs(q.w) > 1.0f)
+            q.Normalize();
+        angle = 2.0f * (float)System.Math.Acos(q.w); // angle
+        float den = (float)System.Math.Sqrt(1.0 - q.w * q.w);
+        if (den > 0.0001f)
+        {
+            axis = q.xyz / den;
+        }
+        else
+        {
+            // This occurs when the angle is zero. 
+            // Not a problem: just set an arbitrary normalized axis.
+            axis = new Vector3(1, 0, 0);
+        }
     }
 }
 

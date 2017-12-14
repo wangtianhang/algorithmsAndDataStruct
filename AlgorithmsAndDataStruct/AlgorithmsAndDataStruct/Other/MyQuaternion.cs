@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 /// github上的某版quaternion
+/// 这jb玩意各种bug 也没测试过
 
 /// <summary>
 /// Quaternions are used to represent rotations.
