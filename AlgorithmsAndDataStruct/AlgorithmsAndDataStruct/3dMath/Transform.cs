@@ -8,7 +8,7 @@ using System.Text;
 /// 坐标系与unity保持一致 为左手坐标系
 /// </summary>
 
-class Transform
+class Transform : Component
 {
     Vector3 m_position;
 

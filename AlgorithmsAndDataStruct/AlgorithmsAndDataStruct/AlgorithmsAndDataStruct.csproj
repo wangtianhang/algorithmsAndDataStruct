@@ -69,6 +69,7 @@
     <Compile Include="Other\BillBorad.cs" />
     <Compile Include="Other\CpuUsage.cs" />
     <Compile Include="Other\Debug.cs" />
+    <Compile Include="Other\GameObject.cs" />
     <Compile Include="Other\MyQuaternion.cs" />
     <Compile Include="Other\Point24.cs" />
     <Compile Include="Other\QueryPerfCounter.cs" />
