@@ -7,8 +7,8 @@ using System.Text;
 
 class Math3d
 {
-    public const float Deg2Rad = 0.0174533f;
-    public const float Rad2Deg = 57.2958f;
+    //public const float Deg2Rad = 0.0174533f;
+    //public const float Rad2Deg = 57.2958f;
 
     /// <summary>
     /// 射线与平面相交
@@ -162,48 +162,6 @@ class Math3d
         return true;
     }
 
-    public static float Clamp(float value, float min, float max)
-    {
-        if (value < min)
-        {
-            value = min;
-        }
-        else if (value > max)
-        {
-            value = max;
-        }
-        return value;
-    }
 
-    public static int Clamp(int value, int min, int max)
-    {
-        if (value < min)
-        {
-            value = min;
-        }
-        else if (value > max)
-        {
-            value = max;
-        }
-        return value;
-    }
-
-    public static float Clamp01(float value)
-    {
-        if (value < 0f)
-        {
-            return 0f;
-        }
-        if (value > 1f)
-        {
-            return 1f;
-        }
-        return value;
-    }
-
-    public static float Lerp(float from, float to, float t)
-    {
-        return from + (to - from) * Math3d.Clamp01(t);
-    }
 }
 

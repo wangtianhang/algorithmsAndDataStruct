@@ -428,7 +428,7 @@ struct Matrix4x4
         //ret.m22 = zFar / (zFar - zNear);
         //ret.m23 = 1;
         //ret.m32 = zFar * zNear / (zNear - zFar);
-         float fovRad = Math3d.Deg2Rad * fov;
+        float fovRad = Mathf.Deg2Rad * fov;
 // 
 //         float width = (float)Math.Tan(fovRad / 2) * zNear * 2;
 //         float height = width / aspect;

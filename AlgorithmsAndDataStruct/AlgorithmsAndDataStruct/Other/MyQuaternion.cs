@@ -557,20 +557,20 @@ public struct MyQuaternion : IEquatable<MyQuaternion>
             v.y = 2f * (float)Math.Atan2(rotation.y, rotation.x);
             v.x = (float)Math.PI / 2;
             v.z = 0;
-            return NormalizeAngles(v * Math3d.Rad2Deg);
+            return NormalizeAngles(v * Mathf.Rad2Deg);
         }
         if (test < -0.4995f * unit)
         { // singularity at south pole
             v.y = -2f * (float)Math.Atan2(rotation.y, rotation.x);
             v.x = -(float)Math.PI / 2;
             v.z = 0;
-            return NormalizeAngles(v * Math3d.Rad2Deg);
+            return NormalizeAngles(v * Mathf.Rad2Deg);
         }
         MyQuaternion q = new MyQuaternion(rotation.w, rotation.z, rotation.x, rotation.y);
         v.y = (float)System.Math.Atan2(2f * q.x * q.w + 2f * q.y * q.z, 1 - 2f * (q.z * q.z + q.w * q.w));     // Yaw
         v.x = (float)System.Math.Asin(2f * (q.x * q.z - q.w * q.y));                             // Pitch
         v.z = (float)System.Math.Atan2(2f * q.x * q.y + 2f * q.z * q.w, 1 - 2f * (q.y * q.y + q.z * q.z));      // Roll
-        return NormalizeAngles(v * Math3d.Rad2Deg);
+        return NormalizeAngles(v * Mathf.Rad2Deg);
     }
     private static Vector3 NormalizeAngles(Vector3 angles)
     {

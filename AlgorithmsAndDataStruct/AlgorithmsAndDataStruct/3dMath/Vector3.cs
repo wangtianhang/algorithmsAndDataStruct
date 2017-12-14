@@ -205,7 +205,7 @@ public struct Vector3
 
     public static float Angle(Vector3 from, Vector3 to)
     {
-        return (float)Math.Acos(Math3d.Clamp(Vector3.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
+        return (float)Math.Acos(Mathf.Clamp(Vector3.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
     }
 
     public static Vector3 ClampMagnitude(Vector3 vector, float maxLength)
@@ -235,7 +235,7 @@ public struct Vector3
 
     public static Vector3 Lerp(Vector3 from, Vector3 to, float t)
     {
-        t = Math3d.Clamp01(t);
+        t = Mathf.Clamp01(t);
         return new Vector3(from.x + (to.x - from.x) * t, from.y + (to.y - from.y) * t, from.z + (to.z - from.z) * t);
     }
 

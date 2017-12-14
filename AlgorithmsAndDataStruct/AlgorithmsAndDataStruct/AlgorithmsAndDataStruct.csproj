@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="3dMath\Math3d.cs" />
+    <Compile Include="3dMath\Mathf.cs" />
     <Compile Include="3dMath\Matrix4x4.cs" />
     <Compile Include="3dMath\Quaternion.cs" />
     <Compile Include="3dMath\Transform.cs" />
