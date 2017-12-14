@@ -9,5 +9,19 @@ class Debug
     {
         Console.WriteLine(str);
     }
+
+    public static void LogWarning(string str)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(str);
+        Console.ForegroundColor = ConsoleColor.White;
+    }
+
+    public static void LogError(string str)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(str);
+        Console.ForegroundColor = ConsoleColor.White;
+    }
 }
 
