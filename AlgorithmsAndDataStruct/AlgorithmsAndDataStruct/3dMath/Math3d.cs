@@ -200,5 +200,10 @@ class Math3d
         }
         return value;
     }
+
+    public static float Lerp(float from, float to, float t)
+    {
+        return from + (to - from) * Math3d.Clamp01(t);
+    }
 }
 

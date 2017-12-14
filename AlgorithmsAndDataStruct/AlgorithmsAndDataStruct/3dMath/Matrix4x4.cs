@@ -327,6 +327,22 @@ struct Matrix4x4
         return new Vector4(this[i, 0], this[i, 1], this[i, 2], this[i, 3]);
     }
 
+    public void SetColumn(int i, Vector4 v)
+    {
+        this[0, i] = v.x;
+        this[1, i] = v.y;
+        this[2, i] = v.z;
+        this[3, i] = v.w;
+    }
+
+    public void SetRow(int i, Vector4 v)
+    {
+        this[i, 0] = v.x;
+        this[i, 1] = v.y;
+        this[i, 2] = v.z;
+        this[i, 3] = v.w;
+    }
+
     public static Matrix4x4 Inverse(Matrix4x4 m)
     {
         float[][] mat = new float[4][];
