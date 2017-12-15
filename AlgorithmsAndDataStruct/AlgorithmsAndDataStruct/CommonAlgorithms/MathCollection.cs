@@ -178,15 +178,7 @@ class MathCollection
         return true;
     }
 
-    /// <summary>
-    /// 海伦公式
-    /// </summary>
-    /// <returns></returns>
-    public float GetTriangleArea(float a, float b, float c)
-    {
-        float p = (a + b + c) / 2;
-        return (float)Math.Sqrt(p * (p - a) * (p - b) * (p - c));
-    }
+
 
     /// <summary>
     /// 一元二次方程组 ax2+bx+c=0;

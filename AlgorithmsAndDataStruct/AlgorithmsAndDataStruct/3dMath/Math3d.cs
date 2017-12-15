@@ -379,5 +379,48 @@ class Math3d
         return true;
     }
     #endregion
+    /// <summary>
+    /// 海伦公式
+    /// </summary>
+    /// <returns></returns>
+    public float GetTriangleArea(float a, float b, float c)
+    {
+        float p = (a + b + c) / 2;
+        return (float)Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+    }
+
+    /// <summary>
+    /// 三点确定一个圆
+    /// </summary>
+    /// <returns></returns>
+    public Tuple<Vector2, double> ThreePointCalculateCircle(Vector2 pt1, Vector2 pt2, Vector2 pt3)
+    {
+        //Tuple<Vector2, double> ret = new Tuple<Vector2, double>();
+
+        double x1 = pt1.x;
+        double x2 = pt2.x;
+        double x3 = pt3.x;
+        double y1 = pt1.y;
+        double y2 = pt2.y;
+        double y3 = pt3.y;
+
+        double a = x1 - x2;
+        double b = y1 - y2;
+        double c = x1 - x3;
+        double d = y1 - y3;
+        double e = ((x1 * x1 - x2 * x2) + (y1 * y1 - y2 * y2)) / 2.0;
+        double f = ((x1 * x1 - x3 * x3) + (y1 * y1 - y3 * y3)) / 2.0;
+        double det = b * c - a * d;
+        if(Math.Abs(det) < 1e-5)
+        {
+            //ret.Item2 = -1f;
+            return new Tuple<Vector2,double>(Vector2.zero, -1);
+        }
+
+        double x0 = -(d * e - b * f) / det;
+        double y0 = -(a * f - c * e) / det;
+        double radius = Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+        return new Tuple<Vector2, double>(new Vector2((float)x0, (float)y0), radius);
+    }
 }
 
