@@ -8,6 +8,8 @@ using System.Numerics;
 
 class BigMath
 {
+    const string PI = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+
     public static void Test()
     {
         //BigRational test = new BigRational();
@@ -15,7 +17,7 @@ class BigMath
         //Debug.Log(test.ToString());
         //Debug.Log(((Double)test).ToString());
         //Debug.Log(((int)test).ToString());
-        string pi = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+        
 
         BigRational result = CalculatePi_BBP_BigFraction();
         Debug.Log(result.ToString());
@@ -24,10 +26,10 @@ class BigMath
         Debug.Log(((decimal)result).ToString());
         string piStr = result.ToDecimalString(1000);
         Debug.Log(piStr);
-        string lcsPi = AlgorithmsBase.LCS(piStr, pi);
+        string lcsPi = AlgorithmsBase.LCS(piStr, PI);
         Debug.Log(lcsPi.Length.ToString());
         Debug.Log(CalculateFactorial(100).ToString());
-        Debug.Log(CalculateFibonacci(10).ToString());
+        Debug.Log(CalculateFibonacci(100).ToString());
     }
 
     public static BigRational CalculatePi_BBP_BigFraction()
@@ -63,18 +65,20 @@ class BigMath
     }
 
     /// <summary>
-    /// 斐波那契 超级慢 哈哈
+    /// 斐波那契 迭代
     /// </summary>
     public static BigInteger CalculateFibonacci(int n)
     {
-        if(n == 1 || n == 2)
+        BigInteger f0 = 0;
+        BigInteger f1 = 1;
+        BigInteger currentNum = 0;
+        for (int i = 1; i < n; i++)
         {
-            return 1;
+            currentNum = f0 + f1;
+            f0 = f1;
+            f1 = currentNum;
         }
-        else
-        {
-            return CalculateFibonacci(n - 1) + CalculateFibonacci(n - 2);
-        }
+        return currentNum;  
     }
 }
 
