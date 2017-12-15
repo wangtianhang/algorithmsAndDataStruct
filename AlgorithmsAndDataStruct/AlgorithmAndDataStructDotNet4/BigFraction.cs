@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 //using UnityEngine;
 using Numerics;
+using System.Numerics;
 
 /// <summary>
 /// 分式辅助类
@@ -266,7 +267,7 @@ struct BigFraction
 
     public override string ToString()
     {
-        return ((int)m_numerator).ToString() + "/" + ((int)m_denominator).ToString();
+        return ((BigInteger)m_numerator).ToString() + "/" + ((BigInteger)m_denominator).ToString();
     }
 
     public decimal ToDecimal()

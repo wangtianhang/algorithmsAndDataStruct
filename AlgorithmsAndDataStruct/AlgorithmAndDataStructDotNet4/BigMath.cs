@@ -15,12 +15,17 @@ class BigMath
         //Debug.Log(test.ToString());
         //Debug.Log(((Double)test).ToString());
         //Debug.Log(((int)test).ToString());
+        string pi = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
 
         BigRational result = CalculatePi_BBP_BigFraction();
         Debug.Log(result.ToString());
         Debug.Log(((float)result).ToString());
         Debug.Log(((double)result).ToString());
         Debug.Log(((decimal)result).ToString());
+        string piStr = result.ToDecimalString(1000);
+        Debug.Log(piStr);
+        string lcsPi = AlgorithmsBase.LCS(piStr, pi);
+        Debug.Log(lcsPi.Length.ToString());
         Debug.Log(CalculateFactorial(100).ToString());
         Debug.Log(CalculateFibonacci(10).ToString());
     }
@@ -28,7 +33,7 @@ class BigMath
     public static BigRational CalculatePi_BBP_BigFraction()
     {
         BigFraction pi = BigFraction.Zero;
-        int maxN = 30;
+        int maxN = 50;
         for (int k = 0; k < maxN; ++k)
         {
             BigFraction par1 = new BigFraction(1, 1);

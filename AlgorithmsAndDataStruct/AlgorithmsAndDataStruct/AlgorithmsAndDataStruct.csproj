@@ -111,9 +111,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HelperLib\HelperLib.csproj">
-      <Project>{8938d659-1ae9-4b1a-956b-e5bf1566d66b}</Project>
-      <Name>HelperLib</Name>
+    <ProjectReference Include="..\BaseLib\BaseLib.csproj">
+      <Project>{518322dc-e7a0-4a64-b7c0-1f81a5c6d07c}</Project>
+      <Name>BaseLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
