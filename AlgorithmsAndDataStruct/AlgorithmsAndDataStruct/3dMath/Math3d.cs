@@ -15,7 +15,7 @@ class Math3d
         test.Add(new Vector2(100, 100));
         test.Add(new Vector2(0, 100));
         test.Add(new Vector2(100, 0));
-        List<Vector2> ret = GetConvexHull(test);
+        List<Vector2> ret = BruteForceGetConvexHull(test);
         foreach(var iter in ret)
         {
             Debug.Log(iter.ToString());
@@ -195,7 +195,7 @@ class Math3d
     /// </summary>
     /// <param name="allPoint"></param>
     /// <returns></returns>
-    public static List<Vector2> GetConvexHull(List<Vector2> allPoint)
+    public static List<Vector2> BruteForceGetConvexHull(List<Vector2> allPoint)
     {
         Dictionary<string, int> noRepeatDic = new Dictionary<string, int>();
         List<Edge> allSegment = new List<Edge>();
@@ -289,7 +289,7 @@ class Math3d
     #endregion
 
     #region 尝试使用tuple替代edge求解凸包
-    public static List<Vector2> GetConvexHull2(List<Vector2> allPoint)
+    public static List<Vector2> BruteForceGetConvexHull2(List<Vector2> allPoint)
     {
         Dictionary<string, int> noRepeatDic = new Dictionary<string, int>();
         List<Tuple<Vector2, Vector2>> allSegment = new List<Tuple<Vector2, Vector2>>();
