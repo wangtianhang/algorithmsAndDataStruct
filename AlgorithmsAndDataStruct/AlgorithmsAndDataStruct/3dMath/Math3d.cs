@@ -21,7 +21,7 @@ class Math3d
             Debug.Log(iter.ToString());
         }
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     //public const float Deg2Rad = 0.0174533f;

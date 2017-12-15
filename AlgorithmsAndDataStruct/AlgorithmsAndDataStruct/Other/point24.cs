@@ -56,7 +56,7 @@ class Point24
 
         Console.WriteLine("total " + noRepeatResult.Count);
         File.WriteAllLines("total24PointResult.txt", noRepeatResult.ToArray(), Encoding.UTF8);
-        Console.ReadLine();
+        //Console.ReadLine();
     }
     
 //     enum Operator

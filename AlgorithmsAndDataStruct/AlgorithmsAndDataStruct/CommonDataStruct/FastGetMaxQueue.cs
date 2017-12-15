@@ -145,7 +145,7 @@ public class TestFastGetMaxQueue
         test.DeQueue();
         Console.WriteLine(test.Max());
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 }
 

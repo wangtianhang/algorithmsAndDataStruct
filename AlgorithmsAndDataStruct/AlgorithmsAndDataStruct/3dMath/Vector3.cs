@@ -16,7 +16,7 @@ public struct Vector3
         Vector3 des = new Vector3(40, 50, 60);
         Debug.Log("测试vecotr3.slerp" + Vector3.Slerp(src, des, 0.7f));
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     public const float kEpsilon = 1e-005f;

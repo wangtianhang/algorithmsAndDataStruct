@@ -40,7 +40,7 @@ struct Matrix4x4
         Matrix4x4 perspectiveMat = Matrix4x4.Perspective(fov, aspect, zNear, zFar);
         Console.WriteLine("测试透视矩阵\n" + perspectiveMat.ToString());
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     public float m00;

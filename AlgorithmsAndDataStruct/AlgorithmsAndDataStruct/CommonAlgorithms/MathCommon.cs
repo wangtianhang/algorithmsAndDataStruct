@@ -25,7 +25,7 @@ class MathCommon
         Debug.Log(CalculatePi_SuperPi_decimal().ToString());
         //Debug.Log(CalculatePi_BBP_Fraction().ToString());
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     /// <summary>

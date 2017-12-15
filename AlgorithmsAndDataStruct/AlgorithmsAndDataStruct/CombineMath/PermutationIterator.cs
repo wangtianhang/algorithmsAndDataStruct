@@ -28,7 +28,7 @@ public class PermutationTest
         }
 
         Console.WriteLine("total " + count);
-        Console.ReadLine(); 
+        //Console.ReadLine(); 
     }
 }
 

@@ -7,7 +7,31 @@ using System.Text;
 /// </summary>
 class GaussianElimination
 {
+    public static void Test()
+    {
+        GaussianElimination test = new GaussianElimination();
+        double[][] param = new double[3][];
+        for (int i = 0; i < param.Length; ++i )
+        {
+            param[i] = new double[3];
+        }
+        param[0][0] = 3;    param[0][1] = -1;    param[0][2] = 1;
 
+        param[1][0] = 2;    param[1][1] = 3;    param[1][2] = -1;
+
+        param[2][0] = 1;    param[2][1] = 1;    param[2][2] = 1;
+
+        double[] d = new double[3];
+        d[0] = 4;
+        d[1] = 12;
+        d[2] = 6;
+
+        double[] result = test.Solve(3, param, d);
+        foreach(var iter in result)
+        {
+            Debug.Log(iter.ToString());
+        }
+    }
     /** 
      * @列主元高斯消去法 
      */
@@ -119,6 +143,8 @@ class GaussianElimination
         m_n = n;
         m_param = param;
         m_d = d;
+
+        m_x = new double[n];
 
         Elimination();
         Back();

@@ -8,7 +8,7 @@ public class QueryPerfCounter
     public static void Test()
     {
         Console.WriteLine(GetCurNanoSecond());
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     [DllImport("KERNEL32")]

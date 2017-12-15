@@ -11,9 +11,10 @@ namespace AlgorithmsAndDataStruct
         static void Main(string[] args)
         {
             //Point24.Test();
-            MathCommon.Test();
+            GaussianElimination.Test();
             
             //Matrix4x4.Test();
+            Console.ReadLine();
         }
     }
 }

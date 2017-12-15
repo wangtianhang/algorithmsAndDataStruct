@@ -61,7 +61,7 @@ struct Quaternion
         lerpQua.ToAngleAxis(out angle2, out axis);
         Debug.Log("测试ToAngleAxis " + angle2 + " " + axis);
 
-        Console.ReadLine();
+        //Console.ReadLine();
     }
 
     public const float kEpsilon = 1e-006f;
