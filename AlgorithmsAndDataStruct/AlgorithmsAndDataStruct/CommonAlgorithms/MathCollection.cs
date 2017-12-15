@@ -19,10 +19,11 @@ class MathCollection
 
         //Debug.Log(CalculatePiSeries().ToString());
         //Debug.Log(CalculatePiFraction().ToString());
-        Debug.Log(CalculatePiBBP().ToString());
-        Debug.Log(CalculatePiBySuperPi().ToString());
-        Debug.Log(CalculatePiBySuperPi2().ToString());
-        Debug.Log(CalculatePiFraction().ToString());
+        Debug.Log(CalculatePi_BBP_double().ToString());
+        Debug.Log(CalculatePi_BBP_decemal().ToString());
+        Debug.Log(CalculatePi_SuperPi_double().ToString());
+        Debug.Log(CalculatePi_SuperPi_decimal().ToString());
+        //Debug.Log(CalculatePi_BBP_Fraction().ToString());
 
         Console.ReadLine();
     }
@@ -32,7 +33,7 @@ class MathCollection
     /// </summary>
     /// <param name="c"></param>
     /// <returns></returns>
-    public static double sqrt(double c)
+    public static double Sqrt(double c)
     {
         if(c < 0)
         {
@@ -44,6 +45,22 @@ class MathCollection
         while(Math.Abs(t - c / t) > err * t)
         {
             t = (c / t + t) / 2.0;
+        }
+        return t;
+    }
+
+    public static decimal Sqrt(decimal c)
+    {
+        if (c < 0)
+        {
+            return decimal.MinValue;
+        }
+
+        decimal err = 1e-20m;
+        decimal t = c;
+        while (Math.Abs(t - c / t) > err * t)
+        {
+            t = (c / t + t) / 2.0m;
         }
         return t;
     }
@@ -234,7 +251,7 @@ class MathCollection
     /// 求Pi
     /// </summary>
     /// <returns></returns>
-    public static double CalculatePiSeries()
+    public static double CalculatePi_Series_double()
     {
         //double x = 1;
         double ret = 0;
@@ -265,7 +282,7 @@ class MathCollection
     /// 高速求pi bbp公式
     /// </summary>
     /// <returns></returns>
-    public static double CalculatePiBBP()
+    public static double CalculatePi_BBP_double()
     {
         double pi = 0;
         int maxN = 10;
@@ -278,10 +295,31 @@ class MathCollection
     }
 
     /// <summary>
+    /// 高速求pi bbp公式
+    /// </summary>
+    /// <returns></returns>
+    public static decimal CalculatePi_BBP_decemal()
+    {
+        decimal pi = 0;
+        int maxN = 10;
+        for (int k = 0; k < maxN; ++k)
+        {
+            decimal par1 = 1;
+            for (int i = 0; i < k; ++i )
+            {
+                par1 *= 16;
+            }
+            par1 = 1 / par1;
+            pi += par1 * (4 / (decimal)(8 * k + 1) - 2 / (decimal)(8 * k + 4) - 1 / (decimal)(8 * k + 5) - 1 / (decimal)(8 * k + 6));
+        }
+        return pi;
+    }
+
+    /// <summary>
     /// 高斯-勒让德算法 super pi 使用
     /// </summary>
     /// <returns></returns>
-    public static double CalculatePiBySuperPi()
+    public static double CalculatePi_SuperPi_double()
     {
         double a = 1;
         double b = 1 / Math.Sqrt(2);
@@ -310,10 +348,10 @@ class MathCollection
     /// 高斯-勒让德算法 super pi 使用
     /// </summary>
     /// <returns></returns>
-    public static decimal CalculatePiBySuperPi2()
+    public static decimal CalculatePi_SuperPi_decimal()
     {
         decimal a = 1;
-        decimal b = 1 / (decimal)Math.Sqrt(2);
+        decimal b = 1 / Sqrt(2m);
         decimal t = 1 / (decimal)4;
         decimal p = 1;
 
@@ -321,7 +359,7 @@ class MathCollection
         for (int n = 0; n < maxN; ++n)
         {
             decimal nextA = (a + b) / 2;
-            decimal nextB = (decimal)Math.Sqrt((double)(a * b));
+            decimal nextB = Sqrt(a * b);
             decimal nextT = t - p * (a - nextA) * (a - nextA);
             decimal nextP = 2 * p;
 
@@ -335,7 +373,7 @@ class MathCollection
         return pi;
     }
 
-    public static double CalculatePiFraction()
+    public static double CalculatePi_BBP_Fraction()
     {
         Fraction pi = Fraction.Zero;
         int maxN = 10;
