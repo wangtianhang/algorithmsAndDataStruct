@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Numerics;
+using System.Numerics;
 
 class BigMath
 {
@@ -20,6 +21,8 @@ class BigMath
         Debug.Log(((float)result).ToString());
         Debug.Log(((double)result).ToString());
         Debug.Log(((decimal)result).ToString());
+        Debug.Log(CalculateFactorial(100).ToString());
+        Debug.Log(CalculateFibonacci(10).ToString());
     }
 
     public static BigRational CalculatePi_BBP_BigFraction()
@@ -37,6 +40,36 @@ class BigMath
             pi += par1 * (new BigFraction(4, 8 * k + 1) - new BigFraction(2, 8 * k + 4) - new BigFraction(1, 8 * k + 5) - new BigFraction(1, 8 * k + 6));
         }
         return pi.ToBigRational();
+    }
+
+    /// <summary>
+    /// 阶乘
+    /// </summary>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public static BigInteger CalculateFactorial(int n)
+    {
+        BigInteger ret = 1;
+        for (int i = 1; i <= n; ++i )
+        {
+            ret *= i;
+        }
+        return ret;
+    }
+
+    /// <summary>
+    /// 斐波那契 超级慢 哈哈
+    /// </summary>
+    public static BigInteger CalculateFibonacci(int n)
+    {
+        if(n == 1 || n == 2)
+        {
+            return 1;
+        }
+        else
+        {
+            return CalculateFibonacci(n - 1) + CalculateFibonacci(n - 2);
+        }
     }
 }
 

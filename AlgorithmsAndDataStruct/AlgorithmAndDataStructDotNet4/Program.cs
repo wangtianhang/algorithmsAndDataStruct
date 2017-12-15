@@ -10,9 +10,8 @@ class Program
 {
     static void Main(string[] args)
     {
-
-
         BigMath.Test();
+
         Console.ReadLine();
     }
 }
