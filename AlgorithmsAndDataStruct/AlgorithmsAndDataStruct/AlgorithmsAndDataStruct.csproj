@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3dMath\BruteForceAlgorithms.cs" />
     <Compile Include="3dMath\Math3d.cs" />
     <Compile Include="3dMath\Mathf.cs" />
     <Compile Include="3dMath\Matrix4x4.cs" />
