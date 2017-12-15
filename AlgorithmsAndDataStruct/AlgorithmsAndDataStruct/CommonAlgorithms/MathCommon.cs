@@ -5,7 +5,7 @@ using System.Text;
 
 
 
-class MathCollection
+class MathCommon
 {
     public static void Test()
     {

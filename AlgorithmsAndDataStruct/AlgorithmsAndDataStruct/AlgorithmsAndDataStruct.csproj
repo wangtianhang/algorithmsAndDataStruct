@@ -86,7 +86,7 @@
     <Compile Include="CommonDataStruct\RedBlackBST.cs" />
     <Compile Include="DirectedGraph\DirectedGraph.cs" />
     <Compile Include="DirectedGraph\Topological.cs" />
-    <Compile Include="CommonAlgorithms\MathCollection.cs" />
+    <Compile Include="CommonAlgorithms\MathCommon.cs" />
     <Compile Include="CommonDataStruct\PriorityQueue.cs" />
     <Compile Include="SortAndSearch\MergeBUSort.cs" />
     <Compile Include="Program.cs" />
