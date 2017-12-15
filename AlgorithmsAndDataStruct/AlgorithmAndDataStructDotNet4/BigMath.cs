@@ -28,8 +28,10 @@ class BigMath
         Debug.Log(piStr);
         string lcsPi = AlgorithmsBase.LCS(piStr, PI);
         Debug.Log(lcsPi.Length.ToString());
-        Debug.Log(CalculateFactorial(100).ToString());
-        Debug.Log(CalculateFibonacci(100).ToString());
+        Debug.Log("阶乘" + CalculateFactorial(100).ToString());
+        Debug.Log("斐波那契" + CalculateFibonacci(100).ToString());
+
+        Debug.Log("pow(2,64)" + BigInteger.Pow(2, 64).ToString());
     }
 
     public static BigRational CalculatePi_BBP_BigFraction()
