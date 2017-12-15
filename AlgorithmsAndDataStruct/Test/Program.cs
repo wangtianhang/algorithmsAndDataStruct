@@ -9,9 +9,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        BigMath.Test();
+        //BigMath.Test();
 
-        AlgorithmsBase.Test();
+        //AlgorithmsBase.Test();
+
+        MagicSquare.Test();
 
         Console.ReadLine();
     }
