@@ -56,7 +56,7 @@ class MathCollection
             return decimal.MinValue;
         }
 
-        decimal err = 1e-20m;
+        decimal err = 1e-28m;
         decimal t = c;
         while (Math.Abs(t - c / t) > err * t)
         {
@@ -301,7 +301,7 @@ class MathCollection
     public static decimal CalculatePi_BBP_decemal()
     {
         decimal pi = 0;
-        int maxN = 10;
+        int maxN = 20;
         for (int k = 0; k < maxN; ++k)
         {
             decimal par1 = 1;
@@ -355,7 +355,7 @@ class MathCollection
         decimal t = 1 / (decimal)4;
         decimal p = 1;
 
-        int maxN = 3;
+        int maxN = 10;
         for (int n = 0; n < maxN; ++n)
         {
             decimal nextA = (a + b) / 2;

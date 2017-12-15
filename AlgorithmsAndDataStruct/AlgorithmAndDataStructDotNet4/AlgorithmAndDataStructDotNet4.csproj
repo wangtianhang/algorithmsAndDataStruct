@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigFraction.cs" />
+    <Compile Include="BigMath.cs" />
     <Compile Include="BigRational.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

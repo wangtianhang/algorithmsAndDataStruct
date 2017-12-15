@@ -31,8 +31,8 @@ struct Fraction
         Console.WriteLine(1 / a);
 
         // 测试隐式转换
-        Console.WriteLine(0.1f + a);
-        Console.WriteLine(0.1d + b);
+        Console.WriteLine(0.1f + (float)a);
+        Console.WriteLine(0.1d + (double)b);
     }
 
     /// <summary>
@@ -273,7 +273,7 @@ struct Fraction
         return (double)m_numerator / (double)m_denominator;
     }
 
-    public static implicit operator double(Fraction d)
+    public static explicit operator double(Fraction d)
     {
         return d.ToDouble();
     }
@@ -283,7 +283,7 @@ struct Fraction
         return (float)m_numerator / (float)m_denominator;
     }
 
-    public static implicit operator float(Fraction d)
+    public static explicit operator float(Fraction d)
     {
         return d.ToFloat();
     }
