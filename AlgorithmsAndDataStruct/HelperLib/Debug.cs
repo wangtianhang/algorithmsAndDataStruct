@@ -4,16 +4,16 @@ using System.Diagnostics;
 using System.Text;
 
 
-class Debug
+public class Debug
 {
     static bool s_hasInit = false;
     public static void Init()
     {
-        if(!s_hasInit)
+        if (!s_hasInit)
         {
             s_hasInit = true;
             //Console.SetWindowSize(1280, 720);
-        }  
+        }
     }
 
     public static void Log(string str)
@@ -63,4 +63,6 @@ class Debug
         return info;
     }
 }
+
+
 

@@ -69,7 +69,6 @@
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
     <Compile Include="Other\BillBorad.cs" />
     <Compile Include="Other\CpuUsage.cs" />
-    <Compile Include="Other\Debug.cs" />
     <Compile Include="Other\GameObject.cs" />
     <Compile Include="Other\MyQuaternion.cs" />
     <Compile Include="Other\Point24.cs" />
@@ -109,6 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelperLib\HelperLib.csproj">
+      <Project>{8938d659-1ae9-4b1a-956b-e5bf1566d66b}</Project>
+      <Name>HelperLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
