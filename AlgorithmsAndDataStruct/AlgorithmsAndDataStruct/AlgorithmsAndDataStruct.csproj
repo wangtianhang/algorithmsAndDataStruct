@@ -52,6 +52,7 @@
     <Compile Include="3dMath\Quaternion.cs" />
     <Compile Include="3dMath\Transform.cs" />
     <Compile Include="3dMath\Vector2.cs" />
+    <Compile Include="3dMath\Vector2i.cs" />
     <Compile Include="3dMath\Vector4.cs" />
     <Compile Include="CommonAlgorithms\Algorithms.cs" />
     <Compile Include="CombineMath\31Next Permutation.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Other\Point24.cs" />
     <Compile Include="Other\QueryPerfCounter.cs" />
     <Compile Include="Other\ObjectPool.cs" />
+    <Compile Include="Other\Sudoku.cs" />
     <Compile Include="Other\ThreadSafeQueue.cs" />
     <Compile Include="Other\Coroutine.cs" />
     <Compile Include="Other\Tuple.cs" />
