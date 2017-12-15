@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgorithmAndDataStructDotNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseLib", "BaseLib\BaseLib.csproj", "{518322DC-E7A0-4A64-B7C0-1F81A5C6D07C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3FAB77B1-3B81-416F-9DEB-D6D7E78498AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{518322DC-E7A0-4A64-B7C0-1F81A5C6D07C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{518322DC-E7A0-4A64-B7C0-1F81A5C6D07C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{518322DC-E7A0-4A64-B7C0-1F81A5C6D07C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FAB77B1-3B81-416F-9DEB-D6D7E78498AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FAB77B1-3B81-416F-9DEB-D6D7E78498AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FAB77B1-3B81-416F-9DEB-D6D7E78498AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FAB77B1-3B81-416F-9DEB-D6D7E78498AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
