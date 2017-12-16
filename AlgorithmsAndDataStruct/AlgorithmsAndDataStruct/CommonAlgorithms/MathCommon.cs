@@ -407,5 +407,17 @@ public class MathCommon
         }
         return count;
     }
+
+    /// <summary>
+    /// 不用多余变量交换两个int型。。又是无聊的trick题目
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    public static void Swap(ref int a, ref int b)
+    {
+        a = a + b;
+        b = a - b;
+        a = a - b;
+    }
 }
 
