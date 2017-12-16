@@ -5,7 +5,7 @@ using System.Text;
 
 
 
-class MathCommon
+public class MathCommon
 {
     public static void Test()
     {
@@ -26,6 +26,7 @@ class MathCommon
         //Debug.Log(CalculatePi_BBP_Fraction().ToString());
 
         //Console.ReadLine();
+        Debug.Log(NumberOf1(82).ToString());
     }
 
     /// <summary>
@@ -376,6 +377,23 @@ class MathCommon
             Debug.Log(pi.ToString());
         }
         return pi.ToDouble();
+    }
+
+    //求二进制形式中1的数量
+    public static int NumberOf1(int n)
+    {
+        int count = 0;
+        // todo csharp中没办法用unsigned int
+        int flag = 1;
+        while(flag != 0)
+        {
+            if((n & flag) != 0)
+            {
+                count++;
+            }
+            flag = flag << 1;
+        }
+        return count;
     }
 }
 
