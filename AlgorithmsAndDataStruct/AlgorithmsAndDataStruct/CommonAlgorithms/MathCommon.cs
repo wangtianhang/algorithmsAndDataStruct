@@ -395,5 +395,17 @@ public class MathCommon
         }
         return count;
     }
+
+    //求二进制形式中1的数量 另一种方法 这么trick的代码有意义么
+    public static int NumberOf1_Another(int n)
+    {
+        int count = 0;
+        while(n != 0)
+        {
+            ++count;
+            n = (n - 1) & n;
+        }
+        return count;
+    }
 }
 
