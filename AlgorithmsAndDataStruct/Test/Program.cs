@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        MagicSquare.Test();
+        TestTree.Test();
 
         Console.ReadLine();
     }

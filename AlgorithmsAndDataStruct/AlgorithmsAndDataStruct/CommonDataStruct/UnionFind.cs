@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 
 
-
+/// <summary>
+/// 并查集算法
+/// </summary>
 class UnionFind
 {
     private int[] parent;  // parent[i] = parent of i
