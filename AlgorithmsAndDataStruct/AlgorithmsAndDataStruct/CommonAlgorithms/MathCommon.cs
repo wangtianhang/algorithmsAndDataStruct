@@ -383,8 +383,8 @@ public class MathCommon
     public static int NumberOf1(int n)
     {
         int count = 0;
-        // todo csharp中没办法用unsigned int
-        int flag = 1;
+        // csharp中没办法用unsigned int 改用long吧
+        long flag = 1;
         while(flag != 0)
         {
             if((n & flag) != 0)
