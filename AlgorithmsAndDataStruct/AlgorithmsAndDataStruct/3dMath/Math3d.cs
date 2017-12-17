@@ -39,6 +39,38 @@ class Math3d
     }
 
     /// <summary>
+    /// 点在矩形内部
+    /// </summary>
+    /// <param name="p"></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <param name="d"></param>
+    /// <returns></returns>
+    public static bool IsInRectangle(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+    {
+        Vector3 v11 = p - a;
+        Vector3 v12 = b - a;
+        Vector3 v21 = p - b;
+        Vector3 v22 = c - b;
+        Vector3 v31 = p - c;
+        Vector3 v32 = d - c;
+        Vector3 v41 = p - d;
+        Vector4 v42 = a - d;
+
+        if (Vector3.Cross(v11, v12).normalized == Vector3.Cross(v21, v22).normalized
+            && Vector3.Cross(v21, v22).normalized == Vector3.Cross(v31, v32).normalized
+            && Vector3.Cross(v31, v32).normalized == Vector3.Cross(v41, v42).normalized)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 仅支持凸多边形
     /// </summary>
     /// <param name="p"></param>
