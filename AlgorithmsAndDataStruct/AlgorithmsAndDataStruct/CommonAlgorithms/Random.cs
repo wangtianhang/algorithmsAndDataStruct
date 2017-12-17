@@ -21,20 +21,23 @@ class Random
 
         return s_ran.Next(min, max);
     }
-}
 
-class Random2
-{
-    static System.Random inter = new System.Random();
-    public static int uniform(int n)
+    static int uniform(int n)
     {
-        return inter.Next() % n;
+        Init();
+
+        return s_ran.Next() % n;
     }
 
+    /// <summary>
+    /// 完美洗牌算法
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="a"></param>
     public static void Shuffle<T>(T[] a)
     {
         int n = a.Length;
-        for (int i = 0; i < n; ++i )
+        for (int i = 0; i < n; ++i)
         {
             int r = i + uniform(n - i);
             T temp = a[i];
@@ -42,7 +45,5 @@ class Random2
             a[r] = temp;
         }
     }
-
-
 }
 

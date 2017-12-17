@@ -18,7 +18,7 @@ class Algorithms
     /// <returns></returns>
     public static T Select<T>(T[] a, int k)
     {
-        Random2.Shuffle<T>(a);
+        Random.Shuffle<T>(a);
         int lo = 0, hi = a.Length - 1;
         while (hi > lo)
         {

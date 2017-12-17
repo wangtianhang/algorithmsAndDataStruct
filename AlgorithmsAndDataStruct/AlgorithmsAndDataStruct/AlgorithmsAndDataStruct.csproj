@@ -105,7 +105,7 @@
     <Compile Include="CommonDataStruct\SeparateChainingHashTable.cs" />
     <Compile Include="CommonDataStruct\StackADT.cs" />
     <Compile Include="SortAndSearch\QuickSort.cs" />
-    <Compile Include="CommonAlgorithms\Random2.cs" />
+    <Compile Include="CommonAlgorithms\Random.cs" />
     <Compile Include="Tree\Tree.cs" />
     <Compile Include="UndirectedGraph\BreadFirstPath.cs" />
     <Compile Include="UndirectedGraph\ConnectedComponent.cs" />
