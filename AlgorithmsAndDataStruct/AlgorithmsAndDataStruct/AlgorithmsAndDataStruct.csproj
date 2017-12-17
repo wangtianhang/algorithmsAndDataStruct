@@ -46,10 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="3dMath\BruteForceAlgorithms.cs" />
+    <Compile Include="3dMath\Line2d.cs" />
     <Compile Include="3dMath\Math3d.cs" />
     <Compile Include="3dMath\Mathf.cs" />
     <Compile Include="3dMath\Matrix4x4.cs" />
+    <Compile Include="3dMath\Plane3d.cs" />
     <Compile Include="3dMath\Quaternion.cs" />
+    <Compile Include="3dMath\Ray3d.cs" />
     <Compile Include="3dMath\Transform.cs" />
     <Compile Include="3dMath\Vector2.cs" />
     <Compile Include="3dMath\Vector2i.cs" />

@@ -20,10 +20,10 @@ class Math3d
     /// <param name="planeNormal"></param>
     /// <param name="planeOnePoint"></param>
     /// <returns></returns>
-    public static bool GetIntersectionPoint(Vector3 rayOrigin, Vector3 rayDir, Vector3 planeNormal, Vector3 planeOnePoint, out Vector3 result)
+    public static bool GetIntersectionPoint(Ray3d ray, Plane3d plane, out Vector3 result)
     {
-        float t = (Vector3.Dot(planeNormal, planeOnePoint) - Vector3.Dot(planeNormal, rayOrigin))
-            / (Vector3.Dot(planeNormal, rayDir));
+        float t = (Vector3.Dot(plane.m_planeNormal, plane.m_planeOnePoint) - Vector3.Dot(plane.m_planeNormal, ray.m_rayOrigin))
+            / (Vector3.Dot(plane.m_planeNormal, ray.m_rayDir));
 
         if(t < 0)
         {
@@ -32,7 +32,7 @@ class Math3d
         }
         else
         {
-            result = rayOrigin + rayDir * t;
+            result = ray.m_rayOrigin + ray.m_rayDir * t;
             return true;
         }
 
