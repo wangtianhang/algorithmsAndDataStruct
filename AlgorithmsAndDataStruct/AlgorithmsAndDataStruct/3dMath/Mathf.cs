@@ -5,15 +5,20 @@ using System.Text;
 
 public struct Mathf
 {
+    public static void Test()
+    {
+        Debug.Log(IsPowerOfTwo(8).ToString());
+        Debug.Log(IsPowerOfTwo(3).ToString());
+        Debug.Log(ClosestPowerOfTwo(8).ToString());
+        Debug.Log(ClosestPowerOfTwo(3).ToString());
+        Debug.Log(ClosestPowerOfTwo(10).ToString());
+    }
     public const float Deg2Rad = 0.0174533f;
     public const float Epsilon = 1.4013e-045f;
     public const float Infinity = 1.0f / 0.0f;
     public const float NegativeInfinity = -1.0f / 0.0f;
     public const float PI = 3.14159f;
     public const float Rad2Deg = 57.2958f;
-
-
-
 
 
     public static float Abs(float f)
@@ -395,6 +400,33 @@ public struct Mathf
     public static float Tan(float f)
     {
         return (float)Math.Tan((double)f);
+    }
+
+    public static int ClosestPowerOfTwo(int n)
+    {
+        int v = n;
+        v--;
+        v |= v >> 1;
+        v |= v >> 2;
+        v |= v >> 4;
+        v |= v >> 8;
+        v |= v >> 16;
+        v++;
+
+        int x = v >> 1;
+        return (v - n) > (n - x) ? x : v;
+    }
+
+    public static bool IsPowerOfTwo(int n)
+    {
+        if(n == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return (n & (n - 1)) == 0;
+        }
     }
 }
 
