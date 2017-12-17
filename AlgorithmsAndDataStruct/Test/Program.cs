@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        Mathf.Test();
+        TestTree.Test();
 
         Console.ReadLine();
     }

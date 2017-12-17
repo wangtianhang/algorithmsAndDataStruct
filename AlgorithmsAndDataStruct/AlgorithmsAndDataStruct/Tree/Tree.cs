@@ -26,13 +26,19 @@ public class TestTree
         three.m_right = new TreeNode<int>(7);
 
         Debug.Log("层序遍历");
-        Tree<int>.LayerOrderTraversal(one, TravelHandle);
-        Debug.Log("先序遍历");
-        Tree<int>.PreOrderTraversal(one, TravelHandle);
-        Debug.Log("中序遍历");
-        Tree<int>.InOrderTraversal(one, TravelHandle);
-        Debug.Log("后序遍历");
-        Tree<int>.PostOrderTraversal(one, TravelHandle);
+        Tree<int>.LayerOrderTraversal_Iteration(one, TravelHandle);
+        Debug.Log("先序遍历递归");
+        Tree<int>.PreOrderTraversal_Recursion(one, TravelHandle);
+        Debug.Log("先序遍历迭代");
+        Tree<int>.PreOrderTraversal_Iteration(one, TravelHandle);
+        Debug.Log("中序遍历递归");
+        Tree<int>.InOrderTraversal_Recursion(one, TravelHandle);
+        Debug.Log("中序遍历迭代");
+        Tree<int>.InOrderTraversal_Iteration(one, TravelHandle);
+        Debug.Log("后序遍历递归");
+        Tree<int>.PostOrderTraversal_Recursion(one, TravelHandle);
+        Debug.Log("后序遍历迭代");
+        Tree<int>.PostOrderTraversal_Iteration(one, TravelHandle);
     }
 
     public static void TravelHandle(TreeNode<int> node)
@@ -48,7 +54,7 @@ public class Tree<T>
     /// <summary>
     /// 层序遍历
     /// </summary>
-    public static void LayerOrderTraversal(TreeNode<T> node, TreeTravelCallback callback)
+    public static void LayerOrderTraversal_Iteration(TreeNode<T> node, TreeTravelCallback callback)
     {
         Queue<TreeNode<T>> queue = new Queue<TreeNode<T>>();
         queue.Enqueue(node);
@@ -70,49 +76,113 @@ public class Tree<T>
     /// <summary>
     /// 先序遍历
     /// </summary>
-    public static void PreOrderTraversal(TreeNode<T> node, TreeTravelCallback callback)
+    public static void PreOrderTraversal_Recursion(TreeNode<T> node, TreeTravelCallback callback)
     {
         callback(node);
         if(node.m_left != null)
         {
-            PreOrderTraversal(node.m_left, callback);
+            PreOrderTraversal_Recursion(node.m_left, callback);
         }
         if(node.m_right != null)
         {
-            PreOrderTraversal(node.m_right, callback);
+            PreOrderTraversal_Recursion(node.m_right, callback);
+        }
+    }
+    public static void PreOrderTraversal_Iteration(TreeNode<T> node, TreeTravelCallback callback)
+    {
+        Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
+        stack.Push(node);
+        while(stack.Count != 0)
+        {
+            TreeNode<T> first = stack.Pop();
+            callback(first);
+            if(first.m_right != null)
+            {
+                stack.Push(first.m_right);
+            }
+            if(first.m_left != null)
+            {
+                stack.Push(first.m_left);
+            }
         }
     }
     /// <summary>
     /// 中序遍历
     /// </summary>
-    public static void InOrderTraversal(TreeNode<T> node, TreeTravelCallback callback)
+    public static void InOrderTraversal_Recursion(TreeNode<T> node, TreeTravelCallback callback)
     {
         if (node.m_left != null)
         {
-            PreOrderTraversal(node.m_left, callback);
+            InOrderTraversal_Recursion(node.m_left, callback);
         }
         callback(node);
         if (node.m_right != null)
         {
-            PreOrderTraversal(node.m_right, callback);
+            InOrderTraversal_Recursion(node.m_right, callback);
+        }
+    }
+
+    public static void InOrderTraversal_Iteration(TreeNode<T> node, TreeTravelCallback callback)
+    {
+        Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
+        while(stack.Count != 0 || node != null)
+        {
+            if(node != null)
+            {
+                stack.Push(node);
+                node = node.m_left;
+            }
+            else
+            {
+                node = stack.Pop();
+                callback(node);
+                node = node.m_right;
+            }
         }
     }
 
     /// <summary>
     /// 后序遍历
     /// </summary>
-    public static void PostOrderTraversal(TreeNode<T> node, TreeTravelCallback callback)
+    public static void PostOrderTraversal_Recursion(TreeNode<T> node, TreeTravelCallback callback)
     {
         if (node.m_left != null)
         {
-            PreOrderTraversal(node.m_left, callback);
+            PostOrderTraversal_Recursion(node.m_left, callback);
         }
         
         if (node.m_right != null)
         {
-            PreOrderTraversal(node.m_right, callback);
+            PostOrderTraversal_Recursion(node.m_right, callback);
         }
         callback(node);
+    }
+
+    public static void PostOrderTraversal_Iteration(TreeNode<T> head, TreeTravelCallback callback)
+    {
+        if(head != null)
+        {
+            Stack<TreeNode<T>> s1 = new Stack<TreeNode<T>>();
+            Stack<TreeNode<T>> s2 = new Stack<TreeNode<T>>();
+            s1.Push(head);
+            while(s1.Count != 0)
+            {
+                head = s1.Pop();
+                s2.Push(head);
+                if(head.m_left != null)
+                {
+                    s1.Push(head.m_left);
+                }
+                if(head.m_right != null)
+                {
+                    s1.Push(head.m_right);
+                }
+            }
+            while(s2.Count != 0)
+            {
+                callback(s2.Pop());
+            }
+        }
     }
 }
 
