@@ -11,12 +11,12 @@ public class Maze
         Maze maze = new Maze();
         int width = 30;
         int height = 20;
-        MazeCell[][] cellMatrix = maze.GenerateByPrim(width, height);
+        MazeCell[][] cellMatrix = maze.GenerateByPrim(height, width);
         List<string> mazeData = new List<string>();
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i < height; i++)
         {
             string oneline = "";
-            for (int j = 0; j < height; ++j)
+            for (int j = 0; j < width; ++j)
             {
                 MazeCell iter = cellMatrix[i][j];
                 oneline += (iter.m_leftCanThrought == 1).ToString() + (iter.m_upCanThrought == 1) + (iter.m_rightCanThrought == 1) + (iter.m_downCanThrought == 1) + "\t";
@@ -28,7 +28,7 @@ public class Maze
         string fileName = "mazeData" + Debug.GetTime() + ".txt";
         File.WriteAllLines(fileName, mazeData.ToArray());
 
-        Draw(cellMatrix, width, height);
+        Draw(cellMatrix, height, width);
 
         Debug.Log("Maze end");
     }
@@ -50,10 +50,10 @@ public class Maze
     {
         // 每个格子占用4 * 4个像素
         int size = 8;
-        Bitmap bitmap = new Bitmap(num_rows * size + 4, num_cols * size + 4);
+        Bitmap bitmap = new Bitmap(num_cols * size + 4, num_rows * size + 4);
 
         //================画边框==========================
-        for (int i = 0; i < num_rows * size + 4; i++)
+        for (int i = 0; i < num_cols * size + 4; i++)
         {
             for (int j = 0; j < 2; ++j )
             {
@@ -61,9 +61,9 @@ public class Maze
             }
         }
 
-        for (int i = 0; i < num_rows * size + 4; i++)
+        for (int i = 0; i < num_cols * size + 4; i++)
         {
-            for (int j = num_cols * size + 2; j < num_cols * size + 4; ++j)
+            for (int j = num_rows * size + 2; j < num_rows * size + 4; ++j)
             {
                 bitmap.SetPixel(i, j, Color.Black);
             }
@@ -71,15 +71,15 @@ public class Maze
 
         for (int i = 0; i < 2; i++)
         {
-            for (int j = 0; j < num_cols * size + 4; ++j)
+            for (int j = 0; j < num_rows * size + 4; ++j)
             {
                 bitmap.SetPixel(i, j, Color.Black);
             }
         }
 
-        for (int i = num_rows * size + 2; i < num_rows * size + 4; i++)
+        for (int i = num_cols * size + 2; i < num_cols * size + 4; i++)
         {
-            for (int j = 0; j < num_cols * size + 4; ++j)
+            for (int j = 0; j < num_rows * size + 4; ++j)
             {
                 bitmap.SetPixel(i, j, Color.Black);
             }
@@ -92,48 +92,48 @@ public class Maze
         {
             for (int j = 0; j < num_cols; ++j)
             {
+//                 if(i != 0)
+//                 {
+//                      continue;
+//                 }
                 MazeCell iter = cellList[i][j];
-                if(i > 10 && j > 10)
-                {
-                    int test = 0;
-                }
                 if(iter.m_leftCanThrought != 1)
                 {
-                    for (int x = iter.m_r * size; x < iter.m_r * size + 2; ++x )
+                    for (int x = iter.m_c * size; x < iter.m_c * size + 2; ++x)
                     {
-                        for (int y = iter.m_c * size; y < iter.m_c * size + 8; ++y)
+                        for (int y = iter.m_r * size; y < iter.m_r * size + 8; ++y)
                         {
-                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 -(offsetY + y), Color.Red);
+                            bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
                 }
                 if (iter.m_upCanThrought != 1)
                 {
-                    for (int x = iter.m_r * size; x < iter.m_r * size + 8; ++x)
+                    for (int x = iter.m_c * size; x < iter.m_c * size + 8; ++x)
                     {
-                        for (int y = iter.m_c * size; y < iter.m_c * size + 2; ++y)
+                        for (int y = iter.m_r * size; y < iter.m_r * size + 2; ++y)
                         {
-                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 - (offsetY + y), Color.Blue);
+                            bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
                 }
                 if (iter.m_rightCanThrought != 1)
                 {
-                    for (int x = iter.m_r * size + 6; x < iter.m_r * size + 8; ++x)
+                    for (int x = iter.m_c * size + 6; x < iter.m_c * size + 8; ++x)
                     {
-                        for (int y = iter.m_c * size; y < iter.m_c * size + 8; ++y)
+                        for (int y = iter.m_r * size; y < iter.m_r * size + 8; ++y)
                         {
-                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 - (offsetY + y), Color.Black);
+                            bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
                 }
                 if (iter.m_downCanThrought != 1)
                 {
-                    for (int x = iter.m_r * size; x < iter.m_r * size + 8; ++x)
+                    for (int x = iter.m_c * size; x < iter.m_c * size + 8; ++x)
                     {
-                        for (int y = iter.m_c * size + 6; y < iter.m_c * size + 8; ++y)
+                        for (int y = iter.m_r * size + 6; y < iter.m_r * size + 8; ++y)
                         {
-                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 - (offsetY + y), Color.Black);
+                            bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
                 }
@@ -148,10 +148,11 @@ public class Maze
     //基于随机Prim的迷宫生成算法
     public MazeCell[][] GenerateByPrim(int num_rows, int num_cols)
     {
-        //  Y
+        //------>x
         // |
         // |
-        // ------>x
+        // |
+        // Y
         MazeCell[][] cellMatrix = new MazeCell[num_rows][];
         for (int i = 0; i < num_rows; ++i )
         {
