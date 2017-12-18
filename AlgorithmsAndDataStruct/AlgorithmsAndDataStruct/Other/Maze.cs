@@ -10,8 +10,8 @@ public class Maze
     {
         Random.SetSeed(0);
 
-        int width = 30;
-        int height = 20;
+        int width = 300;
+        int height = 200;
         
         string time = Debug.GetTime();
         string fileName = "maze" + time + ".bmp";
@@ -42,7 +42,7 @@ public class Maze
 
         Bitmap bitmap = Draw(cellMatrix, height, width);
         bitmap.Save(filePath);
-        Stack<MazeCell> path = maze.GothroughMazeByBacktracing(cellMatrix, height, width);
+        List<MazeCell> path = maze.GothroughMazeByBacktracing(cellMatrix, height, width);
         foreach(var iter in path)
         {
             Debug.Log("pathPoint " + iter.m_r + " " + iter.m_c);
@@ -211,7 +211,7 @@ public class Maze
         return bitmap;
     }
 
-    static Bitmap DrawPath(MazeCell[][] cellList, int num_rows, int num_cols, Bitmap bitmap, Stack<MazeCell> path)
+    static Bitmap DrawPath(MazeCell[][] cellList, int num_rows, int num_cols, Bitmap bitmap, List<MazeCell> path)
     {
         int offsetX = 2;
         int offsetY = 2;
@@ -368,13 +368,15 @@ public class Maze
         return cellMatrix;
     }
 
-    Stack<MazeCell> GothroughMazeByBacktracing(MazeCell[][] matrix, int row, int col)
+    List<MazeCell> GothroughMazeByBacktracing(MazeCell[][] matrix, int row, int col)
     {
-        Stack<MazeCell> pathStack = new Stack<MazeCell>();
-        pathStack.Push(matrix[0][0]);
+        List<MazeCell> pathStack = new List<MazeCell>();
+        pathStack.Add(matrix[0][0]);
+        //MazeCell last = null;
+        Debug.Log("push " + 0 + " " + 0);
         while(pathStack.Count != 0)
         {
-            MazeCell top = pathStack.Peek();
+            MazeCell top = pathStack[pathStack.Count - 1];
             if (top.m_r == row - 1 && top.m_c == col - 1)
             {
                 return pathStack;
@@ -388,8 +390,14 @@ public class Maze
                     if (top.m_c - 1 >= 0)
                     {
                         MazeCell next = matrix[top.m_r][top.m_c - 1];
-                        Debug.Log("push " + next.m_r + " " + next.m_c);
-                        pathStack.Push(next);
+                        MazeCell last = GetLastCell(pathStack);
+                        if (next != last)
+                        {
+                            Debug.Log("push " + next.m_r + " " + next.m_c);
+                            pathStack.Add(next);
+                            //last = top;
+                        }
+
                     }
                 }
                 else if(top.m_upCanThrought == 1 && !top.m_hasThroughUp)
@@ -398,8 +406,14 @@ public class Maze
                     if (top.m_r - 1 >= 0)
                     {
                         MazeCell next = matrix[top.m_r - 1][top.m_c];
-                        Debug.Log("push " + next.m_r + " " + next.m_c);
-                        pathStack.Push(next);
+                        MazeCell last = GetLastCell(pathStack);
+                        if (next != last)
+                        {
+                            Debug.Log("push " + next.m_r + " " + next.m_c);
+                            pathStack.Add(next);
+                            //last = top;
+                        }
+
                     }
                 }
                 else if(top.m_rightCanThrought == 1 && !top.m_hasThroughRight)
@@ -408,8 +422,14 @@ public class Maze
                     if (top.m_c + 1 < col)
                     {
                         MazeCell next = matrix[top.m_r][top.m_c + 1];
-                        Debug.Log("push " + next.m_r + " " + next.m_c);
-                        pathStack.Push(next);
+                        MazeCell last = GetLastCell(pathStack);
+                        if (next != last)
+                        {
+                            Debug.Log("push " + next.m_r + " " + next.m_c);
+                            pathStack.Add(next);
+                            //last = top;
+                        }
+
                     }
                 }
                 else if (top.m_downCanThrought == 1 && !top.m_hasThroughDown)
@@ -418,19 +438,39 @@ public class Maze
                     if (top.m_r + 1 < row)
                     {
                         MazeCell next = matrix[top.m_r + 1][top.m_c];
-                        Debug.Log("push " + next.m_r + " " + next.m_c);
-                        pathStack.Push(next);
+                        MazeCell last = GetLastCell(pathStack);
+                        if (next != last)
+                        {
+                            Debug.Log("push " + next.m_r + " " + next.m_c);
+                            pathStack.Add(next);
+                            //last = top;
+                        }
+
                     }
                 }
                 else
                 {
-                    MazeCell pop = pathStack.Pop();
+                    MazeCell pop = pathStack[pathStack.Count - 1];
+                    pathStack.RemoveAt(pathStack.Count - 1);
                     Debug.Log("pop " + pop.m_r + " " + pop.m_c);
                     
                 }
             }
         }
         return null;
+    }
+
+    MazeCell GetLastCell(List<MazeCell> pathStack)
+    {
+        int index = pathStack.Count - 2;
+        if(index >= 0)
+        {
+            return pathStack[pathStack.Count - 2];
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 
