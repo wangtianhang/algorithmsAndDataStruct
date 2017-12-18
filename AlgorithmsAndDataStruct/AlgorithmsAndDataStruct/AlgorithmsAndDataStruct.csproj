@@ -11,7 +11,8 @@
     <AssemblyName>AlgorithmsAndDataStruct</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +83,7 @@
     <Compile Include="Other\CpuUsage.cs" />
     <Compile Include="3dMath\unity\GameObject.cs" />
     <Compile Include="Other\MagicSquare.cs" />
+    <Compile Include="Other\Maze.cs" />
     <Compile Include="Other\MyQuaternion.cs" />
     <Compile Include="Other\Point24.cs" />
     <Compile Include="Other\QueryPerfCounter.cs" />
@@ -106,7 +109,6 @@
     <Compile Include="CommonDataStruct\SeparateChainingHashTable.cs" />
     <Compile Include="CommonDataStruct\StackADT.cs" />
     <Compile Include="SortAndSearch\QuickSort.cs" />
-    <Compile Include="CommonAlgorithms\Random.cs" />
     <Compile Include="Tree\Tree.cs" />
     <Compile Include="UndirectedGraph\BreadFirstPath.cs" />
     <Compile Include="UndirectedGraph\ConnectedComponent.cs" />

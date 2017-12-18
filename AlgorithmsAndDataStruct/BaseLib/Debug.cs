@@ -62,6 +62,24 @@ public class Debug
         }
         return info;
     }
+
+    public static string GetTime()
+    {
+        string month = DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
+        string day = DateTime.Now.Day < 10 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString();
+        string hour = DateTime.Now.Hour < 10 ? "0" + DateTime.Now.Hour.ToString() : DateTime.Now.Hour.ToString();
+        string minute = DateTime.Now.Minute < 10 ? "0" + DateTime.Now.Minute.ToString() : DateTime.Now.Minute.ToString();
+        string second = DateTime.Now.Second < 10 ? "0" + DateTime.Now.Second.ToString() : DateTime.Now.Second.ToString();
+        //DateTime curTime = DateTime.Now;
+        string time = DateTime.Now.Year + "_" +
+            month + "_" +
+            day + "_" +
+            hour + "_" +
+            minute + "_" +
+            second;
+
+        return time;
+    }
 }
 
 

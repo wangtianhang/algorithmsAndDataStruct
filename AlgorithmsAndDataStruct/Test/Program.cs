@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        ConvexHull.Test();
+        Maze.Test();
 
         Console.ReadLine();
     }

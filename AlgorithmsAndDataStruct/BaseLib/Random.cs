@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using System.Text;
 
-class Random
+public class Random
 {
     static System.Random s_ran = null;
     public static void Init()
