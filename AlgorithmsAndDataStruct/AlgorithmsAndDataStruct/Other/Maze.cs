@@ -2,15 +2,32 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.IO;
 
 public class Maze
 {
     public static void Test()
     {
         Maze maze = new Maze();
-        int width = 300;
-        int height = 200;
+        int width = 30;
+        int height = 20;
         MazeCell[][] cellMatrix = maze.GenerateByPrim(width, height);
+        List<string> mazeData = new List<string>();
+        for (int i = 0; i < width; i++)
+        {
+            string oneline = "";
+            for (int j = 0; j < height; ++j)
+            {
+                MazeCell iter = cellMatrix[i][j];
+                oneline += (iter.m_leftCanThrought == 1).ToString() + (iter.m_upCanThrought == 1) + (iter.m_rightCanThrought == 1) + (iter.m_downCanThrought == 1) + "\t";
+            }
+            mazeData.Add(oneline);
+            Debug.Log(oneline);
+        }
+        
+        string fileName = "mazeData" + Debug.GetTime() + ".txt";
+        File.WriteAllLines(fileName, mazeData.ToArray());
+
         Draw(cellMatrix, width, height);
 
         Debug.Log("Maze end");
@@ -31,9 +48,12 @@ public class Maze
 
     public static void Draw(MazeCell[][] cellList, int num_rows, int num_cols)
     {
-        Bitmap bitmap = new Bitmap(num_rows * 4 + 4, num_cols * 4 + 4);
+        // 每个格子占用4 * 4个像素
+        int size = 8;
+        Bitmap bitmap = new Bitmap(num_rows * size + 4, num_cols * size + 4);
 
-        for (int i = 0; i < num_rows * 4 + 4;  i ++)
+        //================画边框==========================
+        for (int i = 0; i < num_rows * size + 4; i++)
         {
             for (int j = 0; j < 2; ++j )
             {
@@ -41,9 +61,9 @@ public class Maze
             }
         }
 
-        for (int i = 0; i < num_rows * 4 + 4; i++)
+        for (int i = 0; i < num_rows * size + 4; i++)
         {
-            for (int j = num_cols * 4 + 2; j < num_cols * 4 + 4; ++j)
+            for (int j = num_cols * size + 2; j < num_cols * size + 4; ++j)
             {
                 bitmap.SetPixel(i, j, Color.Black);
             }
@@ -51,23 +71,78 @@ public class Maze
 
         for (int i = 0; i < 2; i++)
         {
-            for (int j = 0 ; j < num_cols * 4 + 4; ++j)
+            for (int j = 0; j < num_cols * size + 4; ++j)
             {
                 bitmap.SetPixel(i, j, Color.Black);
             }
         }
 
-        for (int i = num_rows * 4 + 2; i < num_rows * 4 + 4; i++)
+        for (int i = num_rows * size + 2; i < num_rows * size + 4; i++)
         {
-            for (int j = 0; j < num_cols * 4 + 4; ++j)
+            for (int j = 0; j < num_cols * size + 4; ++j)
             {
                 bitmap.SetPixel(i, j, Color.Black);
             }
         }
 
-        string dir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);  
+        //=================画边框结束=============================
+        int offsetX = 2;
+        int offsetY = 2;
+        for (int i = 0; i < num_rows; i++)
+        {
+            for (int j = 0; j < num_cols; ++j)
+            {
+                MazeCell iter = cellList[i][j];
+                if(i > 10 && j > 10)
+                {
+                    int test = 0;
+                }
+                if(iter.m_leftCanThrought != 1)
+                {
+                    for (int r = iter.m_r * size; r < iter.m_r * size + 8; ++r )
+                    {
+                        for (int c = iter.m_c * size; c < iter.m_c * size + 2; ++c)
+                        {
+                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                        }
+                    }
+                }
+                if (iter.m_upCanThrought != 1)
+                {
+                    for (int r = iter.m_r * size; r < iter.m_r * size + 2; ++r)
+                    {
+                        for (int c = iter.m_c * size; c < iter.m_c * size + 8; ++c)
+                        {
+                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                        }
+                    }
+                }
+                if (iter.m_rightCanThrought != 1)
+                {
+                    for (int r = iter.m_r * size; r < iter.m_r * size + 8; ++r)
+                    {
+                        for (int c = iter.m_c * size + 6; c < iter.m_c * size + 8; ++c)
+                        {
+                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                        }
+                    }
+                }
+                if (iter.m_downCanThrought != 1)
+                {
+                    for (int r = iter.m_r * size + 6; r < iter.m_r * size + 8; ++r)
+                    {
+                        for (int c = iter.m_c * size; c < iter.m_c * size + 8; ++c)
+                        {
+                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                        }
+                    }
+                }
+            }
+        }
+
+        //string dir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);  
         string fileName = "maze" + Debug.GetTime() + ".bmp";
-        bitmap.Save(dir + "/" + fileName);
+        bitmap.Save(fileName);
     }
 
     //基于随机Prim的迷宫生成算法
