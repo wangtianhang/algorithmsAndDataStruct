@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        DynamicProgramming.Test();
+        ConvexHull.Test();
 
         Console.ReadLine();
     }
