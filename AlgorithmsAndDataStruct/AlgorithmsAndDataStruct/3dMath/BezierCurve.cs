@@ -21,8 +21,27 @@ class BezierCurve
 }
 
 //http://blog.csdn.net/kongbu0622/article/details/10123989
-class BezierCurveConstantMotion
+public class BezierCurveConstantMotion
 {
+    public static void Test()
+    {
+        BezierCurveConstantMotion test = new BezierCurveConstantMotion(new Vector2(50, 50), new Vector2(500, 500), new Vector2(800, 200));
+        List<Vector2> posList = new List<Vector2>();
+        for (int i = 0; i < 10; ++i )
+        {
+            float percent = 0.1f * i;
+            Vector2 pos = test.CalculatePos(percent);
+            float distancef = 0;
+            if (i - 1 >= 0)
+            {
+                Vector2 distance = pos - posList[i - 1];
+                distancef = distance.magnitude;
+            }
+            posList.Add(pos);
+            Debug.Log(pos.ToString() + " " + distancef);
+        }
+    }
+
     Vector2 m_P0;
     Vector2 m_P1;
     Vector2 m_P2;
@@ -44,9 +63,9 @@ class BezierCurveConstantMotion
         float bx = 2 * m_P1.x - 2 * m_P0.x;
         float by = 2 * m_P1.y - 2 * m_P0.y;
 
-        double A = 4 * (ax * ax + ay * ay);
-        double B = 4 * (ax * bx + ay * by);
-        double C = bx * bx + by * by;
+        m_A = 4 * (ax * ax + ay * ay);
+        m_B = 4 * (ax * bx + ay * by);
+        m_C = bx * bx + by * by;
 
         m_length = Length();
     }
@@ -85,11 +104,14 @@ class BezierCurveConstantMotion
     {
         double t1 = percent, t2;
 
+        // 牛顿切线法求解L(t1) = L(1.0) * percent;
+        // Xn+1 = Xn - (L(xn) - L(1.0) * percent / L'(xn)) 
         do
         {
-            t2 = t1 - (Length(t1) - m_length) / V(t1);
+            t2 = t1 - (Length(t1) - m_length * percent) / V(t1);
 
-            if (Math.Abs(t1 - t2) < 0.000001) break;
+            if (Math.Abs(t1 - t2) < 0.000001) 
+                break;
 
             t1 = t2;
 
@@ -100,8 +122,9 @@ class BezierCurveConstantMotion
 
     public Vector2 CalculatePos(float percent/*[0~1]*/)
     {
+        //Debug.Log("length " + Length(percent));
         double t = InvertLength(percent);
-        return QuadraticBezier(m_P0, m_P1, m_P2, percent);
+        return QuadraticBezier(m_P0, m_P1, m_P2, (float)t);
     }
 
     Vector2 QuadraticBezier(Vector2 p0, Vector2 p1, Vector2 p2, float t/*[0~1]*/)
