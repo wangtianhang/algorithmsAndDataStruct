@@ -8,15 +8,19 @@ public class Maze
 {
     public static void Test()
     {
-        int width = 300;
-        int height = 200;
+        Random.SetSeed(0);
+
+        int width = 30;
+        int height = 20;
         
-        string fileName = "maze" + Debug.GetTime() + ".bmp";
+        string time = Debug.GetTime();
+        string fileName = "maze" + time + ".bmp";
         string fullPath = Directory.GetCurrentDirectory() + "/" + fileName;
-        GenMaze(width, height, fullPath);
+        string pathFileName = "mazePath" + time + ".bmp";
+        GenMaze(width, height, fullPath, pathFileName);
     }
 
-    public static void GenMaze(int width, int height, string path)
+    public static void GenMaze(int width, int height, string filePath, string pathFilePath)
     {
         Maze maze = new Maze();
 
@@ -36,9 +40,18 @@ public class Maze
 
         //File.WriteAllLines(fileName, mazeData.ToArray());
 
-        Draw(cellMatrix, height, width, path);
+        Bitmap bitmap = Draw(cellMatrix, height, width);
+        bitmap.Save(filePath);
+        Stack<MazeCell> path = maze.GothroughMazeByBacktracing(cellMatrix, height, width);
+        foreach(var iter in path)
+        {
+            Debug.Log("pathPoint " + iter.m_r + " " + iter.m_c);
+        }
+        Bitmap pathMap = DrawPath(cellMatrix, height, width, bitmap, path);
+        pathMap.Save(pathFilePath);
 
-        Debug.Log("Maze end " + path);
+        Debug.Log("Maze end " + filePath);
+        Debug.Log("Maze end2 " + pathFilePath);
     }
 
     class MazeCell
@@ -52,9 +65,16 @@ public class Maze
         public int m_rightCanThrought = 0; // index 2
         public int m_downCanThrought = 0; // index 3
         public int m_isVisited = 0; // index 4
+
+        //public bool m_goThroughHasVisited = false;
+        //public bool m_isGothrough = false;
+        public bool m_hasThroughLeft = false;
+        public bool m_hasThroughUp = false;
+        public bool m_hasThroughRight = false;
+        public bool m_hasThroughDown = false;
     }
 
-    static void Draw(MazeCell[][] cellList, int num_rows, int num_cols, string path)
+    static Bitmap Draw(MazeCell[][] cellList, int num_rows, int num_cols)
     {
         // 每个格子占用4 * 4个像素
         int size = 8;
@@ -187,7 +207,34 @@ public class Maze
 
         //string dir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);  
         //string fileName = "maze" + Debug.GetTime() + ".bmp";
-        bitmap.Save(path);
+        //bitmap.Save(filePath);
+        return bitmap;
+    }
+
+    static Bitmap DrawPath(MazeCell[][] cellList, int num_rows, int num_cols, Bitmap bitmap, Stack<MazeCell> path)
+    {
+        int offsetX = 2;
+        int offsetY = 2;
+        int size = 8;
+
+        for (int i = 0; i < num_rows; i++)
+        {
+            for (int j = 0; j < num_cols; ++j)
+            {
+                MazeCell iter = cellList[i][j];
+                if (path.Contains(iter))
+                {
+                    for (int x = iter.m_c * size + 2; x < iter.m_c * size + 6; ++x)
+                    {
+                        for (int y = iter.m_r * size + 2; y < iter.m_r * size + 6; ++y)
+                        {
+                            bitmap.SetPixel(offsetX + x, offsetY + y, Color.Green);
+                        }
+                    }
+                }
+            }
+        }
+        return bitmap;
     }
 
     //基于随机Prim的迷宫生成算法
@@ -319,6 +366,71 @@ public class Maze
         cellMatrix[num_rows - 1][num_cols - 1].m_rightCanThrought = 1;
 
         return cellMatrix;
+    }
+
+    Stack<MazeCell> GothroughMazeByBacktracing(MazeCell[][] matrix, int row, int col)
+    {
+        Stack<MazeCell> pathStack = new Stack<MazeCell>();
+        pathStack.Push(matrix[0][0]);
+        while(pathStack.Count != 0)
+        {
+            MazeCell top = pathStack.Peek();
+            if (top.m_r == row - 1 && top.m_c == col - 1)
+            {
+                return pathStack;
+            }
+            else
+            {
+                //如果当前路径可以通过
+                if(top.m_leftCanThrought == 1 && !top.m_hasThroughLeft)
+                {
+                    top.m_hasThroughLeft = true;
+                    if (top.m_c - 1 >= 0)
+                    {
+                        MazeCell next = matrix[top.m_r][top.m_c - 1];
+                        Debug.Log("push " + next.m_r + " " + next.m_c);
+                        pathStack.Push(next);
+                    }
+                }
+                else if(top.m_upCanThrought == 1 && !top.m_hasThroughUp)
+                {
+                    top.m_hasThroughUp = true;
+                    if (top.m_r - 1 >= 0)
+                    {
+                        MazeCell next = matrix[top.m_r - 1][top.m_c];
+                        Debug.Log("push " + next.m_r + " " + next.m_c);
+                        pathStack.Push(next);
+                    }
+                }
+                else if(top.m_rightCanThrought == 1 && !top.m_hasThroughRight)
+                {
+                    top.m_hasThroughRight = true;
+                    if (top.m_c + 1 < col)
+                    {
+                        MazeCell next = matrix[top.m_r][top.m_c + 1];
+                        Debug.Log("push " + next.m_r + " " + next.m_c);
+                        pathStack.Push(next);
+                    }
+                }
+                else if (top.m_downCanThrought == 1 && !top.m_hasThroughDown)
+                {
+                    top.m_hasThroughDown = true;
+                    if (top.m_r + 1 < row)
+                    {
+                        MazeCell next = matrix[top.m_r + 1][top.m_c];
+                        Debug.Log("push " + next.m_r + " " + next.m_c);
+                        pathStack.Push(next);
+                    }
+                }
+                else
+                {
+                    MazeCell pop = pathStack.Pop();
+                    Debug.Log("pop " + pop.m_r + " " + pop.m_c);
+                    
+                }
+            }
+        }
+        return null;
     }
 }
 

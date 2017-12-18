@@ -6,13 +6,18 @@ using System.Text;
 public class Random
 {
     static System.Random s_ran = null;
-    public static void Init()
+    static void Init()
     {
         if (s_ran == null)
         {
             long tick = System.DateTime.Now.Ticks;
             s_ran = new System.Random((int)(tick & 0xffffffffL) | (int)(tick >> 32));
         }
+    }
+
+    public static void SetSeed(int seed)
+    {
+        s_ran = new System.Random(0);
     }
 
     public static int Range(int min, int max)
