@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class BruteForceAlgorithms
+class ConvexHull
 {
     public static void Test()
     {
