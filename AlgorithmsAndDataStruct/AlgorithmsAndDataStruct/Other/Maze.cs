@@ -9,8 +9,8 @@ public class Maze
     public static void Test()
     {
         Maze maze = new Maze();
-        int width = 30;
-        int height = 20;
+        int width = 300;
+        int height = 200;
         MazeCell[][] cellMatrix = maze.GenerateByPrim(height, width);
         List<string> mazeData = new List<string>();
         for (int i = 0; i < height; i++)
@@ -96,6 +96,8 @@ public class Maze
 //                 {
 //                      continue;
 //                 }
+
+
                 MazeCell iter = cellList[i][j];
                 if(iter.m_leftCanThrought != 1)
                 {
@@ -103,6 +105,7 @@ public class Maze
                     {
                         for (int y = iter.m_r * size; y < iter.m_r * size + 8; ++y)
                         {
+                            //bitmap.SetPixel(offsetX + x, offsetY + y, Color.Red);
                             bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
@@ -113,6 +116,7 @@ public class Maze
                     {
                         for (int y = iter.m_r * size; y < iter.m_r * size + 2; ++y)
                         {
+                            //bitmap.SetPixel(offsetX + x, offsetY + y, Color.Blue);
                             bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
@@ -123,6 +127,7 @@ public class Maze
                     {
                         for (int y = iter.m_r * size; y < iter.m_r * size + 8; ++y)
                         {
+                            //bitmap.SetPixel(offsetX + x, offsetY + y, Color.Green);
                             bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
@@ -133,10 +138,42 @@ public class Maze
                     {
                         for (int y = iter.m_r * size + 6; y < iter.m_r * size + 8; ++y)
                         {
+                            //bitmap.SetPixel(offsetX + x, offsetY + y, Color.Yellow);
                             bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
                         }
                     }
                 }
+
+                ///填充四角
+                for (int x = iter.m_c * size; x < iter.m_c * size + 2; ++x)
+                {
+                    for (int y = iter.m_r * size; y < iter.m_r * size + 2; ++y)
+                    {
+                        bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
+                    }
+                }
+                for (int x = iter.m_c * size + 6; x < iter.m_c * size + 8; ++x)
+                {
+                    for (int y = iter.m_r * size; y < iter.m_r * size + 2; ++y)
+                    {
+                        bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
+                    }
+                }
+                for (int x = iter.m_c * size; x < iter.m_c * size + 2; ++x)
+                {
+                    for (int y = iter.m_r * size + 6; y < iter.m_r * size + 8; ++y)
+                    {
+                        bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
+                    }
+                }
+                for (int x = iter.m_c * size + 6; x < iter.m_c * size + 8; ++x)
+                {
+                    for (int y = iter.m_r * size + 6; y < iter.m_r * size + 8; ++y)
+                    {
+                        bitmap.SetPixel(offsetX + x, offsetY + y, Color.Black);
+                    }
+                }
+                ///填充四角结束
             }
         }
 
