@@ -8,11 +8,20 @@ public class Maze
 {
     public static void Test()
     {
-        Maze maze = new Maze();
         int width = 300;
         int height = 200;
+        
+        string fileName = "maze" + Debug.GetTime() + ".bmp";
+        string fullPath = Directory.GetCurrentDirectory() + "/" + fileName;
+        GenMaze(width, height, fullPath);
+    }
+
+    public static void GenMaze(int width, int height, string path)
+    {
+        Maze maze = new Maze();
+
         MazeCell[][] cellMatrix = maze.GenerateByPrim(height, width);
-        List<string> mazeData = new List<string>();
+        //List<string> mazeData = new List<string>();
         for (int i = 0; i < height; i++)
         {
             string oneline = "";
@@ -21,19 +30,18 @@ public class Maze
                 MazeCell iter = cellMatrix[i][j];
                 oneline += (iter.m_leftCanThrought == 1).ToString() + (iter.m_upCanThrought == 1) + (iter.m_rightCanThrought == 1) + (iter.m_downCanThrought == 1) + "\t";
             }
-            mazeData.Add(oneline);
+            //mazeData.Add(oneline);
             Debug.Log(oneline);
         }
-        
-        string fileName = "mazeData" + Debug.GetTime() + ".txt";
-        File.WriteAllLines(fileName, mazeData.ToArray());
 
-        Draw(cellMatrix, height, width);
+        //File.WriteAllLines(fileName, mazeData.ToArray());
 
-        Debug.Log("Maze end");
+        Draw(cellMatrix, height, width, path);
+
+        Debug.Log("Maze end " + path);
     }
 
-    public class MazeCell
+    class MazeCell
     {
         //public int m_x = 0;
         //public int m_y = 0;
@@ -46,7 +54,7 @@ public class Maze
         public int m_isVisited = 0; // index 4
     }
 
-    public static void Draw(MazeCell[][] cellList, int num_rows, int num_cols)
+    static void Draw(MazeCell[][] cellList, int num_rows, int num_cols, string path)
     {
         // 每个格子占用4 * 4个像素
         int size = 8;
@@ -178,12 +186,12 @@ public class Maze
         }
 
         //string dir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);  
-        string fileName = "maze" + Debug.GetTime() + ".bmp";
-        bitmap.Save(fileName);
+        //string fileName = "maze" + Debug.GetTime() + ".bmp";
+        bitmap.Save(path);
     }
 
     //基于随机Prim的迷宫生成算法
-    public MazeCell[][] GenerateByPrim(int num_rows, int num_cols)
+    MazeCell[][] GenerateByPrim(int num_rows, int num_cols)
     {
         //------>x
         // |
