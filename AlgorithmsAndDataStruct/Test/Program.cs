@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        TestTree.Test();
+        DynamicProgramming.Test();
 
         Console.ReadLine();
     }

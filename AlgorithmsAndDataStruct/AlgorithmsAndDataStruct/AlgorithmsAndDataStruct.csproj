@@ -64,6 +64,7 @@
     <Compile Include="CombineMath\CombineIterator.cs" />
     <Compile Include="CombineMath\combineTeplate.cs" />
     <Compile Include="CombineMath\PermutationIterator.cs" />
+    <Compile Include="CommonAlgorithms\DynamicProgramming.cs" />
     <Compile Include="CommonAlgorithms\GaussianElimination.cs" />
     <Compile Include="CommonDataStruct\FastGetMaxQueue.cs" />
     <Compile Include="CommonDataStruct\Fraction.cs" />
