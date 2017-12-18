@@ -99,41 +99,41 @@ public class Maze
                 }
                 if(iter.m_leftCanThrought != 1)
                 {
-                    for (int r = iter.m_r * size; r < iter.m_r * size + 8; ++r )
+                    for (int x = iter.m_r * size; x < iter.m_r * size + 2; ++x )
                     {
-                        for (int c = iter.m_c * size; c < iter.m_c * size + 2; ++c)
+                        for (int y = iter.m_c * size; y < iter.m_c * size + 8; ++y)
                         {
-                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 -(offsetY + y), Color.Red);
                         }
                     }
                 }
                 if (iter.m_upCanThrought != 1)
                 {
-                    for (int r = iter.m_r * size; r < iter.m_r * size + 2; ++r)
+                    for (int x = iter.m_r * size; x < iter.m_r * size + 8; ++x)
                     {
-                        for (int c = iter.m_c * size; c < iter.m_c * size + 8; ++c)
+                        for (int y = iter.m_c * size; y < iter.m_c * size + 2; ++y)
                         {
-                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 - (offsetY + y), Color.Blue);
                         }
                     }
                 }
                 if (iter.m_rightCanThrought != 1)
                 {
-                    for (int r = iter.m_r * size; r < iter.m_r * size + 8; ++r)
+                    for (int x = iter.m_r * size + 6; x < iter.m_r * size + 8; ++x)
                     {
-                        for (int c = iter.m_c * size + 6; c < iter.m_c * size + 8; ++c)
+                        for (int y = iter.m_c * size; y < iter.m_c * size + 8; ++y)
                         {
-                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 - (offsetY + y), Color.Black);
                         }
                     }
                 }
                 if (iter.m_downCanThrought != 1)
                 {
-                    for (int r = iter.m_r * size + 6; r < iter.m_r * size + 8; ++r)
+                    for (int x = iter.m_r * size; x < iter.m_r * size + 8; ++x)
                     {
-                        for (int c = iter.m_c * size; c < iter.m_c * size + 8; ++c)
+                        for (int y = iter.m_c * size + 6; y < iter.m_c * size + 8; ++y)
                         {
-                            bitmap.SetPixel(offsetX + r, offsetY + c, Color.Black);
+                            bitmap.SetPixel(offsetX + x, num_cols * size + 4 - (offsetY + y), Color.Black);
                         }
                     }
                 }
@@ -148,6 +148,10 @@ public class Maze
     //基于随机Prim的迷宫生成算法
     public MazeCell[][] GenerateByPrim(int num_rows, int num_cols)
     {
+        //  Y
+        // |
+        // |
+        // ------>x
         MazeCell[][] cellMatrix = new MazeCell[num_rows][];
         for (int i = 0; i < num_rows; ++i )
         {
