@@ -92,7 +92,7 @@
     <Compile Include="Other\ThreadSafeQueue.cs" />
     <Compile Include="3dMath\unity\Coroutine.cs" />
     <Compile Include="Other\Tuple.cs" />
-    <Compile Include="String\KMP.cs" />
+    <Compile Include="String\StringMatch.cs" />
     <Compile Include="String\NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />
     <Compile Include="CommonDataStruct\LinkedListADT.cs" />
