@@ -11,6 +11,8 @@ public class Math3d
     {
         XAxisWeightMinDistance();
 
+        XAxisWeightMinDistance2();
+
         XYPlaneMinDistance();
     }
 
@@ -273,35 +275,102 @@ public class Math3d
     }  
     #endregion
 
-    public static void XAxisWeightMinDistance()
+    #region 邮局测试代码 不要用
+    class XAxisWeightMinDistanceData
     {
-        List<Tuple<double, double>> posList = new List<Tuple<double, double>>();
-        posList.Add(new Tuple<double, double>(0.1d, 0.1d));
-        posList.Add(new Tuple<double, double>(0.35d, 0.35d));
-        posList.Add(new Tuple<double, double>(0.05d, 0.05d));
-        posList.Add(new Tuple<double, double>(0.1d, 0.1d));
-        posList.Add(new Tuple<double, double>(0.15d, 0.15d));
-        posList.Add(new Tuple<double, double>(0.05d, 0.05d));
-        posList.Add(new Tuple<double, double>(0.2d, 0.2d));
-        double minDistance = double.MaxValue;
-        double step = 0.001d;
-        for (int i = 0; i < 1000; ++i )
+        public List<Tuple<double, double>> m_posList = new List<Tuple<double, double>>();
+
+        public XAxisWeightMinDistanceData()
         {
-            double curPos = step * i;
+            m_posList.Add(new Tuple<double, double>(10d, 10d));
+            m_posList.Add(new Tuple<double, double>(35d, 35d));
+            m_posList.Add(new Tuple<double, double>(5d, 5d));
+            m_posList.Add(new Tuple<double, double>(10d, 10d));
+            m_posList.Add(new Tuple<double, double>(15d, 15d));
+            m_posList.Add(new Tuple<double, double>(5d, 5d));
+            m_posList.Add(new Tuple<double, double>(20d, 20d));
+        }
+
+        public double GetDistance(double curPos)
+        {
             double sum = 0;
-            foreach (var iter in posList)
+            foreach (var iter in m_posList)
             {
                 double weight = iter.Item2;
                 sum += Math.Abs(curPos - iter.Item1) * weight;
             }
-            minDistance = Math.Min(sum, minDistance);
+            return sum;
         }
-        Debug.Log("XAxisWeightMinDistance " + minDistance);
+
+        public double GetDistanceDerivative(double curPos, double delta = 0.001d)
+        {
+            return MathCommon.DerivativeD(GetDistance, curPos, delta);
+        }
     }
+
+    public static void XAxisWeightMinDistance()
+    {
+        XAxisWeightMinDistanceData test = new XAxisWeightMinDistanceData();
+
+        double total = 0;
+        foreach (var iter in test.m_posList)
+        {
+            total += iter.Item1 * iter.Item2;
+        }
+
+        double minDistance = double.MaxValue;
+        double minPos = double.MaxValue;
+        double step = 0.1d;
+        for (int i = 0; i < 1000; ++i )
+        {
+            double curPos = step * i;
+            double sum = 0;
+            foreach (var iter in test.m_posList)
+            {
+                double weight = iter.Item2;
+                sum += Math.Abs(curPos - iter.Item1) * weight;
+            }
+            if(sum < minDistance)
+            {
+                minDistance = sum;
+                minPos = curPos;
+            }
+        }
+        Debug.Log("total " + total + " XAxisWeightMinDistance " + minDistance + " minPos " + minPos);
+    }
+
+    public static void XAxisWeightMinDistance2()
+    {
+        XAxisWeightMinDistanceData test = new XAxisWeightMinDistanceData();
+        double total = 0;
+        foreach (var iter in test.m_posList)
+        {
+            total += iter.Item1 * iter.Item2;
+        }
+
+        // f(x) = Abs(x - x1) * weight1 + ...Abs(x - xN) * weightN - ( total / 2)
+        double t1 = 20d, t2 = 0;
+        do
+        {
+            double sum = test.GetDistance(t1);
+            t2 = t1 - (sum - total / 2) / test.GetDistanceDerivative(t1);
+
+            if (Math.Abs(t1 - t2) < 0.001d) 
+                break;
+
+            t1 = t2;
+
+        } while (true);
+
+        double minSum = test.GetDistance(t2);
+        Debug.Log("XAxisWeightMinDistance2 " + minSum + " minPos " + t2);
+    }
+
+
 
     public static void XYPlaneMinDistance()
     {
-        
+
         List<Vector2> posList = new List<Vector2>();
         posList.Add(new Vector2(0.1f, 0.1f));
         posList.Add(new Vector2(0.35f, 0.35f));
@@ -336,5 +405,6 @@ public class Math3d
         long end = QueryPerfCounter.GetMs();
         Debug.Log("XYPlaneMinDistance " + minDistance + " minPos " + minPos + " time " + (end - start));
     }
+    #endregion
 }
 

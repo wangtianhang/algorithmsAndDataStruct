@@ -77,6 +77,12 @@ public class MathCommon
         return (function(x + delta) - function(x)) / delta;
     }
 
+    public delegate double FunctionOfOneVariableD(double x);
+    public static double DerivativeD(FunctionOfOneVariableD function, double x, double delta = 0.0001d)
+    {
+        return (function(x + delta) - function(x)) / delta;
+    }
+
     /// <summary>
     /// sin（泰勒级数）
     /// </summary>
