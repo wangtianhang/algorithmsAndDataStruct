@@ -15,6 +15,7 @@ class Program
 
         Math3d.Test();
 
+        Console.WriteLine("测试结束");
         Console.ReadLine();
     }
 }

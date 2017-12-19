@@ -84,6 +84,66 @@ public class MathCommon
     }
 
     /// <summary>
+    /// 三分法计算极值
+    /// </summary>
+    /// <param name="function"></param>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    public static double GetMinByThree(FunctionOfOneVariableD function, double left, double right)
+    {
+        do
+        {
+            double yLeft = function(left);
+            double yRight = function(right);
+            double mid = (left + right) / 2;
+            double yMid = function(mid);
+            double midMid = (left + mid) / 2;
+            double yMidMid = function(midMid);
+            if (yMidMid > yMid)
+            {
+                left = midMid;
+            }
+            else
+            {
+                right = mid;
+            }
+
+            if (Math.Abs(left - right) < 0.001d)
+            {
+                return left;
+            }
+
+        }while(true);
+    }
+
+    public static double GetMaxByThree(FunctionOfOneVariableD function, double left, double right)
+    {
+        do
+        {
+            double yLeft = function(left);
+            double yRight = function(right);
+            double mid = (left + right) / 2;
+            double yMid = function(mid);
+            double midMid = (left + mid) / 2;
+            double yMidMid = function(midMid);
+            if (yMidMid < yMid)
+            {
+                left = midMid;
+            }
+            else
+            {
+                right = mid;
+            }
+
+            if (Math.Abs(left - right) < 0.001d)
+            {
+                return left;
+            }
+
+        } while (true);
+    }
+
+    /// <summary>
     /// sin（泰勒级数）
     /// </summary>
     /// <param name="x"></param>

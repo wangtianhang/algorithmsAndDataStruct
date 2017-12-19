@@ -13,6 +13,8 @@ public class Math3d
 
         XAxisWeightMinDistance2();
 
+        XAxisWeightMinDistance3();
+
         XYPlaneMinDistance();
     }
 
@@ -278,17 +280,18 @@ public class Math3d
     #region 邮局测试代码 不要用
     class XAxisWeightMinDistanceData
     {
-        public List<Tuple<double, double>> m_posList = new List<Tuple<double, double>>();
+        public List<double> m_posList = new List<double>();
 
         public XAxisWeightMinDistanceData()
         {
-            m_posList.Add(new Tuple<double, double>(10d, 10d));
-            m_posList.Add(new Tuple<double, double>(35d, 35d));
-            m_posList.Add(new Tuple<double, double>(5d, 5d));
-            m_posList.Add(new Tuple<double, double>(10d, 10d));
-            m_posList.Add(new Tuple<double, double>(15d, 15d));
-            m_posList.Add(new Tuple<double, double>(5d, 5d));
-            m_posList.Add(new Tuple<double, double>(20d, 20d));
+            // 先人肉排序了..
+            m_posList.Add(5d);
+            m_posList.Add(5d);
+            m_posList.Add(10d);
+            m_posList.Add(10d);
+            m_posList.Add(15d);
+            m_posList.Add(20d);
+            m_posList.Add(35d);
         }
 
         public double GetDistance(double curPos)
@@ -296,8 +299,8 @@ public class Math3d
             double sum = 0;
             foreach (var iter in m_posList)
             {
-                double weight = iter.Item2;
-                sum += Math.Abs(curPos - iter.Item1) * weight;
+                //double weight = iter.Item2;
+                sum += Math.Abs(curPos - iter);
             }
             return sum;
         }
@@ -305,6 +308,43 @@ public class Math3d
         public double GetDistanceDerivative(double curPos, double delta = 0.001d)
         {
             return MathCommon.DerivativeD(GetDistance, curPos, delta);
+        }
+
+        public double GetMinWeightDistanceX()
+        {
+//             double total = 0;
+//             foreach (var iter in m_posList)
+//             {
+//                 total += iter;
+//             }
+
+//             double left = 0;
+//             double right = 0;
+// 
+//             double sum = 0;
+//             for (int i = 0; i < m_posList.Count; ++i )
+//             {
+//                 sum += m_posList[i];
+//                 if (sum >= total / 2)
+//                 {
+//                     right = m_posList[i];
+//                     break;
+//                 }
+//             }
+// 
+//             sum = 0;
+//             for (int i = m_posList.Count - 1; i >= 0; --i)
+//             {
+//                 sum += m_posList[i];
+//                 if (sum >= total / 2)
+//                 {
+//                     left = m_posList[i];
+//                     break;
+//                 }
+//             }
+
+            double minX = MathCommon.GetMinByThree(GetDistance, m_posList[0], m_posList[m_posList.Count - 1]);
+            return minX;
         }
     }
 
@@ -315,7 +355,7 @@ public class Math3d
         double total = 0;
         foreach (var iter in test.m_posList)
         {
-            total += iter.Item1 * iter.Item2;
+            total += iter;
         }
 
         double minDistance = double.MaxValue;
@@ -327,8 +367,8 @@ public class Math3d
             double sum = 0;
             foreach (var iter in test.m_posList)
             {
-                double weight = iter.Item2;
-                sum += Math.Abs(curPos - iter.Item1) * weight;
+                //double weight = iter.Item2;
+                sum += Math.Abs(curPos - iter);
             }
             if(sum < minDistance)
             {
@@ -345,7 +385,7 @@ public class Math3d
         double total = 0;
         foreach (var iter in test.m_posList)
         {
-            total += iter.Item1 * iter.Item2;
+            total += iter;
         }
 
         // f(x) = Abs(x - x1) * weight1 + ...Abs(x - xN) * weightN - ( total / 2)
@@ -366,7 +406,13 @@ public class Math3d
         Debug.Log("XAxisWeightMinDistance2 " + minSum + " minPos " + t2);
     }
 
-
+    public static void XAxisWeightMinDistance3()
+    {
+        XAxisWeightMinDistanceData test = new XAxisWeightMinDistanceData();
+        double minX = test.GetMinWeightDistanceX();
+        double minSum = test.GetDistance(minX);
+        Debug.Log("XAxisWeightMinDistance3 " + minSum + " minX " + minX);
+    }
 
     public static void XYPlaneMinDistance()
     {
