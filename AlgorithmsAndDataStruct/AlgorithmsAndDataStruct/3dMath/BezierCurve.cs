@@ -25,21 +25,42 @@ public class BezierCurveConstantMotion
 {
     public static void Test()
     {
-        BezierCurveConstantMotion test = new BezierCurveConstantMotion(new Vector2(50, 50), new Vector2(500, 500), new Vector2(800, 200));
-        List<Vector2> posList = new List<Vector2>();
-        for (int i = 0; i < 10; ++i )
         {
-            float percent = 0.1f * i;
-            Vector2 pos = test.CalculatePos(percent);
-            float distancef = 0;
-            if (i - 1 >= 0)
+            BezierCurveConstantMotion test = new BezierCurveConstantMotion(new Vector2(50, 50), new Vector2(500, 500), new Vector2(800, 200));
+            List<Vector2> posList = new List<Vector2>();
+            for (int i = 0; i < 10; ++i)
             {
-                Vector2 distance = pos - posList[i - 1];
-                distancef = distance.magnitude;
+                float percent = 0.1f * i;
+                Vector2 pos = test.CalculatePos(percent);
+                float distancef = 0;
+                if (i - 1 >= 0)
+                {
+                    Vector2 distance = pos - posList[i - 1];
+                    distancef = distance.magnitude;
+                }
+                posList.Add(pos);
+                Debug.Log(pos.ToString() + " " + distancef);
             }
-            posList.Add(pos);
-            Debug.Log(pos.ToString() + " " + distancef);
         }
+
+        {
+            BezierCurveConstantMotion test = new BezierCurveConstantMotion(new Vector2(50, 50), new Vector2(500, 500), new Vector2(800, 200));
+            List<Vector2> posList = new List<Vector2>();
+            for (int i = 0; i < 10; ++i)
+            {
+                float percent = 0.1f * i;
+                Vector2 pos = test.CalculatePos_Definite_Integration(percent);
+                float distancef = 0;
+                if (i - 1 >= 0)
+                {
+                    Vector2 distance = pos - posList[i - 1];
+                    distancef = distance.magnitude;
+                }
+                posList.Add(pos);
+                Debug.Log("定积分" + pos.ToString() + " " + distancef);
+            }
+        }
+
     }
 
     Vector2 m_P0;
@@ -89,6 +110,20 @@ public class BezierCurveConstantMotion
         return (temp5 + temp6) / (8 * Math.Pow(m_A, 1.5));
     }
 
+    double Length_Definite_Integration(double t = 1)
+    {
+        double step = 0.001d;
+        int num = (int)(t / step);
+        double sum = 0;
+        for (int i = 0; i < num; ++i )
+        {
+            double stepT = step * i;
+            double oneSum = Math.Sqrt(m_A * stepT * stepT + m_B * stepT + m_C) * step;
+            sum += oneSum;
+        }
+        return sum;
+    }
+
     double V(double t)
     {
         return Math.Sqrt(m_A * t * t + m_B * t + m_C);
@@ -108,9 +143,31 @@ public class BezierCurveConstantMotion
         // Xn+1 = Xn - (L(xn) - L(1.0) * percent / L'(xn)) 
         do
         {
-            t2 = t1 - (Length(t1) - m_length * percent) / V(t1);
+            double length = Length(t1);
+            t2 = t1 - (length - m_length * percent) / V(t1);
 
             if (Math.Abs(t1 - t2) < 0.000001) 
+                break;
+
+            t1 = t2;
+
+        } while (true);
+
+        return t2;
+    }
+
+    double InvertLength_Definite_Integration(double percent)
+    {
+        double t1 = percent, t2;
+
+        // 牛顿切线法求解L(t1) = L(1.0) * percent;
+        // Xn+1 = Xn - (L(xn) - L(1.0) * percent / L'(xn)) 
+        do
+        {
+            double length = Length_Definite_Integration(t1);
+            t2 = t1 - (length - m_length * percent) / V(t1);
+
+            if (Math.Abs(t1 - t2) < 0.001)
                 break;
 
             t1 = t2;
@@ -124,6 +181,12 @@ public class BezierCurveConstantMotion
     {
         //Debug.Log("length " + Length(percent));
         double t = InvertLength(percent);
+        return QuadraticBezier(m_P0, m_P1, m_P2, (float)t);
+    }
+
+    public Vector2 CalculatePos_Definite_Integration(float percent/*[0~1]*/)
+    {
+        double t = InvertLength_Definite_Integration(percent);
         return QuadraticBezier(m_P0, m_P1, m_P2, (float)t);
     }
 
