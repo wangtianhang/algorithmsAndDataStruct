@@ -83,17 +83,48 @@ public class MathCommon
         return (function(x + delta) - function(x)) / delta;
     }
 
-    public static Bitmap DrawFunction(FunctionOfOneVariableD function, double step, double begin, double end, 
-        double xMin, double xMax, double yMin, double yMax)
+    public static Bitmap DrawFunction(FunctionOfOneVariableD function, double step, double beginX, double endX, 
+        double xMin, double xMax, double yMin, double yMax, string des = "")
     {
         int width = 1136;
         int height = 640;
         Bitmap bitmap = new Bitmap(width, height);
 
-        int num = (int)((end - begin) / step);
+        //================画边框==========================
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                bitmap.SetPixel(i, j, Color.Black);
+            }
+        }
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = height - 2; j < height; ++j)
+            {
+                bitmap.SetPixel(i, j, Color.Black);
+            }
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < height; ++j)
+            {
+                bitmap.SetPixel(i, j, Color.Black);
+            }
+        }
+        for (int i = width - 2; i < width; i++)
+        {
+            for (int j = 0; j < height; ++j)
+            {
+                bitmap.SetPixel(i, j, Color.Black);
+            }
+        }
+        //=================画边框结束=============================
+
+        int num = (int)((endX - beginX) / step);
         for (int i = 0; i < num; ++i )
         {
-            double curX = begin + step * i;
+            double curX = beginX + step * i;
             double curY = function(curX);
 
             int x = (int)((curX - xMin) / (xMax - xMin) * width);
@@ -105,6 +136,21 @@ public class MathCommon
                 bitmap.SetPixel(x, height - y, Color.Black);
             }
             
+        }
+
+        using(Graphics g = Graphics.FromImage(bitmap))
+        {
+            using(Font font = new Font("宋体", 16f))
+            {
+                //string drawText = des;
+                //g.TextContrast = 0;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+                g.DrawString(des, font, Brushes.Black, new Point(20, 20));
+                string drawText2 = "xMin " + xMin + " xMax " + xMax + " yMin " + yMin + " yMax " + yMax;
+                g.DrawString(drawText2, font, Brushes.Black, new Point(20, 40));
+                string drawText3 = "beginX " + beginX + " endX " + endX;
+                g.DrawString(drawText3, font, Brushes.Black, new Point(20, 60));
+            }
         }
 
         return bitmap;
