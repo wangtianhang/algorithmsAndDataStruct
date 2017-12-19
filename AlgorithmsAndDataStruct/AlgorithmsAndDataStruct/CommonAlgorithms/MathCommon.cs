@@ -27,6 +27,8 @@ public class MathCommon
 
         //Console.ReadLine();
         Debug.Log(NumberOf1(82).ToString());
+
+        ProbabilityAB();
     }
 
     /// <summary>
@@ -559,6 +561,35 @@ public class MathCommon
         a = a - b;
     }
 
-
+    /// <summary>
+    /// 获得a概率10% 获得b概率20% 获得a和b需要进行多少次试验
+    /// </summary>
+    static void ProbabilityAB()
+    {
+        int totalCount = 0;
+        System.Random random = new System.Random();
+        for (int i = 0; i < 1000000; ++i)
+        {
+            int a = 0;
+            int b = 0;
+            while (a == 0 || b == 0)
+            {
+                int randomA = random.Next(0, 100);
+                if (randomA < 10)
+                {
+                    a++;
+                }
+                //System.Random random2 = new System.Random();
+                int randomB = random.Next(0, 100);
+                if (randomB < 20)
+                {
+                    b++;
+                }
+                totalCount++;
+            }
+        }
+        float perCount = (float)totalCount / 1000000;
+        Debug.Log("ProbabilityAB 如果与11.4近似说明随机数发生器符合正态分布 " + perCount);
+    }
 }
 
