@@ -5,9 +5,12 @@ using System.Text;
 
 
 
-class Math3d
+public class Math3d
 {
-
+    public static void Test()
+    {
+        XWeightMinDistance();
+    }
 
     //public const float Deg2Rad = 0.0174533f;
     //public const float Rad2Deg = 57.2958f;
@@ -267,5 +270,31 @@ class Math3d
         return true;
     }  
     #endregion
+
+    public static void XWeightMinDistance()
+    {
+        List<double> posList = new List<double>();
+        posList.Add(0.1d);
+        posList.Add(0.35d);
+        posList.Add(0.05d);
+        posList.Add(0.1d);
+        posList.Add(0.15d);
+        posList.Add(0.05d);
+        posList.Add(0.2d);
+        double minDistance = double.MaxValue;
+        double step = 0.001d;
+        for (int i = 0; i < 1000; ++i )
+        {
+            double curPos = step * i;
+            double sum = 0;
+            foreach (var iter in posList)
+            {
+                double weight = iter;
+                sum += Math.Abs(curPos - iter) * weight;
+            }
+            minDistance = Math.Min(sum, minDistance);
+        }
+        Debug.Log("minDistance " + minDistance);
+    }
 }
 

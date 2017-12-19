@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        BezierCurveConstantMotion.Test();
+        Math3d.Test();
 
         Console.ReadLine();
     }
