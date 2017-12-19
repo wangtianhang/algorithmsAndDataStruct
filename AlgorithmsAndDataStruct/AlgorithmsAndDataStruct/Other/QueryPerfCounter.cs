@@ -37,4 +37,10 @@ public class QueryPerfCounter
         double ret = (double)perfermanceCounter * (double)s_multiplier / (double)s_frequency;
         return (long)ret;
     }
+
+    public static long GetMs()
+    {
+        long nanoSecond = GetCurNanoSecond();
+        return nanoSecond / (1000 * 1000);
+    }
 }
