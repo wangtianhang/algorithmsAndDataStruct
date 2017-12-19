@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Drawing;
 using System.Text;
 
 
@@ -81,6 +81,33 @@ public class MathCommon
     public static double DerivativeD(FunctionOfOneVariableD function, double x, double delta = 0.0001d)
     {
         return (function(x + delta) - function(x)) / delta;
+    }
+
+    public static Bitmap DrawFunction(FunctionOfOneVariableD function, double step, double begin, double end, 
+        double xMin, double xMax, double yMin, double yMax)
+    {
+        int width = 1136;
+        int height = 640;
+        Bitmap bitmap = new Bitmap(width, height);
+
+        int num = (int)((end - begin) / step);
+        for (int i = 0; i < num; ++i )
+        {
+            double curX = begin + step * i;
+            double curY = function(curX);
+
+            int x = (int)((curX - xMin) / (xMax - xMin) * width);
+            int y = (int)((curY - yMin) / (yMax - yMin) * height);
+
+            if(x >= 0 && x < width
+                && y >= 0 && y < height)
+            {
+                bitmap.SetPixel(x, height - y, Color.Black);
+            }
+            
+        }
+
+        return bitmap;
     }
 
     /// <summary>
@@ -485,5 +512,7 @@ public class MathCommon
         b = a - b;
         a = a - b;
     }
+
+
 }
 
