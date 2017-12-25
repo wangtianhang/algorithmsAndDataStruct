@@ -3,25 +3,39 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class ProbabilityAndStatistics
+public class ProbabilityAndStatistics
 {
     public static void Test()
     {
-        List<Vector2> pointList = new List<Vector2>();
-        pointList.Add(new Vector2(0, 6));
-        pointList.Add(new Vector2(3, 8));
-        pointList.Add(new Vector2(6, 10));
-        pointList.Add(new Vector2(7, 13));
-        pointList.Add(new Vector2(9, 15));
-        pointList.Add(new Vector2(13, 20));
-        pointList.Add(new Vector2(17, 22));
-        pointList.Add(new Vector2(19, 25));
-        pointList.Add(new Vector2(23, 29));
-        pointList.Add(new Vector2(27, 32));
-        pointList.Add(new Vector2(30, 33));
+        List<Vector2Double> pointList = new List<Vector2Double>();
+        pointList.Add(new Vector2Double(0, 6));
+        pointList.Add(new Vector2Double(3, 8));
+        pointList.Add(new Vector2Double(6, 10));
+        pointList.Add(new Vector2Double(7, 13));
+        pointList.Add(new Vector2Double(9, 15));
+        pointList.Add(new Vector2Double(13, 20));
+        pointList.Add(new Vector2Double(17, 22));
+        pointList.Add(new Vector2Double(19, 25));
+        pointList.Add(new Vector2Double(23, 29));
+        pointList.Add(new Vector2Double(27, 32));
+        pointList.Add(new Vector2Double(30, 33));
         double a = 0;
         double b = 0;
         LinearRegressionEquation(pointList, out a, out b);
+
+        List<Vector2Double> pointList2 = new List<Vector2Double>();
+        pointList2.Add(new Vector2Double(0.2, 1.8));
+        pointList2.Add(new Vector2Double(0.65, 3.6));
+        pointList2.Add(new Vector2Double(1.13, 5.4));
+        pointList2.Add(new Vector2Double(2.55, 7.2));
+        pointList2.Add(new Vector2Double(4.0, 9.0));
+        pointList2.Add(new Vector2Double(5.75, 10.8));
+        pointList2.Add(new Vector2Double(7.8, 12.6));
+        pointList2.Add(new Vector2Double(10.2, 14.4));
+        pointList2.Add(new Vector2Double(12.9, 16.2));
+        pointList2.Add(new Vector2Double(16.0, 18.0));
+        pointList2.Add(new Vector2Double(18.4, 19.8));
+        PowerRegressionEquation(pointList2, out a, out b);
     }
 
     /// <summary>
@@ -60,7 +74,7 @@ class ProbabilityAndStatistics
     /// 最小二乘法
     /// y = a + bx
     /// </summary>
-    static void LinearRegressionEquation(List<Vector2> pointList, out double a, out double b)
+    static void LinearRegressionEquation(List<Vector2Double> pointList, out double a, out double b)
     {
         double averageX = 0;
         double averageY = 0;
@@ -80,6 +94,29 @@ class ProbabilityAndStatistics
         b = (total1 - pointList.Count * averageX * averageY) / (total2 - pointList.Count * averageX * averageX);
         a = averageY - b * averageX;
         Debug.Log("y = " + a + " + " + b + " * x");
+    }
+
+    /// <summary>
+    /// 幂函数回归
+    /// y = a * x ^ b;
+    /// lnY = lnA + b * lnX
+    /// 令 y' = lnY    x' = lnX   a' = lna
+    /// y' = a ' + b * x'
+    /// </summary>
+    /// <param name="pointList"></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    static void PowerRegressionEquation(List<Vector2Double> pointList, out double a, out double b)
+    {
+        List<Vector2Double> lnPointList = new List<Vector2Double>();
+        foreach(var iter in pointList)
+        {
+            lnPointList.Add(new Vector2Double(Math.Log(iter.x), Math.Log(iter.y)));
+        }
+        double lnA = 0;
+        LinearRegressionEquation(lnPointList, out lnA, out b);
+        a = Math.Pow(Math.E, lnA);
+        Debug.Log("y = " + a + " + x ^ " + b);
     }
 }
 

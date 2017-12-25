@@ -57,6 +57,7 @@
     <Compile Include="3dMath\Ray3d.cs" />
     <Compile Include="3dMath\unity\Transform.cs" />
     <Compile Include="3dMath\unity\Vector2.cs" />
+    <Compile Include="3dMath\Vector2Double.cs" />
     <Compile Include="3dMath\Vector2i.cs" />
     <Compile Include="3dMath\unity\Vector4.cs" />
     <Compile Include="CommonAlgorithms\Algorithms.cs" />

@@ -77,6 +77,19 @@ public struct Mathf
         return value;
     }
 
+    public static double Clamp(double value, double min, double max)
+    {
+        if (value < min)
+        {
+            value = min;
+        }
+        else if (value > max)
+        {
+            value = max;
+        }
+        return value;
+    }
+
     public static int Clamp(int value, int min, int max)
     {
         if (value < min)
@@ -99,6 +112,19 @@ public struct Mathf
         if (value > 1f)
         {
             return 1f;
+        }
+        return value;
+    }
+
+    public static double Clamp01(double value)
+    {
+        if (value < 0d)
+        {
+            return 0d;
+        }
+        if (value > 1d)
+        {
+            return 1d;
         }
         return value;
     }
