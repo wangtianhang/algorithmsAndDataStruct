@@ -35,8 +35,9 @@ public class MathHelper
         //bitmap.Save("y = 1 divide sqrt(4 - power(x, 2)" + ".bmp");
 
         List<FunctionDraw> drawList = new List<FunctionDraw>();
-        drawList.Add(new FunctionDraw((x) =>  1 / Math.Sqrt(4 - x * x)  , 0.001d, -2, 2));
-        drawList.Add(new FunctionDraw((x) => x * x, 0.001d, -3, 3));
+        //drawList.Add(new FunctionDraw((x) =>  1 / Math.Sqrt(4 - x * x)  , 0.001d, -2, 2));
+        //drawList.Add(new FunctionDraw((x) => x * x, 0.001d, -3, 3));
+        drawList.Add(new FunctionDraw((x) => (4 * x / (x * x + 1)), 0.001d, -3, 3));
         Bitmap bitmap = DrawFunction(drawList, -3, 3, -1, +10, "MathHelper Test");
         bitmap.Save("MathHelper Test" + ".bmp");
     }
@@ -116,7 +117,7 @@ public class MathHelper
                 if (x >= 0 && x < width
                     && y >= 0 && y < height)
                 {
-                    bitmap.SetPixel(x, height - y, Color.Black);
+                    bitmap.SetPixel(x, height - y - 1, Color.Black);
                 }
 
             }

@@ -221,6 +221,20 @@ public class Math3d
     }
 
     /// <summary>
+    /// 余弦定理 根据三边求夹角
+    /// c ^ 2 = a ^ 2 + b ^ 2 - 2 * a * b * cosTheta
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public float GetTheta(float a, float b, float c)
+    {
+        float cosTheta = (a * a + b * b - c * c) / (2 * a * b);
+        return (float)Math.Acos(cosTheta);
+    }
+
+    /// <summary>
     /// 三点确定一个圆
     /// </summary>
     /// <returns></returns>
