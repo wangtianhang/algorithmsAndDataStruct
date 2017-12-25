@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        MathCommon.Test();
+        MathHelper.Test();
 
         Console.WriteLine("测试结束");
         Console.ReadLine();

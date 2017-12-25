@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-
+public delegate double FunctionOfOneVariableD(double x);
+public delegate float FunctionOfOneVariable(float x);
 
 public class MathCommon
 {
@@ -28,7 +29,7 @@ public class MathCommon
         //Console.ReadLine();
         Debug.Log(NumberOf1(82).ToString());
 
-        ProbabilityAB();
+        //ProbabilityAB();
 
         List<Vector2> pointList = new List<Vector2>();
         pointList.Add(new Vector2(0, 6));
@@ -45,6 +46,8 @@ public class MathCommon
         double a = 0;
         double b = 0;
         LinearRegressionEquation(pointList, out a, out b);
+
+        //TestFuncGraphic();
     }
 
     /// <summary>
@@ -89,112 +92,15 @@ public class MathCommon
     /// </summary>
     /// <param name="x"></param>
     /// <returns></returns>
-    public delegate float FunctionOfOneVariable(float x);
+    
     public static float Derivative(FunctionOfOneVariable function, float x, float delta = 0.0001f)
     {
         return (function(x + delta) - function(x)) / delta;
     }
 
-    public delegate double FunctionOfOneVariableD(double x);
     public static double DerivativeD(FunctionOfOneVariableD function, double x, double delta = 0.0001d)
     {
         return (function(x + delta) - function(x)) / delta;
-    }
-
-    public static Bitmap DrawFunction(FunctionOfOneVariableD function, double step, double beginX, double endX, 
-        double xMin, double xMax, double yMin, double yMax, string des = "")
-    {
-        int width = 1136;
-        int height = 640;
-        Bitmap bitmap = new Bitmap(width, height);
-
-        //================画边框==========================
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < 2; ++j)
-            {
-                bitmap.SetPixel(i, j, Color.Black);
-            }
-        }
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = height - 2; j < height; ++j)
-            {
-                bitmap.SetPixel(i, j, Color.Black);
-            }
-        }
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < height; ++j)
-            {
-                bitmap.SetPixel(i, j, Color.Black);
-            }
-        }
-        for (int i = width - 2; i < width; i++)
-        {
-            for (int j = 0; j < height; ++j)
-            {
-                bitmap.SetPixel(i, j, Color.Black);
-            }
-        }
-        //=================画边框结束=============================
-        
-        //===============画数轴=========================
-        {
-            int yAxis = (int)((0 - xMin) / (xMax - xMin) * width);
-            int xAxis = (int)((0 - yMin) / (yMax - yMin) * height);
-            for (int i = 0; i < width; i++)
-            {
-                if (i >= 0 && i < width
-                    && xAxis >= 0 && xAxis < height)
-                {
-                    bitmap.SetPixel(i, height - xAxis - 1, Color.Black);
-                }
-            }
-            for (int j = 0; j < height; ++j)
-            {
-                if (yAxis >= 0 && yAxis < width
-                    && j >= 0 && j < height)
-                {
-                    bitmap.SetPixel(yAxis, height - j - 1, Color.Black);
-                }
-            }
-        }
-        //===============画数轴结束=======================
-
-        int num = (int)((endX - beginX) / step);
-        for (int i = 0; i < num; ++i )
-        {
-            double curX = beginX + step * i;
-            double curY = function(curX);
-
-            int x = (int)((curX - xMin) / (xMax - xMin) * width);
-            int y = (int)((curY - yMin) / (yMax - yMin) * height);
-
-            if(x >= 0 && x < width
-                && y >= 0 && y < height)
-            {
-                bitmap.SetPixel(x, height - y, Color.Black);
-            }
-            
-        }
-
-        using(Graphics g = Graphics.FromImage(bitmap))
-        {
-            using(Font font = new Font("宋体", 16f))
-            {
-                //string drawText = des;
-                //g.TextContrast = 0;
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-                g.DrawString(des, font, Brushes.Black, new Point(20, 20));
-                string drawText2 = "xMin " + xMin + " xMax " + xMax + " yMin " + yMin + " yMax " + yMax;
-                g.DrawString(drawText2, font, Brushes.Black, new Point(20, 40));
-                string drawText3 = "beginX " + beginX + " endX " + endX;
-                g.DrawString(drawText3, font, Brushes.Black, new Point(20, 60));
-            }
-        }
-
-        return bitmap;
     }
 
     /// <summary>
@@ -657,5 +563,12 @@ public class MathCommon
         a = averageY - b * averageX;
         Debug.Log("y = " + a + " + " + b + " * x");
     }
+
+
+
+//     public static double TestFunc(double x)
+//     {
+//         return 1 / Math.Sqrt(4 - x * x);
+//     }
 }
 

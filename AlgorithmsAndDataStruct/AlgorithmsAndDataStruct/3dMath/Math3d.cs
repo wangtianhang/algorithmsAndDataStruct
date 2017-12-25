@@ -9,23 +9,18 @@ public class Math3d
 {
     public static void Test()
     {
-        //XAxisWeightMinDistance();
+        XAxisWeightMinDistance();
 
-        //XAxisWeightMinDistance2();
+        XAxisWeightMinDistance2();
 
-        //XAxisWeightMinDistance3();
+        XAxisWeightMinDistance3();
 
-        //XYPlaneMinDistance();
+        XYPlaneMinDistance();
 
-        Bitmap bitmap = MathCommon.DrawFunction(TestFunc, 0.001d, -2, 2,
-            -3, 3, -1, +10, "y = 1 / sqrt(4 - x^2)");
-        bitmap.Save("TestFunc" + ".bmp");
+
     }
 
-    public static double TestFunc(double x)
-    {
-        return 1 / Math.Sqrt(4 - x * x);
-    }
+
 
     //public const float Deg2Rad = 0.0174533f;
     //public const float Rad2Deg = 57.2958f;
@@ -387,7 +382,9 @@ public class Math3d
         }
         Debug.Log("total " + total + " XAxisWeightMinDistance " + minDistance + " minPos " + minPos);
 
-        Bitmap bitmap = MathCommon.DrawFunction(test.GetDistance, 0.001d, test.m_posList[0], test.m_posList[test.m_posList.Count - 1],
+        List<FunctionDraw> drawList = new List<FunctionDraw>();
+        drawList.Add(new FunctionDraw(test.GetDistance, 0.001d, test.m_posList[0], test.m_posList[test.m_posList.Count - 1]));
+        Bitmap bitmap = MathHelper.DrawFunction(drawList,
             test.m_posList[0] - 10, test.m_posList[test.m_posList.Count - 1], -10, +100, "XAxisWeightMinDistance");
         string fileName = "XAxisWeightMinDistance" + Debug.GetTime() + ".bmp";
         bitmap.Save(fileName);
