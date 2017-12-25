@@ -69,6 +69,12 @@ public class ProbabilityAndStatistics
         pointList4.Add(new Vector2Double(1980 - 1900, 66.8));
         pointList4.Add(new Vector2Double(1990 - 1900, 81.1));
         ExponentRegressionEquation(pointList4, out a, out b);
+
+        List<Vector2Double> pointList5 = new List<Vector2Double>();
+        pointList5.Add(new Vector2Double(1960 - 1900, 20.56));
+        pointList5.Add(new Vector2Double(1970 - 1900, 42.10));
+        pointList5.Add(new Vector2Double(1990 - 1900, 70.10));
+        LogarithmRegressionEquation(pointList5, out a, out b);
     }
 
     /// <summary>
@@ -249,6 +255,23 @@ public class ProbabilityAndStatistics
         b = Math.Pow(Math.E, lnB);
 
         Debug.Log("指数回归方程 y = " + a + " * " + b + " ^ x");
+    }
+
+    /// <summary>
+    /// 对数回归方程
+    /// y = a + b * lnX
+    /// y = a + b * x'
+    /// </summary>
+    /// <param name="pointList"></param>
+    static void LogarithmRegressionEquation(List<Vector2Double> pointList, out double a, out double b)
+    {
+        List<Vector2Double> linePointList = new List<Vector2Double>();
+        foreach (var iter in pointList)
+        {
+            linePointList.Add(new Vector2Double(Math.Log(iter.x), iter.y));
+        }
+        LinearRegressionEquation(linePointList, out a, out b);
+        Debug.Log("对数回归方程 y = " + a + " + " + b + " * lnX");
     }
 
     /// <summary>
