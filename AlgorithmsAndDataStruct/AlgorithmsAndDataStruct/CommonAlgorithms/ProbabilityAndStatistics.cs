@@ -36,6 +36,29 @@ public class ProbabilityAndStatistics
         pointList2.Add(new Vector2Double(16.0, 18.0));
         pointList2.Add(new Vector2Double(18.4, 19.8));
         PowerRegressionEquation(pointList2, out a, out b);
+
+        List<Vector2Double> pointList3 = new List<Vector2Double>();
+        pointList3.Add(new Vector2Double(20, 42));
+        pointList3.Add(new Vector2Double(25, 56));
+        pointList3.Add(new Vector2Double(30, 73.5));
+        pointList3.Add(new Vector2Double(35, 91.5));
+        pointList3.Add(new Vector2Double(40, 116));
+        pointList3.Add(new Vector2Double(45, 142.5));
+        pointList3.Add(new Vector2Double(50, 173));
+        pointList3.Add(new Vector2Double(55, 209.5));
+        pointList3.Add(new Vector2Double(60, 248));
+        pointList3.Add(new Vector2Double(65, 292.5));
+        pointList3.Add(new Vector2Double(70, 343));
+        pointList3.Add(new Vector2Double(75, 401));
+        pointList3.Add(new Vector2Double(80, 464));
+        double c = 0;
+        QuadraticPolynomialRegressionEquation(pointList3, out a, out b, out c);
+        double x = 72;
+        double length = a * x * x + b * x + c;
+        Debug.Log("length 72 " + length);
+        x = 85;
+        length = a * x * x + b * x + c;
+        Debug.Log("length 85 " + length);
     }
 
     /// <summary>
@@ -117,6 +140,80 @@ public class ProbabilityAndStatistics
         LinearRegressionEquation(lnPointList, out lnA, out b);
         a = Math.Pow(Math.E, lnA);
         Debug.Log("y = " + a + " + x ^ " + b);
+    }
+
+    class TwoUnknonwnEquation
+    {
+        public TwoUnknonwnEquation(double x2, double x1, double y)
+        {
+            m_x2 = x2;
+            m_x1 = x1;
+            m_y = y;
+        }
+        public double m_x2 = 0;
+        public double m_x1 = 0;
+        public double m_y = 0;
+    }
+
+    /// <summary>
+    /// 一元二次多项式回归
+    /// 转为一次二元回归
+    /// </summary>
+    /// <param name="pointList"></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    static void QuadraticPolynomialRegressionEquation(List<Vector2Double> pointList, out double a, out double b, out double c)
+    {
+        List<TwoUnknonwnEquation> twoUnknownEquationList = new List<TwoUnknonwnEquation>();
+        foreach (var iter in pointList)
+        {
+            twoUnknownEquationList.Add(new TwoUnknonwnEquation(iter.x * iter.x, iter.x, iter.y));
+        }
+        TwoUnknonwnRegressionEquation(twoUnknownEquationList, out a, out b, out c);
+        Debug.Log("一元二次多项式回归 y = " + a + " *  x ^ 2 + " + b + " *  x + " + c);
+    }
+
+    /// <summary>
+    /// 二元一次回归方程
+    /// y = beta0 + beta1 * x1 + beta2 * x2;
+    /// </summary>
+    /// <param name="twoUnknownEquationList"></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    static void TwoUnknonwnRegressionEquation(List<TwoUnknonwnEquation> twoUnknownEquationList, out double beta2, out double beta1, out double beta0)
+    {
+        double sum_y_x2 = 0;
+        double sum_x1_x1 = 0;
+        double sum_y_x1 = 0;
+        double sum_x1_x2 = 0;
+        double sum_x2_x2 = 0;
+        double averageY = 0;
+        double averageX1 = 0;
+        double avergaeX2 = 0;
+        foreach(var iter in twoUnknownEquationList)
+        {
+            sum_y_x2 += iter.m_y * iter.m_x2;
+            sum_x1_x1 += iter.m_x1 * iter.m_x1;
+            sum_y_x1 += iter.m_y * iter.m_x1;
+            sum_x1_x2 += iter.m_x1 * iter.m_x2;
+            sum_x2_x2 += iter.m_x2 * iter.m_x2;
+
+            averageY += iter.m_y;
+            averageX1 += iter.m_x1;
+            avergaeX2 += iter.m_x2;
+        }
+        averageY /= twoUnknownEquationList.Count;
+        averageX1 /= twoUnknownEquationList.Count;
+        avergaeX2 /= twoUnknownEquationList.Count;
+
+        beta2 = (sum_y_x2 * sum_x1_x1 - sum_y_x1 * sum_x1_x2) / (sum_x1_x1 * sum_x2_x2 - sum_x1_x2 * sum_x1_x2);
+        beta1 = (sum_y_x1 * sum_x2_x2 - sum_y_x2 * sum_x1_x2) / (sum_x1_x1 * sum_x2_x2 - sum_x1_x2 * sum_x1_x2);
+
+        beta0 = averageY - beta1 * averageX1 - beta2 * avergaeX2;
+
+        Debug.Log("二元一次回归方程 y = " + beta2 + " *  x2 + " + beta1 + " * x1 + " + beta0);
     }
 }
 
