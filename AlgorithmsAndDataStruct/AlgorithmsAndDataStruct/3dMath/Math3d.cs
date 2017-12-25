@@ -9,13 +9,22 @@ public class Math3d
 {
     public static void Test()
     {
-        XAxisWeightMinDistance();
+        //XAxisWeightMinDistance();
 
-        XAxisWeightMinDistance2();
+        //XAxisWeightMinDistance2();
 
-        XAxisWeightMinDistance3();
+        //XAxisWeightMinDistance3();
 
-        XYPlaneMinDistance();
+        //XYPlaneMinDistance();
+
+        Bitmap bitmap = MathCommon.DrawFunction(TestFunc, 0.001d, -2, 2,
+            -3, 3, -1, +10, "y = 1 / sqrt(4 - x^2)");
+        bitmap.Save("TestFunc" + ".bmp");
+    }
+
+    public static double TestFunc(double x)
+    {
+        return 1 / Math.Sqrt(4 - x * x);
     }
 
     //public const float Deg2Rad = 0.0174533f;

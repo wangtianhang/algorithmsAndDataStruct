@@ -146,17 +146,17 @@ public class MathCommon
             for (int i = 0; i < width; i++)
             {
                 if (i >= 0 && i < width
-                    && yAxis >= 0 && yAxis < height)
+                    && xAxis >= 0 && xAxis < height)
                 {
-                    bitmap.SetPixel(i, height - yAxis - 1, Color.Black);
+                    bitmap.SetPixel(i, height - xAxis - 1, Color.Black);
                 }
             }
             for (int j = 0; j < height; ++j)
             {
-                if (xAxis >= 0 && xAxis < width
+                if (yAxis >= 0 && yAxis < width
                     && j >= 0 && j < height)
                 {
-                    bitmap.SetPixel(xAxis, height - j - 1, Color.Black);
+                    bitmap.SetPixel(yAxis, height - j - 1, Color.Black);
                 }
             }
         }
