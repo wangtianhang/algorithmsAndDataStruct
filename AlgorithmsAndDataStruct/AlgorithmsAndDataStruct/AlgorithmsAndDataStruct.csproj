@@ -70,6 +70,7 @@
     <Compile Include="CommonAlgorithms\DynamicProgramming.cs" />
     <Compile Include="CommonAlgorithms\GaussianElimination.cs" />
     <Compile Include="CommonAlgorithms\MathHelper.cs" />
+    <Compile Include="CommonAlgorithms\NumberTheory.cs" />
     <Compile Include="CommonAlgorithms\ProbabilityAndStatistics.cs" />
     <Compile Include="CommonDataStruct\FastGetMaxQueue.cs" />
     <Compile Include="CommonDataStruct\Fraction.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Other\MagicSquare.cs" />
     <Compile Include="Other\Maze.cs" />
     <Compile Include="Other\MyQuaternion.cs" />
+    <Compile Include="Other\Pi.cs" />
     <Compile Include="Other\Point24.cs" />
     <Compile Include="Other\QueryPerfCounter.cs" />
     <Compile Include="Other\ObjectPool.cs" />

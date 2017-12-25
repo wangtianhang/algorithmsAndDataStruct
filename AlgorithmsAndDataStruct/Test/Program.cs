@@ -13,7 +13,7 @@ class Program
 
         //AlgorithmsBase.Test();
 
-        ProbabilityAndStatistics.Test();
+        MathCommon.Test();
 
         Console.WriteLine("测试结束");
         Console.ReadLine();
