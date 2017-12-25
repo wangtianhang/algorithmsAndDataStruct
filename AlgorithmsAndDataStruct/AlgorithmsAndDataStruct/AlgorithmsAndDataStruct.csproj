@@ -60,6 +60,7 @@
     <Compile Include="3dMath\Vector2Double.cs" />
     <Compile Include="3dMath\Vector2i.cs" />
     <Compile Include="3dMath\unity\Vector4.cs" />
+    <Compile Include="CommonAlgorithms\Algebra.cs" />
     <Compile Include="CommonAlgorithms\Algorithms.cs" />
     <Compile Include="CombineMath\31Next Permutation.cs" />
     <Compile Include="3dMath\BezierCurve.cs" />

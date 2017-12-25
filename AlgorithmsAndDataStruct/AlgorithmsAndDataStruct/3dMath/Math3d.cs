@@ -311,7 +311,7 @@ public class Math3d
 
         public double GetDistanceDerivative(double curPos, double delta = 0.001d)
         {
-            return MathCommon.DerivativeD(GetDistance, curPos, delta);
+            return Algebra.DerivativeD(GetDistance, curPos, delta);
         }
 
         public double GetMinWeightDistanceX()
@@ -347,7 +347,7 @@ public class Math3d
 //                 }
 //             }
 
-            double minX = MathCommon.GetMinByThree(GetDistance, m_posList[0], m_posList[m_posList.Count - 1]);
+            double minX = Algebra.GetMinByThree(GetDistance, m_posList[0], m_posList[m_posList.Count - 1]);
             return minX;
         }
     }
