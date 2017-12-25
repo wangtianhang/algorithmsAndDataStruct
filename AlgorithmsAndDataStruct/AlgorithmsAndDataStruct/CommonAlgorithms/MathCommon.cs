@@ -138,6 +138,29 @@ public class MathCommon
             }
         }
         //=================画边框结束=============================
+        
+        //===============画数轴=========================
+        {
+            int yAxis = (int)((0 - xMin) / (xMax - xMin) * width);
+            int xAxis = (int)((0 - yMin) / (yMax - yMin) * height);
+            for (int i = 0; i < width; i++)
+            {
+                if (i >= 0 && i < width
+                    && yAxis >= 0 && yAxis < height)
+                {
+                    bitmap.SetPixel(i, height - yAxis - 1, Color.Black);
+                }
+            }
+            for (int j = 0; j < height; ++j)
+            {
+                if (xAxis >= 0 && xAxis < width
+                    && j >= 0 && j < height)
+                {
+                    bitmap.SetPixel(xAxis, height - j - 1, Color.Black);
+                }
+            }
+        }
+        //===============画数轴结束=======================
 
         int num = (int)((endX - beginX) / step);
         for (int i = 0; i < num; ++i )
