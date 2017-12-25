@@ -69,6 +69,7 @@
     <Compile Include="CommonAlgorithms\DynamicProgramming.cs" />
     <Compile Include="CommonAlgorithms\GaussianElimination.cs" />
     <Compile Include="CommonAlgorithms\MathHelper.cs" />
+    <Compile Include="CommonAlgorithms\ProbabilityAndStatistics.cs" />
     <Compile Include="CommonDataStruct\FastGetMaxQueue.cs" />
     <Compile Include="CommonDataStruct\Fraction.cs" />
     <Compile Include="CommonDataStruct\IndexMinHeap.cs" />
