@@ -397,7 +397,7 @@ public class Math3d
         Debug.Log("total " + total + " XAxisWeightMinDistance " + minDistance + " minPos " + minPos);
 
         List<FunctionDraw> drawList = new List<FunctionDraw>();
-        drawList.Add(new FunctionDraw(test.GetDistance, 0.001d, test.m_posList[0], test.m_posList[test.m_posList.Count - 1]));
+        drawList.Add(new FunctionDraw(test.GetDistance, 0.001d));
         Bitmap bitmap = MathHelper.DrawFunction(drawList,
             test.m_posList[0] - 10, test.m_posList[test.m_posList.Count - 1], -10, +100, "XAxisWeightMinDistance");
         string fileName = "XAxisWeightMinDistance" + Debug.GetTime() + ".bmp";

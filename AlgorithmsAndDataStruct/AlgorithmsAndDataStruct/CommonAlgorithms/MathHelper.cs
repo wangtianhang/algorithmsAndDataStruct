@@ -5,17 +5,17 @@ using System.Text;
 
 public class FunctionDraw
 {
-    public FunctionDraw(FunctionOfOneVariableD func, double step, double beginX, double endX)
+    public FunctionDraw(FunctionOfOneVariableD func, double step = 0.001d)
     {
         m_func = func;
         m_step = step;
-        m_beginX = beginX;
-        m_endX = endX;
+        //m_beginX = beginX;
+        //m_endX = endX;
     }
     public FunctionOfOneVariableD m_func = null;
     public double m_step = 0.001d;
-    public double m_beginX = 0;
-    public double m_endX = 0;
+    //public double m_beginX = 0;
+    //public double m_endX = 0;
 }
 
 public class MathHelper
@@ -37,8 +37,9 @@ public class MathHelper
         List<FunctionDraw> drawList = new List<FunctionDraw>();
         //drawList.Add(new FunctionDraw((x) =>  1 / Math.Sqrt(4 - x * x)  , 0.001d, -2, 2));
         //drawList.Add(new FunctionDraw((x) => x * x, 0.001d, -3, 3));
-        drawList.Add(new FunctionDraw((x) => (4 * x / (x * x + 1)), 0.001d, -3, 3));
-        Bitmap bitmap = DrawFunction(drawList, -3, 3, -1, +10, "MathHelper Test");
+        drawList.Add(new FunctionDraw((x) => (4 * x / (x * x + 1))));
+        drawList.Add(new FunctionDraw((x) => (2 * Math.Sin(2 * Math.Atan(x)))));
+        Bitmap bitmap = DrawFunction(drawList, -5, 5, -10, +10, "MathHelper Test");
         bitmap.Save("MathHelper Test" + ".bmp");
     }
 
@@ -105,10 +106,10 @@ public class MathHelper
 
         foreach (var iter in drawList)
         {
-            int num = (int)((iter.m_endX - iter.m_beginX) / iter.m_step);
+            int num = (int)((xMax - xMin) / iter.m_step);
             for (int i = 0; i < num; ++i)
             {
-                double curX = iter.m_beginX + iter.m_step * i;
+                double curX = xMin + iter.m_step * i;
                 double curY = iter.m_func(curX);
 
                 int x = (int)((curX - xMin) / (xMax - xMin) * width);
