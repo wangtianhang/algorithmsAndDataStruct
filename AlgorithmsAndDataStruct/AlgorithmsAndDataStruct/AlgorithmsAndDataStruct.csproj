@@ -94,6 +94,7 @@
     <Compile Include="Other\Sudoku.cs" />
     <Compile Include="Other\ThreadSafeQueue.cs" />
     <Compile Include="3dMath\unity\Coroutine.cs" />
+    <Compile Include="Other\Trick.cs" />
     <Compile Include="Other\Tuple.cs" />
     <Compile Include="String\StringMatch.cs" />
     <Compile Include="String\NFA.cs" />

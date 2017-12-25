@@ -59,6 +59,16 @@ public class ProbabilityAndStatistics
         x = 85;
         length = a * x * x + b * x + c;
         Debug.Log("length 85 " + length);
+
+        Debug.Log(CalculateCompoundInterest(100, 0.055, 20).ToString());
+
+        List<Vector2Double> pointList4 = new List<Vector2Double>();
+        pointList4.Add(new Vector2Double(1950 - 1900, 25.8));
+        pointList4.Add(new Vector2Double(1960 - 1900, 34.9));
+        pointList4.Add(new Vector2Double(1970 - 1900, 48.2));
+        pointList4.Add(new Vector2Double(1980 - 1900, 66.8));
+        pointList4.Add(new Vector2Double(1990 - 1900, 81.1));
+        ExponentRegressionEquation(pointList4, out a, out b);
     }
 
     /// <summary>
@@ -93,7 +103,7 @@ public class ProbabilityAndStatistics
     }
 
     /// <summary>
-    /// 回归线性方程
+    /// 线性回归
     /// 最小二乘法
     /// y = a + bx
     /// </summary>
@@ -116,7 +126,7 @@ public class ProbabilityAndStatistics
 
         b = (total1 - pointList.Count * averageX * averageY) / (total2 - pointList.Count * averageX * averageX);
         a = averageY - b * averageX;
-        Debug.Log("y = " + a + " + " + b + " * x");
+        Debug.Log("线性回归 y = " + a + " + " + b + " * x");
     }
 
     /// <summary>
@@ -139,7 +149,7 @@ public class ProbabilityAndStatistics
         double lnA = 0;
         LinearRegressionEquation(lnPointList, out lnA, out b);
         a = Math.Pow(Math.E, lnA);
-        Debug.Log("y = " + a + " + x ^ " + b);
+        Debug.Log("幂函数回归 y = " + a + " + x ^ " + b);
     }
 
     class TwoUnknonwnEquation
@@ -214,6 +224,41 @@ public class ProbabilityAndStatistics
         beta0 = averageY - beta1 * averageX1 - beta2 * avergaeX2;
 
         Debug.Log("二元一次回归方程 y = " + beta2 + " *  x2 + " + beta1 + " * x1 + " + beta0);
+    }
+
+    /// <summary>
+    /// 指数回归方程
+    /// y = a * b ^ x
+    /// lnY = lnA + x * lnB
+    /// y' = a' + b' x
+    /// </summary>
+    /// <param name="pointList"></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    static void ExponentRegressionEquation(List<Vector2Double> pointList, out double a, out double b)
+    {
+        List<Vector2Double> linePointList = new List<Vector2Double>();
+        foreach(var iter in pointList)
+        {
+            linePointList.Add(new Vector2Double(iter.x, Math.Log(iter.y)));
+        }
+        double lnB = 0;
+        double lnA = 0;
+        LinearRegressionEquation(linePointList, out lnA, out lnB);
+        a = Math.Pow(Math.E, lnA);
+        b = Math.Pow(Math.E, lnB);
+
+        Debug.Log("指数回归方程 y = " + a + " * " + b + " ^ x");
+    }
+
+    /// <summary>
+    /// 复利计算
+    /// y = p * power(e, r * t)
+    /// p 本金 r 利率 t 时间
+    /// </summary>
+    public static double CalculateCompoundInterest(double p, double r, double t)
+    {
+        return p * Math.Pow(Math.E, r * t);
     }
 }
 
