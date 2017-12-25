@@ -8,10 +8,10 @@ public class Maze
 {
     public static void Test()
     {
-        Random.SetSeed(0);
+        //Random.SetSeed(0);
 
-        int width = 300;
-        int height = 200;
+        int width = 150;
+        int height = 100;
         
         string time = Debug.GetTime();
         string fileName = "maze" + time + ".bmp";
