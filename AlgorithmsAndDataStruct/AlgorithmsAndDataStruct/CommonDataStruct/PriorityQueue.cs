@@ -114,7 +114,7 @@ public class MinPQ<T> : PriorityQueue<T>
     public MinPQ(int max, Comparer<T> comparer)
         : base(max, comparer)
     {
-        m_pq = new T[max];
+        m_pq = new T[max + 1];
         m_comparer = comparer;
     }
 
@@ -143,7 +143,7 @@ public class MaxPQ<T> : PriorityQueue<T>
     public MaxPQ(int max, Comparer<T> comparer)
         : base(max, comparer)
     {
-        m_pq = new T[max];
+        m_pq = new T[max + 1];
         m_comparer = comparer;
     }
 
