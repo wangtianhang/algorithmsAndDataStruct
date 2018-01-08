@@ -20,7 +20,7 @@ class FastGetMaxStack<T> where T: IComparable<T>
         }
         else
         {
-            m_link2NextMaxItem.Add(-1);
+            m_link2NextMaxItem.Add(m_maxStackItemIndex);
         }
     }
 
