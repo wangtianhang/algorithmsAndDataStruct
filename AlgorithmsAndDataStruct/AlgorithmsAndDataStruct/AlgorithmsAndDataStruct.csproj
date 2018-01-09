@@ -76,6 +76,7 @@
     <Compile Include="CommonDataStruct\FastGetMaxQueue.cs" />
     <Compile Include="CommonDataStruct\Fraction.cs" />
     <Compile Include="CommonDataStruct\IndexMinHeap.cs" />
+    <Compile Include="CommonDataStruct\PriorityQueueAnySize.cs" />
     <Compile Include="DirectedGraph\BreadFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DepthFirstDirectedPath.cs" />
     <Compile Include="DirectedGraph\DijkstraSP.cs" />

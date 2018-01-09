@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Text;
 
 
-// 优先队列概念
-public class PriorityQueue<T> 
+public class PriorityQueueAnySize<T>
 {
     protected T[] m_pq = null;
     int m_n = 0;
 
     protected IComparer<T> m_comparer = null;
 
-    public PriorityQueue(int max, IComparer<T> comparer)
+    public int m_max = 64;
+
+    public PriorityQueueAnySize( IComparer<T> comparer)
     {
-        m_pq = new T[max];
+        m_pq = new T[m_max + 1];
         m_comparer = comparer;
     }
 
-    public PriorityQueue(IList<T> keys) 
+    public PriorityQueueAnySize(IList<T> keys)
     {
         m_n = keys.Count;
         m_pq = new T[keys.Count + 1];
@@ -30,7 +30,15 @@ public class PriorityQueue<T>
 
     public void Insert(T a)
     {
-        m_pq[++m_n] = a;
+        ++m_n;
+        if(m_n > m_max)
+        {
+            m_max *= 2;
+            T[] newPQ = new T[m_max * 2 + 1];
+            Array.Copy(m_pq, newPQ, m_pq.Length);
+            m_pq = newPQ;
+        }
+        m_pq[m_n] = a;
         Swim(m_n);
     }
 
@@ -66,7 +74,7 @@ public class PriorityQueue<T>
 
     void Swim(int k)
     {
-        while(k > 1 && less(k /2 , k))
+        while (k > 1 && less(k / 2, k))
         {
             Exch(k / 2, k);
             k = k / 2;
@@ -75,14 +83,14 @@ public class PriorityQueue<T>
 
     void Sink(int k)
     {
-        while(2 * k <= m_n)
+        while (2 * k <= m_n)
         {
             int j = 2 * k;
-            if(j < m_n && less(j, j+1))
+            if (j < m_n && less(j, j + 1))
             {
                 j++;
             }
-            if(!less(k, j))
+            if (!less(k, j))
             {
                 break;
             }
@@ -99,19 +107,13 @@ public class PriorityQueue<T>
     }
 }
 
-public class MinPQ<T> : PriorityQueue<T> 
+public class MinPQAnySize<T> : PriorityQueueAnySize<T>
 {
-    public MinPQ(int max, IComparer<T> comparer)
-        : base(max, comparer)
+    public MinPQAnySize(IComparer<T> comparer)
+        : base(comparer)
     {
-        m_pq = new T[max + 1];
+        m_pq = new T[m_max + 1];
         m_comparer = comparer;
-    }
-
-    public MinPQ(IList<T> keys)
-        : base(keys)
-    {
-
     }
 
     protected override bool less(int i, int j)
@@ -128,12 +130,12 @@ public class MinPQ<T> : PriorityQueue<T>
     }
 }
 
-public class MaxPQ<T> : PriorityQueue<T>
+public class MaxPQAnySize<T> : PriorityQueueAnySize<T>
 {
-    public MaxPQ(int max, IComparer<T> comparer)
-        : base(max, comparer)
+    public MaxPQAnySize(IComparer<T> comparer)
+        : base(comparer)
     {
-        m_pq = new T[max + 1];
+        m_pq = new T[m_max + 1];
         m_comparer = comparer;
     }
 
