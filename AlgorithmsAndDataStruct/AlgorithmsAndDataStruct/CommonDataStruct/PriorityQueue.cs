@@ -10,14 +10,14 @@ public class PriorityQueue<T>
     protected T[] m_pq = null;
     int m_n = 0;
 
-    protected Comparer<T> m_comparer = null;
+    protected IComparer<T> m_comparer = null;
 
 //     public PriorityQueue(Comparer<T> comparer)
 //     {
 //         m_comparer = comparer;
 //     }
 
-    public PriorityQueue(int max, Comparer<T> comparer)
+    public PriorityQueue(int max, IComparer<T> comparer)
     {
         m_pq = new T[max];
         m_comparer = comparer;
@@ -39,7 +39,7 @@ public class PriorityQueue<T>
             Sink(k);
     }
 
-    void Insert(T a)
+    public void Insert(T a)
     {
         m_pq[++m_n] = a;
         Swim(m_n);
@@ -49,6 +49,12 @@ public class PriorityQueue<T>
 //     {
 // 
 //     }
+
+    public T Top()
+    {
+        T top = m_pq[1];
+        return top;
+    }
 
     public T DeleteTop()
     {
@@ -111,7 +117,7 @@ public class PriorityQueue<T>
 
 public class MinPQ<T> : PriorityQueue<T> 
 {
-    public MinPQ(int max, Comparer<T> comparer)
+    public MinPQ(int max, IComparer<T> comparer)
         : base(max, comparer)
     {
         m_pq = new T[max + 1];
@@ -140,7 +146,7 @@ public class MinPQ<T> : PriorityQueue<T>
 
 public class MaxPQ<T> : PriorityQueue<T>
 {
-    public MaxPQ(int max, Comparer<T> comparer)
+    public MaxPQ(int max, IComparer<T> comparer)
         : base(max, comparer)
     {
         m_pq = new T[max + 1];
