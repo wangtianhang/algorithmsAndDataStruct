@@ -14,7 +14,6 @@ public class PriorityQueue<T>
 
     public PriorityQueue(int max, IComparer<T> comparer)
     {
-        m_pq = new T[max];
         m_comparer = comparer;
     }
 
@@ -38,6 +37,13 @@ public class PriorityQueue<T>
     {
         T top = m_pq[1];
         return top;
+    }
+
+    public void ChangeTop(T a)
+    {
+        m_pq[1] = a;
+        Swim(1);
+        Sink(1);
     }
 
     public T DeleteTop()
