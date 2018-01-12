@@ -5,9 +5,12 @@ using System.Text;
 
 
 
-class Algorithms
+public class Algorithms
 {
-
+    public static void Test()
+    {
+        Console.WriteLine(JosephRing(10, 2));
+    }
 
     /// <summary>
     /// 找到一组数中第k小元素
@@ -63,6 +66,20 @@ class Algorithms
         return maxsum; 
     }
 
-
+    /// <summary>
+    /// 约瑟夫环问题
+    /// </summary>
+    /// <param name="n"></param>
+    /// <param name="m"></param>
+    /// <returns></returns>
+    static int JosephRing(int n, int m)
+    {
+        int result = 0;
+        for (int i = 2; i <= n; ++i )
+        {
+            result = (result + m) % i;
+        }
+        return result + 1;
+    }
 }
 
