@@ -47,7 +47,7 @@ public class QuadTree
                 QuadTreeElement element = new QuadTreeElement();
                 element.lng = pos.x;
                 element.lat = pos.y;
-                Debug.Log("尝试InsertElement " + i.ToString() + " " + element.lng + " " + element.lat);
+                //Debug.Log("尝试InsertElement " + i.ToString() + " " + element.lng + " " + element.lat);
                 quadTree.InsertElement(element);
                 posDic.Add(pos, 1);
             }
