@@ -30,13 +30,27 @@ public class QuadTree
     {
         QuadTree quadTree = new QuadTree();
         quadTree.Init(-90, 90, -180, 180);
-        Common.Random random = new Common.Random();
+        Dictionary<Vector2, int> posDic = new Dictionary<Vector2, int>();
+        System.Random random = new System.Random(0);
         for (int i = 0; i < 100000; i++)
         {
-            QuadTreeElement element = new QuadTreeElement();
-            element.lng = (float)(random.Next() % 360 - 180 + (float)(random.Next() % 1000) / 1000);
-            element.lat = (float)(random.Next() % 180 - 90 + (float)(random.Next() % 1000) / 1000);
-            quadTree.InsertElement(element);
+            Vector2 pos = new Vector2();
+            pos.x = (float)(random.Next() % 360 - 180 + (float)(random.Next() % 1000) / 1000);
+            pos.y = (float)(random.Next() % 180 - 90 + (float)(random.Next() % 1000) / 1000);
+
+            if (posDic.ContainsKey(pos))
+            {
+                posDic[pos] += 1;
+            }
+            else
+            {
+                QuadTreeElement element = new QuadTreeElement();
+                element.lng = pos.x;
+                element.lat = pos.y;
+                Debug.Log("尝试InsertElement " + i.ToString() + " " + element.lng + " " + element.lat);
+                quadTree.InsertElement(element);
+                posDic.Add(pos, 1);
+            }
         }
 
         QuadTreeElement test = new QuadTreeElement();
@@ -111,6 +125,14 @@ public class QuadTree
 //                 strcpy(ele_ptr->desc, ele.desc);
 //                 node->ele_list[node->ele_num] = ele_ptr;
 //                 node->ele_num++;
+                foreach (var iter in node.m_elementList)
+                {
+                    if(iter.lat == ele.lat
+                        && iter.lng == ele.lng)
+                    {
+                        Debug.LogError("重复点，有可能造成堆栈溢出");
+                    }
+                }
                 node.m_elementList.Add(ele);
             }
 
