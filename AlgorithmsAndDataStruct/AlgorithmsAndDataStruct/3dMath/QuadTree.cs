@@ -24,7 +24,7 @@ class QuadTreeNode
     public List<QuadTreeElement> m_elementList = new List<QuadTreeElement>();
 }
 
-class QuadTree
+public class QuadTree
 {
     public static void Test()
     {
@@ -52,6 +52,7 @@ class QuadTree
 
     QuadTreeNode m_root = null;
     Rect m_rootRegion;
+    const int MAX_ELE_NUM = 100;
 
     void Init(float bottom, float up, float left, float right)
     {
@@ -77,6 +78,11 @@ class QuadTree
          */
     }
 
+    void InsertElement(QuadTreeElement element)
+    {
+        InsertElementRecursion(m_root, element);
+    }
+
     /**
      * 插入元素
      * 1.判断是否已分裂，已分裂的选择适合的子结点，插入；
@@ -87,9 +93,91 @@ class QuadTree
      * @param ele
      * todo 使用元素原地址，避免重新分配内存造成的效率浪费
      */
-    void InsertElement(QuadTreeElement element)
+    void InsertElementRecursion(QuadTreeNode node, QuadTreeElement ele)
     {
+        if (node.m_isLeaf) 
+        {
+            if (node.m_elementList.Count > MAX_ELE_NUM) 
+            {
+                splitNode(node);
+                InsertElementRecursion(node, ele);
+            } 
+            else 
+            {
+                // todo 点排重（不排重的话如果相同的点数目大于 MAX_ELE_NUM， 会造成无限循环分裂）
+//                 struct ElePoint *ele_ptr = (struct ElePoint *) malloc(sizeof(struct ElePoint));
+//                 ele_ptr->lat = ele.lat;
+//                 ele_ptr->lng = ele.lng;
+//                 strcpy(ele_ptr->desc, ele.desc);
+//                 node->ele_list[node->ele_num] = ele_ptr;
+//                 node->ele_num++;
+                node.m_elementList.Add(ele);
+            }
 
+            return;
+        }
+
+
+        float mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
+        float mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
+        if (ele.lat > mid_vertical) {
+            if (ele.lng > mid_horizontal) {
+                InsertElementRecursion(node.m_ru, ele);
+            } else {
+                InsertElementRecursion(node.m_lu, ele);
+            }
+        } else {
+            if (ele.lng > mid_horizontal) {
+                InsertElementRecursion(node.m_rb, ele);
+            } else {
+                InsertElementRecursion(node.m_lb, ele);
+            }
+        }
+    }
+
+
+    /**
+     * 分裂结点
+     * 1.通过父结点获取子结点的深度和范围
+     * 2.生成四个结点，挂载到父结点下
+     *
+     * @param node
+     */
+    void splitNode(QuadTreeNode node) {
+        float mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
+        float mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
+
+        node.m_isLeaf = false;
+        node.m_ru = createChildNode(node, mid_vertical, node.m_region.top, mid_horizontal, node.m_region.right);
+        node.m_lu = createChildNode(node, mid_vertical, node.m_region.top, node.m_region.left, mid_horizontal);
+        node.m_rb = createChildNode(node, node.m_region.bottom, mid_vertical, mid_horizontal, node.m_region.right);
+        node.m_lb = createChildNode(node, node.m_region.bottom, mid_vertical, node.m_region.left, mid_horizontal);
+
+//         for (int i = 0; i < node.ele_num; i++) {
+//             insertEle(node, *node.ele_list[i]);
+//             free(node.ele_list[i]);
+//             node.ele_num--;
+//         }
+        foreach(var iter in node.m_elementList)
+        {
+            InsertElementRecursion(node, iter);
+        }
+        node.m_elementList.Clear();
+    }
+
+    QuadTreeNode createChildNode(QuadTreeNode node, float bottom, float up, float left, float right) 
+    {
+        int depth = node.m_depth + 1;
+        //struct QuadTreeNode *childNode = (struct QuadTreeNode *) malloc(sizeof(struct QuadTreeNode));
+        QuadTreeNode childNode = new QuadTreeNode();
+        //struct Region *region = (struct Region *) malloc(sizeof(struct Region));
+        //initRegion(region, bottom, up, left, right);
+        //initNode(childNode, depth, *region);
+        childNode.m_region = new Rect(left, up, right - left, up - bottom);
+        childNode.m_isLeaf = true;
+        childNode.m_depth = depth;
+
+        return childNode;
     }
 
     List<QuadTreeElement> queryEle(QuadTreeElement element)
@@ -107,8 +195,8 @@ class QuadTree
             return;
         }
 
-        double mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
-        double mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
+        float mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
+        float mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
 
         if (ele.lat > mid_vertical)
         {
