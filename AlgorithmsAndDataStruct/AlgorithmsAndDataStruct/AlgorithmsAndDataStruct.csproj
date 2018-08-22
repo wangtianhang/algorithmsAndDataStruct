@@ -57,11 +57,13 @@
     <Compile Include="3dMath\FixPoint\Vector4L.cs" />
     <Compile Include="3dMath\Line2d.cs" />
     <Compile Include="3dMath\Math3d.cs" />
+    <Compile Include="3dMath\QuadTree.cs" />
     <Compile Include="3dMath\unity\Mathf.cs" />
     <Compile Include="3dMath\unity\Matrix4x4.cs" />
     <Compile Include="3dMath\Plane3d.cs" />
     <Compile Include="3dMath\unity\Quaternion.cs" />
     <Compile Include="3dMath\Ray3d.cs" />
+    <Compile Include="3dMath\unity\Rect.cs" />
     <Compile Include="3dMath\unity\Transform.cs" />
     <Compile Include="3dMath\unity\Vector2.cs" />
     <Compile Include="3dMath\Vector2Double.cs" />
