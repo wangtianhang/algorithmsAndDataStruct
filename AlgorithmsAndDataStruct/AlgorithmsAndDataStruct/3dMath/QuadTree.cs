@@ -70,7 +70,7 @@ public class QuadTree
 
     void Init(float bottom, float up, float left, float right)
     {
-        m_rootRegion = new Rect(left, up, right - left, up - bottom);
+        m_rootRegion = new Rect(left, bottom, right - left, up - bottom);
         m_root = new QuadTreeNode();
         m_root.m_depth = 1;
         m_root.m_isLeaf = true;
@@ -140,7 +140,7 @@ public class QuadTree
         }
 
 
-        float mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
+        float mid_vertical = (node.m_region.yMax + node.m_region.yMin) / 2;
         float mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
         if (ele.lat > mid_vertical) {
             if (ele.lng > mid_horizontal) {
@@ -166,14 +166,14 @@ public class QuadTree
      * @param node
      */
     void splitNode(QuadTreeNode node) {
-        float mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
+        float mid_vertical = (node.m_region.yMax + node.m_region.yMin) / 2;
         float mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
 
         node.m_isLeaf = false;
-        node.m_ru = createChildNode(node, mid_vertical, node.m_region.top, mid_horizontal, node.m_region.right);
-        node.m_lu = createChildNode(node, mid_vertical, node.m_region.top, node.m_region.left, mid_horizontal);
-        node.m_rb = createChildNode(node, node.m_region.bottom, mid_vertical, mid_horizontal, node.m_region.right);
-        node.m_lb = createChildNode(node, node.m_region.bottom, mid_vertical, node.m_region.left, mid_horizontal);
+        node.m_ru = createChildNode(node, mid_vertical, node.m_region.yMax, mid_horizontal, node.m_region.right);
+        node.m_lu = createChildNode(node, mid_vertical, node.m_region.yMax, node.m_region.left, mid_horizontal);
+        node.m_rb = createChildNode(node, node.m_region.yMin, mid_vertical, mid_horizontal, node.m_region.right);
+        node.m_lb = createChildNode(node, node.m_region.yMin, mid_vertical, node.m_region.left, mid_horizontal);
 
 //         for (int i = 0; i < node.ele_num; i++) {
 //             insertEle(node, *node.ele_list[i]);
@@ -195,7 +195,7 @@ public class QuadTree
         //struct Region *region = (struct Region *) malloc(sizeof(struct Region));
         //initRegion(region, bottom, up, left, right);
         //initNode(childNode, depth, *region);
-        childNode.m_region = new Rect(left, up, right - left, up - bottom);
+        childNode.m_region = new Rect(left, bottom, right - left, up - bottom);
         childNode.m_isLeaf = true;
         childNode.m_depth = depth;
 
@@ -217,7 +217,7 @@ public class QuadTree
             return;
         }
 
-        float mid_vertical = (node.m_region.top + node.m_region.bottom) / 2;
+        float mid_vertical = (node.m_region.yMax + node.m_region.yMin) / 2;
         float mid_horizontal = (node.m_region.left + node.m_region.right) / 2;
 
         if (ele.lat > mid_vertical)
