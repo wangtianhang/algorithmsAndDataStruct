@@ -174,10 +174,11 @@ public class IntersectionTest2D
         var edgePoint = (polygon2d.m_pointList[1] + polygon2d.m_pointList[0]) * 0.5f;
         Vector2 outPoint = (edgePoint - pos).normalized * 10000;
         int count = 0;
-        for (int i = 0; i < polygon2d.m_pointList.Count; i++)
+        List<Vector2> pointList = polygon2d.GetWorldPosList();
+        for (int i = 0; i < pointList.Count; i++)
         {
-            var a = polygon2d.m_pointList[i % polygon2d.m_pointList.Count];
-            var b = polygon2d.m_pointList[(i + 1) % polygon2d.m_pointList.Count];
+            var a = pointList[i % pointList.Count];
+            var b = pointList[(i + 1) % pointList.Count];
 
             var r = IsTwoSegmentIntersection(a, b, pos, outPoint);
 
@@ -249,6 +250,12 @@ public class IntersectionTest2D
         return Mathf.Approximately(point.y, M * point.x + B);
     }
 
+    /// <summary>
+    /// 算法来自 game physics cookbook
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="circle"></param>
+    /// <returns></returns>
     public static bool Line2dWithCircle2d(Line2d line, Circle2d circle)
     {
         Vector2 ab = line.m_point2 - line.m_point1;
@@ -308,5 +315,325 @@ public class IntersectionTest2D
         }
         return false;
     }
+
+    #region Separating Axis Theorem
+
+    public class CollisionInfo
+    {
+        public System.Object shapeA;
+        public System.Object shapeB;
+        public bool shapeAContained;
+        public bool shapeBContained;
+        public float distance;
+        public Vector2 vector;
+    }
+
+    static Vector2 GetAxisNormal(List<Vector2> vertexArray, int pointIndex)
+    {
+        Vector2 pt1 = vertexArray[pointIndex];
+        Vector2 pt2 = pointIndex >= vertexArray.Count - 1 ? vertexArray[0] : vertexArray[pointIndex + 1];
+        Vector2 p = new Vector2(-(pt2.y - pt1.y), pt2.x - pt1.x);
+        p.Normalize();
+        return p;
+    }
+
+    /// <summary>
+    /// 根据Separating Axis Theorem理论实现
+    /// https://www.sevenson.com.au/actionscript/sat/
+    /// https://github.com/sevdanski/SAT_AS3
+    /// </summary>
+    /// <param name="convex1"></param>
+    /// <param name="convex2"></param>
+    /// <returns></returns>
+    public static CollisionInfo Convex2dWithConvex2d(Convex2d polygonA, Convex2d polygonB, bool flip, bool docalc)
+    {
+        CollisionInfo result = new CollisionInfo();
+        result.shapeA = (flip) ? polygonB : polygonA;
+        result.shapeB = (flip) ? polygonA : polygonB;
+        result.shapeAContained = true;
+        result.shapeBContained = true;
+
+        // get the vertices
+        List<Vector2> p1 = polygonA.GetRotateList();
+        List<Vector2> p2 = polygonB.GetRotateList();
+
+        // get the offset
+        Vector2 vOffset = new Vector2(polygonA.m_pos.x - polygonB.m_pos.x, polygonA.m_pos.y - polygonB.m_pos.y);
+
+        float shortestDist = float.MaxValue;
+
+        // loop through all of the axis on the first polygon
+        for (int i = 0; i < p1.Count; ++i )
+        {
+            // find the axis that we will project onto
+            Vector2 vAxis = GetAxisNormal(p1, i);
+
+            // project polygon A
+            float min0 = Vector2.Dot(vAxis, p1[0]);
+            float max0 = min0;
+
+            for (int j = 1; j < p1.Count; ++j )
+            {
+                float t = Vector2.Dot(vAxis, p1[j]);
+                if(t < min0)
+                {
+                    min0 = t;
+                }
+                if(t < max0)
+                {
+                    max0 = t;
+                }
+            }
+
+            // project polygon B
+            float min1 = Vector2.Dot(vAxis, p2[0]);
+            float max1 = min1;
+            for (int j = 1; j < p2.Count; ++j )
+            {
+                float t = Vector2.Dot(vAxis, p2[j]);
+                if(t < min1)
+                {
+                    min1 = t;
+                }
+                if(t > max1)
+                {
+                    max1 = t;
+                }
+            }
+
+            // shift polygonA's projected points
+            float sOffset = Vector2.Dot(vAxis, vOffset);
+            min0 += sOffset;
+            max0 += sOffset;
+
+            // test for intersections
+            float d0 = min0 - max1;
+            float d1 = min1 - max0;
+            if(d0 > 0 || d1 > 0)
+            {
+                // gap found
+                return null;
+            }
+
+            if(docalc)
+            {
+                // check for containment
+                if(!flip)
+                {
+                    if(max0 > max1 || min0 < min1)
+                    {
+                        result.shapeAContained = false;
+                    }
+                    if(max1 > max0 || min1 < min0)
+                    {
+                        result.shapeBContained = false;
+                    }
+                }
+                else
+                {
+                    if(max0 < max1 || min0 > min1)
+                    {
+                        result.shapeAContained = false;
+                    }
+                    if(max1 < max0 || min1 > min0)
+                    {
+                        result.shapeBContained = false;
+                    }
+                }
+
+                float distmin = (max1 - min0) * -1;
+                if(flip)
+                {
+                    distmin *= -1;
+                }
+                float distminAbs = (distmin < 0) ? distmin * -1 : distmin;
+                if (distminAbs < shortestDist)
+                {
+                    // this distance is shorter so use it...
+                    result.distance = distmin;
+                    result.vector = vAxis;
+
+                    shortestDist = distminAbs;
+                }
+
+            }
+        }
+
+        // if you are here then no gap was found
+        return result;
+    }
+
+    /// <summary>
+    /// 根据Separating Axis Theorem理论实现
+    /// https://www.sevenson.com.au/actionscript/sat/
+    /// https://github.com/sevdanski/SAT_AS3
+    /// </summary>
+    /// <param name="convex1"></param>
+    /// <param name="convex2"></param>
+    /// <returns></returns>
+    public static CollisionInfo Circle2dWithConvex2d(Circle2d circleA, Convex2d polygonA, bool flip, bool docalc)
+    {
+        CollisionInfo result = new CollisionInfo();
+        if(flip)
+        {
+            result.shapeA = polygonA;
+            result.shapeB = circleA;
+        }
+        else
+        {
+            result.shapeA = circleA;
+            result.shapeB = polygonA;
+        }
+        result.shapeAContained = true;
+        result.shapeBContained = true;
+
+        // get the offset
+        Vector2 vOffset = new Vector2(polygonA.m_pos.x - circleA.m_pos.x, polygonA.m_pos.y - circleA.m_pos.y);
+
+        // get the vertices
+        List<Vector2> p1 = polygonA.GetRotateList();
+
+        // find the closest point
+        Vector2 closestPoint = new Vector2();
+        float minDist = float.MaxValue;
+        foreach(var iter in p1)
+        {
+            float currentDist = (circleA.m_pos - (polygonA.m_pos + iter)).sqrMagnitude;
+            if(currentDist < minDist)
+            {
+                minDist = currentDist;
+                closestPoint = polygonA.m_pos + iter;
+            }
+        }
+
+        // make a normal of this vector
+        Vector2 vAxis = closestPoint - circleA.m_pos;
+        vAxis.Normalize();
+
+        // project polygon A
+        float min0 = Vector2.Dot(vAxis, p1[0]);
+        float max0 = min0;
+
+        for (int j = 1; j < p1.Count; ++j )
+        {
+            float t = Vector2.Dot(vAxis, p1[j]);
+            if(t < min0)
+            {
+                min0 = t;
+            }
+            if(t > max0)
+            {
+                max0 = t;
+            }
+        }
+
+        // project circle A
+        float min1 = Vector2.Dot(vAxis, Vector2.zero);
+        float max1 = min1 + circleA.m_radius;
+        min1 -= circleA.m_radius;
+
+        // shift polygonA's projected points
+        float sOffset = Vector2.Dot(vAxis, vOffset);
+        min0 += sOffset;
+        max0 += sOffset;
+
+        // test for intersections
+        float d0 = min0 - max1;
+        float d1 = min1 - max0;
+
+        if (d0 > 0 || d1 > 0)
+        {
+            // gap found
+            return null;
+        }
+
+        float shortestDist = float.MaxValue;
+        if(docalc) {
+			float distmin = (max1 - min0) * -1;  //Math.min(dist0, dist1);
+            if (flip) distmin *= -1;
+			float distminAbs = (distmin < 0) ? distmin * -1 : distmin;
+							
+			// check for containment
+			if (!flip) {
+				if (max0 > max1 || min0 < min1) result.shapeAContained = false;
+				if (max1 > max0 || min1 < min0) result.shapeBContained = false;
+			} else {
+				if (max0 < max1 || min0 > min1) result.shapeAContained = false;				
+				if (max1 < max0 || min1 > min0) result.shapeBContained = false;				
+			}			
+				
+			// this distance is shorter so use it...
+			result.distance = distmin;
+			result.vector = vAxis;
+			//
+			shortestDist = distminAbs;
+		}
+
+        // loop through all of the axis on the first polygon
+		for (int i = 0; i < p1.Count; i++) {
+			// find the axis that we will project onto
+			vAxis = GetAxisNormal(p1, i);
+				
+			// project polygon A
+			min0 = Vector2.Dot(vAxis, p1[0]);
+			max0 = min0;
+				
+			//
+			for (int j = 1; j < p1.Count; j++) {
+				float t = Vector2.Dot(vAxis, p1[j]);
+				if (t < min0) min0 = t;
+				if (t > max0) max0 = t;
+			}
+				
+			// project circle A
+			min1 = Vector2.Dot(vAxis, new Vector2(0,0) );
+			max1 = min1 + circleA.m_radius;
+			min1 -= circleA.m_radius;				
+				
+			// shift polygonA's projected points
+			sOffset = Vector2.Dot(vAxis, vOffset);
+			min0 += sOffset;
+			max0 += sOffset;				
+				
+			// test for intersections
+			d0 = min0 - max1;
+			d1 = min1 - max0;
+				
+			if (d0 > 0 || d1 > 0) {
+				// gap found
+				return null;
+			}
+				
+			if(docalc) {
+
+				// check for containment
+				if (!flip) {
+					if (max0 > max1 || min0 < min1) result.shapeAContained = false;
+					if (max1 > max0 || min1 < min0) result.shapeBContained = false;
+				} else {
+					if (max0 < max1 || min0 > min1) result.shapeAContained = false;				
+					if (max1 < max0 || min1 > min0) result.shapeBContained = false;				
+				}				
+					
+				float distmin = (max1 - min0) * -1;
+                if (flip) distmin *= -1;
+				float distminAbs = (distmin < 0) ? distmin * -1 : distmin;
+				if (distminAbs < shortestDist) {
+					// this distance is shorter so use it...
+					result.distance = distmin;
+					result.vector = vAxis;
+					//
+					shortestDist = distminAbs;
+				}
+			}
+		}
+
+        // if you are here then no gap was found
+        return result;
+    }
+
+    #endregion
 }
+
+
 

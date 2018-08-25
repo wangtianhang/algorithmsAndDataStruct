@@ -73,6 +73,7 @@
     <Compile Include="3dMath\shape3D\Point3d.cs" />
     <Compile Include="3dMath\shape3D\Triangle3d.cs" />
     <Compile Include="3dMath\TiledmapMathHelper.cs" />
+    <Compile Include="3dMath\Trigonometry.cs" />
     <Compile Include="3dMath\unity\Mathf.cs" />
     <Compile Include="3dMath\unity\Matrix4x4.cs" />
     <Compile Include="3dMath\shape3D\Plane3d.cs" />
