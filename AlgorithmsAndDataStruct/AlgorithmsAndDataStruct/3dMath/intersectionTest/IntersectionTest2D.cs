@@ -236,5 +236,50 @@ public class IntersectionTest2D
         float cosHalfDegree = Mathf.Cos((Mathf.Deg2Rad * sector2d.m_theraDegree / 2));
         return cosTarget > cosHalfDegree;
     }
+
+    public static bool Point2dWithLine2d(Vector2 point, Line2d line2d)
+    {
+        // Find the slope
+        float dy = (line2d.m_point2.y - line2d.m_point1.y);
+        float dx = (line2d.m_point2.x - line2d.m_point1.x);
+        float M = dy / dx;
+        // Find the Y-Intercept
+        float B = line2d.m_point1.y - M * line2d.m_point1.x;
+        // Check line equation
+        return Mathf.Approximately(point.y, M * point.x + B);
+    }
+
+    public static bool Line2dWithCircle2d(Line2d line, Circle2d circle)
+    {
+        Vector2 ab = line.m_point2 - line.m_point1;
+        float t = Vector2.Dot(circle.m_pos - line.m_point1, ab) / Vector2.Dot(ab, ab);
+        Vector2 closestPoint = line.m_point1 + ab * t;
+        return (circle.m_pos - closestPoint).sqrMagnitude < circle.m_radius * circle.m_radius;
+    }
+
+    public static bool Line2dWithOrientedRectangle2d(Line2d line, OrientedRectangle2d rectangle2d)
+    {
+        Vector3 forward = RotateHelper.GetForward(rectangle2d.m_rotation);
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        Vector3 pos = new Vector3(rectangle2d.m_pos.x, 0, rectangle2d.m_pos.y);
+        Vector3 a = pos + forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        Vector3 b = pos + forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3 c = pos + -forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3 d = pos + -forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        List<Vector2> lineList = new List<Vector2>();
+        lineList.Add(new Vector2(a.x, a.z));
+        lineList.Add(new Vector2(b.x, b.z));
+        lineList.Add(new Vector2(c.x, c.z));
+        lineList.Add(new Vector2(d.x, d.z));
+        for (int i = 0; i < lineList.Count; ++i )
+        {
+            if (IsTwoSegmentIntersection(lineList[i], lineList[(i + 1) % lineList.Count], line.m_point1, line.m_point2))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
