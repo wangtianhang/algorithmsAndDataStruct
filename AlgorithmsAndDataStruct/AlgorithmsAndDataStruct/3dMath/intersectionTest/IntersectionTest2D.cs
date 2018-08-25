@@ -12,10 +12,54 @@ class IntersectionTest2D
     /// </summary>
     /// <param name="line2"></param>
     /// <returns></returns>
-    public static bool Line2dWithLine2d(Line2d line1, Line2d line2)
+//     public static bool Line2dWithLine2d(Line2d line1, Line2d line2)
+//     {
+//         return Math.Abs(line1.m_slope - line2.m_slope) > Line2d.epsilon
+//             || Math.Abs(line1.m_y_interept - line2.m_y_interept) < Line2d.epsilon;
+//     }
+    public static bool Line2dWithLine2d(Line2d line1, Line2d line2, ref Vector2 intersectionPoint)
     {
-        return Math.Abs(line1.m_slope - line2.m_slope) > Line2d.epsilon
-            || Math.Abs(line1.m_y_interept - line2.m_y_interept) < Line2d.epsilon;
+        return linesCross(line1.m_point1, line1.m_point2, line2.m_point1, line2.m_point2, ref intersectionPoint);
+    }
+
+    /// Perform the cross product on a scalar and a vector. In 2D this produces
+    /// a vector.
+    static Vector2 b2Cross(float s, Vector2 a)
+    {
+        return new Vector2(-s * a.y, s * a.x);
+    }
+
+    static bool linesCross(Vector2 v0, Vector2 v1, Vector2 t0, Vector2 t1, ref Vector2 intersectionPoint)
+    {
+        if (v1 == t0 ||
+            v0 == t0 ||
+            v1 == t1 ||
+            v0 == t1)
+            return false;
+
+        Vector2 vnormal = v1 - v0;
+        vnormal = b2Cross(1.0f, vnormal);
+        float v0d = Vector2.Dot(vnormal, v0);
+        float t0d = Vector2.Dot(vnormal, t0);
+        float t1d = Vector2.Dot(vnormal, t1);
+        if (t0d > v0d && t1d > v0d)
+            return false;
+        if (t0d < v0d && t1d < v0d)
+            return false;
+
+        Vector2 tnormal = t1 - t0;
+        tnormal = b2Cross(1.0f, tnormal);
+        t0d = Vector2.Dot(tnormal, t0);
+        v0d = Vector2.Dot(tnormal, v0);
+        float v1d = Vector2.Dot(tnormal, v1);
+        if (v0d > t0d && v1d > t0d)
+            return false;
+        if (v0d < t0d && v1d < t0d)
+            return false;
+
+        intersectionPoint = v0 + ((t0d - v0d) / (v1d - v0d)) * (v1 - v0);
+
+        return true;
     }
 
     public static bool Segment2dWithSegment2d(Segment2d segment1, Segment2d segment2, ref Vector3 result)
