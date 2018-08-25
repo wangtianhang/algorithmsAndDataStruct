@@ -103,5 +103,47 @@ class IntersectionTest2D
             return false;
         }
     }
+
+    public static bool Point2dWithPolygon2d(Vector2 pos, Polygon2d polygon2d)
+    {
+        var edgePoint = (polygon2d.m_pointList[1] + polygon2d.m_pointList[0]) * 0.5f;
+        Vector2 outPoint = (edgePoint - pos).normalized * 10000;
+        int count = 0;
+        for (int i = 0; i < polygon2d.m_pointList.Count; i++)
+        {
+            var a = polygon2d.m_pointList[i % polygon2d.m_pointList.Count];
+            var b = polygon2d.m_pointList[(i + 1) % polygon2d.m_pointList.Count];
+
+            var r = IsTwoSegmentIntersection(a, b, pos, outPoint);
+
+            if (r)
+            {
+                count += 1;
+            }
+        }
+        return count % 2 == 1;
+    }
+
+    public static bool IsTwoSegmentIntersection(Vector2 a2d, Vector2 b2d, Vector2 c2d, Vector2 d2d)
+    {
+        Vector3 a = new Vector3(a2d.x, 0, a2d.y);
+        Vector3 b = new Vector3(b2d.x, 0, b2d.y);
+        Vector3 c = new Vector3(c2d.x, 0, c2d.y);
+        Vector3 d = new Vector3(d2d.x, 0, d2d.y);
+
+        var crossA = Mathf.Sign(Vector3.Cross(d - c, a - c).y);
+        var crossB = Mathf.Sign(Vector3.Cross(d - c, b - c).y);
+
+        if (Mathf.Approximately(crossA, crossB)) 
+            return false;
+
+        var crossC = Mathf.Sign(Vector3.Cross(b - a, c - a).y);
+        var crossD = Mathf.Sign(Vector3.Cross(b - a, d - a).y);
+
+        if (Mathf.Approximately(crossC, crossD)) 
+            return false;
+
+        return true;
+    }
 }
 

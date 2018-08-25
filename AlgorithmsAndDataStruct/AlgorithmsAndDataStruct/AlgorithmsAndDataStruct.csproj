@@ -65,6 +65,7 @@
     <Compile Include="3dMath\QuadTree.cs" />
     <Compile Include="3dMath\shape2D\OrientedRectangle2d.cs" />
     <Compile Include="3dMath\shape2D\Point2d.cs" />
+    <Compile Include="3dMath\shape2D\Polygon2d.cs" />
     <Compile Include="3dMath\shape2D\Sector2d.cs" />
     <Compile Include="3dMath\shape2D\Segment2d.cs" />
     <Compile Include="3dMath\shape3D\Line3d.cs" />
