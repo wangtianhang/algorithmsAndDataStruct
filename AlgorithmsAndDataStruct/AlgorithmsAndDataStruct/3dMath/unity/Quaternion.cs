@@ -11,7 +11,7 @@ using System.Xml.Serialization;
     /// <summary>
     /// 坐标系与unity保持一致 为左手坐标系
     /// </summary>
-    struct Quaternion
+    public struct Quaternion
     {
         public static void Test()
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class Polygon2d
+public class Polygon2d
 {
     /// <summary>
     /// 需要最后一个点和第一个点不重合

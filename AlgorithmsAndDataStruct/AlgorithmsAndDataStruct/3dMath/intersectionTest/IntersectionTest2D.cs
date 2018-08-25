@@ -5,8 +5,29 @@ using System.Text;
 /// <summary>
 /// 预计实现point2d ray2d line2d segment2d circle2d orientedRectangle2d convex2d sector2d 之间的相交测试
 /// </summary>
-class IntersectionTest2D
+public class IntersectionTest2D
 {
+    public static void Test()
+    {
+        Line2d line1 = new Line2d();
+        line1.m_point1 = new Vector2(0, 0);
+        line1.m_point2 = new Vector2(100, 100);
+
+        Line2d line2 = new Line2d();
+        line2.m_point1 = new Vector2(0, 100);
+        line2.m_point2 = new Vector2(100, 0);
+
+        Vector2 intersectionPoint = new Vector2();
+        if (Line2dWithLine2d(line1, line2, ref intersectionPoint))
+        {
+            Debug.Log("双线相交 交点 " + intersectionPoint);
+        }
+        else
+        {
+            Debug.Log("双线没有相交");
+        }
+    }
+
     /// <summary>
     /// 2d线和2d线相交
     /// </summary>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class Sector2d
+public class Sector2d
 {
     public Vector2 m_pos;
     // 假设为xz平面的2d物体

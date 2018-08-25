@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class OrientedRectangle2d
+public class OrientedRectangle2d
 {
     public Vector2 m_pos;
     // 假设为xz平面的2d物体

@@ -16,7 +16,7 @@ using System.Text;
 //     }
 // }
 
-class Line2d
+public class Line2d
 {
     public Vector2 m_point1;
     public Vector2 m_point2;
