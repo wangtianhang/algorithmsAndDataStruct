@@ -124,7 +124,19 @@ class IntersectionTest2D
         return count % 2 == 1;
     }
 
-    public static bool IsTwoSegmentIntersection(Vector2 a2d, Vector2 b2d, Vector2 c2d, Vector2 d2d)
+    /// <summary>
+    /// 判断两条线段是否相交
+    /// 现在有线段AB和线段CB
+    //用线段AB的方向和C，D两点分别做差乘比较。如果C,D在同侧则return跳出
+    //用线段CD的方向和A，B两点分别做差乘比较。如果A,B在同侧则return跳出
+    //最终返回相交
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <param name="d"></param>
+    /// <returns></returns>
+    static bool IsTwoSegmentIntersection(Vector2 a2d, Vector2 b2d, Vector2 c2d, Vector2 d2d)
     {
         Vector3 a = new Vector3(a2d.x, 0, a2d.y);
         Vector3 b = new Vector3(b2d.x, 0, b2d.y);
@@ -144,6 +156,20 @@ class IntersectionTest2D
             return false;
 
         return true;
+    }
+
+    public static bool Point2dWithSector2d(Vector2 pos, Sector2d sector2d)
+    {
+        Vector2 distance = pos - sector2d.m_pos;
+        if (distance.magnitude > sector2d.m_radius)
+        {
+            return false;
+        }
+
+        Vector3 sectorForward = RotateHelper.GetForward(sector2d.m_rotation);
+        float cosTarget = Vector3.Dot(sectorForward, distance) / sectorForward.magnitude / distance.magnitude;
+        float cosHalfDegree = Mathf.Cos((Mathf.Deg2Rad * sector2d.m_theraDegree / 2));
+        return cosTarget > cosHalfDegree;
     }
 }
 
