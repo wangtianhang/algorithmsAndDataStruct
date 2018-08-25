@@ -51,5 +51,57 @@ class IntersectionTest2D
 
         return false; // No collision
     }
+
+    public static bool Point2dWithRectangle2d(Vector2 point2d, OrientedRectangle2d rectangle2d)
+    {
+        Vector3 forward = RotateHelper.GetForward(rectangle2d.m_rotation);
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        Vector3 pos = new Vector3(rectangle2d.m_pos.x, 0, rectangle2d.m_pos.y);
+        Vector3 a = pos + forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        Vector3 b = pos + forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3 c = pos + -forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3 d = pos + -forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        return IsInRectangle2d(a, b, c, d, new Vector3(point2d.x, 0, point2d.y));
+    }
+
+    /// <summary>
+    /// 注意abcd为绕序
+    /// </summary>
+    /// <param name="p"></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <param name="d"></param>
+    /// <returns></returns>
+    static bool IsInRectangle2d(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+    {
+        Vector3 v11 = p - a;
+        Vector3 v12 = b - a;
+
+        Vector3 v21 = p - b;
+        Vector3 v22 = c - b;
+
+        Vector3 v31 = p - c;
+        Vector3 v32 = d - c;
+
+        Vector3 v41 = p - d;
+        Vector3 v42 = a - d;
+
+        Vector3 cross1 = Vector3.Cross(v11, v12);
+        Vector3 cross2 = Vector3.Cross(v21, v22);
+        Vector3 cross3 = Vector3.Cross(v31, v32);
+        Vector3 cross4 = Vector3.Cross(v41, v42);
+
+        if (Vector3.Dot(cross1, cross2) > 0
+            && Vector3.Dot(cross2, cross3) > 0
+            && Vector3.Dot(cross3, cross4) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 

@@ -28,13 +28,13 @@ public class DynamicProgramming
         //Debug.Log("CUT_ROD " + CUT_ROD_Recursion(p.ToArray(), p.Count - 1).ToString());
         Debug.Log("CUT_ROD " + CUT_ROD_DP(p.ToArray(), p.Count - 1).ToString());
 
-        List<Vector2i> matrixList = new List<Vector2i>();
-        matrixList.Add(new Vector2i(30, 35));
-        matrixList.Add(new Vector2i(35, 15));
-        matrixList.Add(new Vector2i(15, 5));
-        matrixList.Add(new Vector2i(5, 10));
-        matrixList.Add(new Vector2i(10, 20));
-        matrixList.Add(new Vector2i(20, 25));
+        List<Vector2ixy> matrixList = new List<Vector2ixy>();
+        matrixList.Add(new Vector2ixy(30, 35));
+        matrixList.Add(new Vector2ixy(35, 15));
+        matrixList.Add(new Vector2ixy(15, 5));
+        matrixList.Add(new Vector2ixy(5, 10));
+        matrixList.Add(new Vector2ixy(10, 20));
+        matrixList.Add(new Vector2ixy(20, 25));
         int[][] s = null;
         int[][] m = null;
         MATRAIX_CHAIN_ORDER(matrixList, out s, out m);
@@ -101,7 +101,7 @@ public class DynamicProgramming
         return r[n];
     }
 
-    public static void MATRAIX_CHAIN_ORDER(List<Vector2i> matrix, out int[][] s, out int[][] m)
+    public static void MATRAIX_CHAIN_ORDER(List<Vector2ixy> matrix, out int[][] s, out int[][] m)
     {
         //int[] p = new int[matrix.Count + 2];
         List<int> tmpP = new List<int>();
@@ -111,11 +111,11 @@ public class DynamicProgramming
             if(i == 0)
             {
                 tmpP.Add(matrix[i].m_x);
-                tmpP.Add(matrix[i].m_z);
+                tmpP.Add(matrix[i].m_y);
             }
             else
             {
-                tmpP.Add(matrix[i].m_z);
+                tmpP.Add(matrix[i].m_y);
             }
         }
         int[] p = tmpP.ToArray();

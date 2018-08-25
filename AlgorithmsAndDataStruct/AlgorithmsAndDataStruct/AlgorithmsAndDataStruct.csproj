@@ -58,6 +58,7 @@
     <Compile Include="3dMath\geometryTools\Distance3d.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest2D.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest3D.cs" />
+    <Compile Include="3dMath\RotateHelper.cs" />
     <Compile Include="3dMath\shape2D\Convex2d.cs" />
     <Compile Include="3dMath\shape2D\Line2d.cs" />
     <Compile Include="3dMath\Math3d.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="3dMath\shape3D\Line3d.cs" />
     <Compile Include="3dMath\shape3D\Point3d.cs" />
     <Compile Include="3dMath\shape3D\Triangle3d.cs" />
+    <Compile Include="3dMath\TiledmapMathHelper.cs" />
     <Compile Include="3dMath\unity\Mathf.cs" />
     <Compile Include="3dMath\unity\Matrix4x4.cs" />
     <Compile Include="3dMath\shape3D\Plane3d.cs" />
@@ -78,7 +80,7 @@
     <Compile Include="3dMath\unity\Transform.cs" />
     <Compile Include="3dMath\unity\Vector2.cs" />
     <Compile Include="3dMath\Vector2Double.cs" />
-    <Compile Include="3dMath\Vector2i.cs" />
+    <Compile Include="3dMath\Vector2ixy.cs" />
     <Compile Include="3dMath\unity\Vector4.cs" />
     <Compile Include="CommonAlgorithms\Algebra.cs" />
     <Compile Include="CommonAlgorithms\Algorithms.cs" />
