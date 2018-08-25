@@ -25,31 +25,7 @@ public class Math3d
     //public const float Deg2Rad = 0.0174533f;
     //public const float Rad2Deg = 57.2958f;
 
-    /// <summary>
-    /// 射线与平面相交
-    /// </summary>
-    /// <param name="rayOrigin"></param>
-    /// <param name="rayDir"></param>
-    /// <param name="planeNormal"></param>
-    /// <param name="planeOnePoint"></param>
-    /// <returns></returns>
-    public static bool GetIntersectionPoint(Ray3d ray, Plane3d plane, out Vector3 result)
-    {
-        float t = (Vector3.Dot(plane.m_planeNormal, plane.m_planeOnePoint) - Vector3.Dot(plane.m_planeNormal, ray.m_rayOrigin))
-            / (Vector3.Dot(plane.m_planeNormal, ray.m_rayDir));
 
-        if(t < 0)
-        {
-            result = Vector3.zero;
-            return false;
-        }
-        else
-        {
-            result = ray.m_rayOrigin + ray.m_rayDir * t;
-            return true;
-        }
-
-    }
 
     /// <summary>
     /// 点在矩形内部
