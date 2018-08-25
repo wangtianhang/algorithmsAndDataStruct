@@ -281,5 +281,32 @@ public class IntersectionTest2D
 
         return false;
     }
+
+    public static bool Circle2dWithOrientedRectangle2d(Circle2d circle, OrientedRectangle2d rectangle)
+    {
+        Vector3 forward = RotateHelper.GetForward(rectangle.m_rotation);
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        Vector3 pos = new Vector3(rectangle.m_pos.x, 0, rectangle.m_pos.y);
+        Vector3 a = pos + forward * rectangle.m_length * 0.5f + -right * rectangle.m_width * 0.5f;
+        Vector3 b = pos + forward * rectangle.m_length * 0.5f + right * rectangle.m_width * 0.5f;
+        Vector3 c = pos + -forward * rectangle.m_length * 0.5f + right * rectangle.m_width * 0.5f;
+        Vector3 d = pos + -forward * rectangle.m_length * 0.5f + -right * rectangle.m_width * 0.5f;
+        List<Vector2> lineList = new List<Vector2>();
+        lineList.Add(new Vector2(a.x, a.z));
+        lineList.Add(new Vector2(b.x, b.z));
+        lineList.Add(new Vector2(c.x, c.z));
+        lineList.Add(new Vector2(d.x, d.z));
+        for (int i = 0; i < lineList.Count; ++i)
+        {
+            Line2d line = new Line2d();
+            line.m_point1 = lineList[i];
+            line.m_point2 = lineList[(i + 1) % lineList.Count];
+            if (Line2dWithCircle2d(line, circle))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
