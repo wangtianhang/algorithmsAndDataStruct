@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-
-class IntersectionTest
+/// <summary>
+/// 预计实现point3d ray3d line3d plane3d sphere3d aabb3d obb3d triangle3d mesh3d 
+/// Capsule3d(胶囊 delay) cylinder(圆柱 delay) cone3d(圆锥 delay) frustum3d(视锥 平截头体 delay) polyhedron3d(多面体 delay)
+/// </summary>
+class IntersectionTest3D
 {
     /// <summary>
     /// 射线与平面相交
