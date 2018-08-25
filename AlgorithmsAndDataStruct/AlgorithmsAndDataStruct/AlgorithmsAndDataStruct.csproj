@@ -58,7 +58,9 @@
     <Compile Include="3dMath\geometryTools\Distance3d.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest2D.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest3D.cs" />
+    <Compile Include="3dMath\Math2d.cs" />
     <Compile Include="3dMath\RotateHelper.cs" />
+    <Compile Include="3dMath\shape2D\AARectangle.cs" />
     <Compile Include="3dMath\shape2D\Circle2d.cs" />
     <Compile Include="3dMath\shape2D\Convex2d.cs" />
     <Compile Include="3dMath\shape2D\Line2d.cs" />
