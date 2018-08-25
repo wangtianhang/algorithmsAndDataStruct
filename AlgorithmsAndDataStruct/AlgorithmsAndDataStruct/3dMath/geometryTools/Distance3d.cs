@@ -21,6 +21,21 @@ class Distance3d
         float sin_A = Mathf.Sqrt(1 - Mathf.Pow(cos_A, 2.0f));
         return as2 * sin_A;
     }
+
+
+    public static Vector3 CloestPointOfPoint3dWithAABB3d(Vector3 point, AABB3d aabb)
+    {
+        Vector3 result = new Vector3();
+        Vector3 min = aabb.GetMin();
+        Vector3 max = aabb.GetMax();
+        result.x = (result.x < min.x) ? min.x : result.x;
+        result.y = (result.y < min.x) ? min.y : result.y;
+        result.z = (result.z < min.x) ? min.z : result.z;
+        result.x = (result.x > max.x) ? max.x : result.x;
+        result.y = (result.y > max.x) ? max.y : result.y;
+        result.z = (result.z > max.x) ? max.z : result.z;
+        return result;
+    }
 }
 
 
