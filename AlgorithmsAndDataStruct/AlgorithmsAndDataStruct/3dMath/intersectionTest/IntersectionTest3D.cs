@@ -255,6 +255,34 @@ public class IntersectionTest3D
 	    return result;
     }
 
+    static Interval GetInterval(AABB3d aabb, Vector3 axis) 
+    {
+	    Vector3 i = aabb.GetMin();
+	    Vector3 a = aabb.GetMax();
+
+	    Vector3[] vertex = {
+		    new Vector3(i.x, a.y, a.z),
+		    new Vector3(i.x, a.y, i.z),
+		    new Vector3(i.x, i.y, a.z),
+		    new Vector3(i.x, i.y, i.z),
+		    new Vector3(a.x, a.y, a.z),
+		    new Vector3(a.x, a.y, i.z),
+		    new Vector3(a.x, i.y, a.z),
+		    new Vector3(a.x, i.y, i.z)
+	    };
+
+	    Interval result = new Interval();
+        result.min = result.max = Vector3.Dot(axis, vertex[0]);
+
+	    for (int j = 1; j < 8; ++j) {
+            float projection = Vector3.Dot(axis, vertex[j]);
+		    result.min = (projection < result.min) ? projection : result.min;
+		    result.max = (projection > result.max) ? projection : result.max;
+	    }
+
+	    return result;
+    }
+
     static bool OverlapOnAxis(OBB3d obb1, OBB3d obb2, Vector3 axis)
     {
         Interval a = GetInterval(obb1, axis);
@@ -273,6 +301,13 @@ public class IntersectionTest3D
     {
 	    Interval a = GetInterval(t1, axis);
 	    Interval b = GetInterval(t2, axis);
+	    return ((b.min <= a.max) && (a.min <= b.max));
+    }
+
+    static bool OverlapOnAxis(AABB3d aabb, Triangle3d triangle, Vector3 axis) 
+    {
+	    Interval a = GetInterval(aabb, axis);
+	    Interval b = GetInterval(triangle, axis);
 	    return ((b.min <= a.max) && (a.min <= b.max));
     }
 
@@ -341,6 +376,46 @@ public class IntersectionTest3D
 
 	    for (int i = 0; i < 13; ++i) {
 		    if (!OverlapOnAxis(o, t, test[i])) {
+			    return false; // Seperating axis found
+		    }
+	    }
+
+	    return true; // Seperating axis not found
+    }
+
+    public static bool Triangle3dWithAABB3d(Triangle3d t, AABB3d a)
+    {
+        // Compute the edge vectors of the triangle  (ABC)
+	    Vector3 f0 = t.m_point1 - t.m_point0; 
+	    Vector3 f1 = t.m_point2 - t.m_point1; 
+	    Vector3 f2 = t.m_point0 - t.m_point2; 
+
+	    // Compute the face normals of the AABB
+	    Vector3 u0 = new Vector3(1.0f, 0.0f, 0.0f);
+	    Vector3 u1 = new Vector3(0.0f, 1.0f, 0.0f);
+	    Vector3 u2 = new Vector3(0.0f, 0.0f, 1.0f);
+
+	    Vector3[] test = {
+		    // 3 Normals of AABB
+		    u0, // AABB Axis 1
+		    u1, // AABB Axis 2
+		    u2, // AABB Axis 3
+		    // 1 Normal of the Triangle
+		    Vector3.Cross(f0, f1),
+		    // 9 Axis, cross products of all edges
+		    Vector3.Cross(u0, f0),
+		    Vector3.Cross(u0, f1),
+		    Vector3.Cross(u0, f2),
+		    Vector3.Cross(u1, f0),
+		    Vector3.Cross(u1, f1),
+		    Vector3.Cross(u1, f2),
+		    Vector3.Cross(u2, f0),
+		    Vector3.Cross(u2, f1),
+		    Vector3.Cross(u2, f2)
+	    };
+
+	    for (int i = 0; i < 13; ++i) {
+		    if (!OverlapOnAxis(a, t, test[i])) {
 			    return false; // Seperating axis found
 		    }
 	    }
@@ -902,6 +977,27 @@ public class IntersectionTest3D
 	    }
 
 	    return false;
+    }
+
+    public static bool Line3dWithTriangle3d(Triangle3d triangle, Line3d line)
+    {
+        Ray3d ray1 = new Ray3d(line.m_point1, line.m_point2 - line.m_point1);
+        Ray3d ray2 = new Ray3d(line.m_point2, line.m_point1 - line.m_point1);
+        RaycastResult result = new RaycastResult();
+        return Ray3dWithTriangle3d(triangle, ray1, ref result)
+            || Ray3dWithTriangle3d(triangle, ray2, ref result);
+    }
+
+    public static bool Segment3dWithTriangle3d(Triangle3d triangle, Segment3d segment) 
+    {
+        Ray3d ray = new Ray3d(segment.m_point1, segment.m_point2 - segment.m_point1);
+	    RaycastResult result =  new RaycastResult();
+	    if (!Ray3dWithTriangle3d(triangle, ray, ref result)) {
+		    return false;
+	    }
+	    float t = result.m_t;
+
+	    return t >= 0 && t * t <= segment.GetLengthSqr();
     }
 }
 
