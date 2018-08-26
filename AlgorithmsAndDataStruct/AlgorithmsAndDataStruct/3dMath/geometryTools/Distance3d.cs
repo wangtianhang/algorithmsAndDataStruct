@@ -90,7 +90,7 @@ class Distance3d
         return ray.m_rayOrigin + ray.m_rayDir * t;
     }
 
-    static Plane3d FromTriangle(Triangle3d t)
+    public static Plane3d FromTriangle(Triangle3d t)
     {
         Plane3d result = new Plane3d(Vector3.Cross(t.m_point1 - t.m_point0, t.m_point2 - t.m_point0), t.m_point0);
         return result;

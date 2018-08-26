@@ -839,5 +839,69 @@ public class IntersectionTest3D
 
 	    return true; // Seperating axis not found
     }
+
+    /// <summary>
+    /// 返回质心坐标系中的坐标
+    /// </summary>
+    /// <param name="?"></param>
+    /// <returns></returns>
+    static Vector3 Barycentric(Vector3 p, Triangle3d t) 
+    {
+        Vector3 ap = p - t.m_point0;
+        Vector3 bp = p - t.m_point1;
+        Vector3 cp = p - t.m_point2;
+
+        Vector3 ab = t.m_point1 - t.m_point0;
+        Vector3 ac = t.m_point2 - t.m_point0;
+        Vector3 bc = t.m_point2 - t.m_point1;
+        Vector3 cb = t.m_point1 - t.m_point2;
+        Vector3 ca = t.m_point0 - t.m_point2;
+
+        Vector3 v = ab - Vector3.Project(ab, cb);
+        float a = 1.0f - (Vector3.Dot(v, ap) / Vector3.Dot(v, ab));
+
+        v = bc - Vector3.Project(bc, ac);
+        float b = 1.0f - (Vector3.Dot(v, bp) / Vector3.Dot(v, bc));
+
+        v = ca - Vector3.Project(ca, ab);
+        float c = 1.0f - (Vector3.Dot(v, cp) / Vector3.Dot(v, ca));
+
+        return new Vector3(a, b, c);
+    }
+
+    public static bool Ray3dWithTriangle3d(Triangle3d triangle, Ray3d ray, ref RaycastResult outResult) 
+    {
+	    //ResetRaycastResult(outResult);
+        outResult.Reset();
+
+	    Plane3d plane = Distance3d.FromTriangle(triangle);
+
+	    RaycastResult planeResult = new RaycastResult();
+	    if (!Ray3dWithPlane3d(plane, ray, ref planeResult)) {
+		    return false;
+	    }
+	    float t = planeResult.m_t;
+
+	    Vector3 result = ray.m_rayOrigin + ray.m_rayDir * t;
+
+        Vector3 barycentric = Barycentric(result, triangle);
+	    if (barycentric.x >= 0.0f && barycentric.x <= 1.0f &&
+		    barycentric.y >= 0.0f && barycentric.y <= 1.0f &&
+		    barycentric.z >= 0.0f && barycentric.z <= 1.0f) 
+        {
+
+		    if (outResult != null) 
+            {
+			    outResult.m_t = t;
+			    outResult.m_hit = true;
+			    outResult.m_point = ray.m_rayOrigin + ray.m_rayDir * t;
+			    outResult.m_normal = plane.m_planeNormal;
+		    }
+
+		    return true;
+	    }
+
+	    return false;
+    }
 }
 
