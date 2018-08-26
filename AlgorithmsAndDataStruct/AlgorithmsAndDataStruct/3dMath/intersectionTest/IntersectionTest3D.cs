@@ -129,5 +129,24 @@ public class IntersectionTest3D
         float dot = Vector3.Dot(plane.m_planeOnePoint - point, plane.m_planeNormal);
         return Mathf.Approximately(dot, 0);
     }
+
+    public bool Point3dWithLine3d(Vector3 point, Line3d line)
+    {
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithLine3d(point, line);
+        float distanceSq = (closestPoint - point).sqrMagnitude;
+        return Mathf.Approximately(distanceSq, 0);
+    }
+
+    public bool Point3dWithRay3d(Vector3 point, Ray3d ray)
+    {
+        if(point == ray.m_rayOrigin)
+        {
+            return true;
+        }
+        Vector3 norm = point - ray.m_rayOrigin;
+        norm.Normalize();
+        float diff = Vector3.Dot(norm, ray.m_rayDir);
+        return Mathf.Approximately(diff, 1);
+    }
 }
 
