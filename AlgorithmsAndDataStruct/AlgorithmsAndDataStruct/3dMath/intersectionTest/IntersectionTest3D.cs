@@ -15,6 +15,12 @@ public class IntersectionTest3D
         Debug.Log("最近点 " + closestPoint);
         closestPoint = Distance3d.ClosestPointOfPoint3dWithPlane3d(new Vector3(-10, -10, -10), plane);
         Debug.Log("最近点 " + closestPoint);
+
+        OBB3d obb1 = new OBB3d(new Vector3(-5, 0, 0), Quaternion.Euler(Vector3.zero), 9, 20, 10);
+        OBB3d obb2 = new OBB3d(new Vector3(5, 0, 0), Quaternion.Euler(Vector3.zero), 9, 20, 10);
+        Debug.Log("obb相交测试1 " + OBB3dWithOBB3d(obb1, obb2));
+        OBB3d obb3 = new OBB3d(new Vector3(5, 0, 0), Quaternion.Euler(new Vector3(0, 0, 90)), 9, 20, 10);
+        Debug.Log("obb相交测试2 " + OBB3dWithOBB3d(obb1, obb3));
     }
 
     /// <summary>
@@ -185,5 +191,89 @@ public class IntersectionTest3D
         Vector3 d = Vector3.Cross(plane1.m_planeNormal, plane2.m_planeNormal);
         return Mathf.Approximately(Vector3.Dot(d, d), 0);
     }
+
+    #region Separating Axis Theorem
+    /// <summary>
+    /// 来自game physics cookbook
+    /// https://github.com/gszauer/GamePhysicsCookbook
+    /// </summary>
+    class Interval
+    {
+        public float min;
+        public float max;
+    }
+
+    static Interval GetInterval(OBB3d obb, Vector3 axis)
+    {
+        Vector3[] vertex = new Vector3[8];
+
+	    Vector3 C = obb.m_pos;	// OBB Center
+	    Vector3 E = obb.GetHalfSize();		// OBB Extents
+	    float[] o = obb.GetOrientationMatrixArray();
+	    Vector3[] A = {			// OBB Axis
+		    new Vector3(o[0], o[1], o[2]),
+		    new Vector3(o[3], o[4], o[5]),
+		    new Vector3(o[6], o[7], o[8]),
+	    };
+
+	    vertex[0] = C + A[0] * E[0] + A[1] * E[1] + A[2] * E[2];
+	    vertex[1] = C - A[0] * E[0] + A[1] * E[1] + A[2] * E[2];
+	    vertex[2] = C + A[0] * E[0] - A[1] * E[1] + A[2] * E[2];
+	    vertex[3] = C + A[0] * E[0] + A[1] * E[1] - A[2] * E[2];
+	    vertex[4] = C - A[0] * E[0] - A[1] * E[1] - A[2] * E[2];
+	    vertex[5] = C + A[0] * E[0] - A[1] * E[1] - A[2] * E[2];
+	    vertex[6] = C - A[0] * E[0] + A[1] * E[1] - A[2] * E[2];
+	    vertex[7] = C - A[0] * E[0] - A[1] * E[1] + A[2] * E[2];
+
+	    Interval result = new Interval();
+	    result.min = result.max = Vector3.Dot(axis, vertex[0]);
+
+	    for (int i = 1; i < 8; ++i) {
+            float projection = Vector3.Dot(axis, vertex[i]);
+		    result.min = (projection < result.min) ? projection : result.min;
+		    result.max = (projection > result.max) ? projection : result.max;
+	    }
+
+	    return result;
+    }
+
+    static bool OverlapOnAxis(OBB3d obb1, OBB3d obb2, Vector3 axis)
+    {
+        Interval a = GetInterval(obb1, axis);
+        Interval b = GetInterval(obb2, axis);
+        return ((b.min <= a.max) && (a.min <= b.max));
+    }
+
+    public static bool OBB3dWithOBB3d(OBB3d obb1, OBB3d obb2) {
+	    float[] o1 = obb1.GetOrientationMatrixArray();
+	    float[] o2 = obb2.GetOrientationMatrixArray();
+
+	    Vector3[] test2 = {
+		    new Vector3(o1[0], o1[1], o1[2]),
+		    new Vector3(o1[3], o1[4], o1[5]),
+		    new Vector3(o1[6], o1[7], o1[8]),
+		    new Vector3(o2[0], o2[1], o2[2]),
+		    new Vector3(o2[3], o2[4], o2[5]),
+		    new Vector3(o2[6], o2[7], o2[8])
+	    };
+
+        Vector3[] test = new Vector3[15];
+        Array.Copy(test2, test, test2.Length);
+
+	    for (int i = 0; i < 3; ++i) { // Fill out rest of axis
+            test[6 + i * 3 + 0] = Vector3.Cross(test[i], test[0]);
+            test[6 + i * 3 + 1] = Vector3.Cross(test[i], test[1]);
+            test[6 + i * 3 + 2] = Vector3.Cross(test[i], test[2]);
+	    }
+
+	    for (int i = 0; i < 15; ++i) {
+		    if (!OverlapOnAxis(obb1, obb2, test[i])) {
+			    return false; // Seperating axis found
+		    }
+	    }
+
+	    return true; // Seperating axis not found
+    }
+    #endregion
 }
 
