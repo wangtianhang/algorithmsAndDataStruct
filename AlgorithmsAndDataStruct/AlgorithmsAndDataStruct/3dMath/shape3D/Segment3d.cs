@@ -5,6 +5,12 @@ using System.Text;
 
 public class Segment3d
 {
+    public Segment3d(Vector3 point1, Vector3 point2)
+    {
+        m_point1 = point1;
+        m_point2 = point2;
+    }
+
     public Vector3 m_point1;
     public Vector3 m_point2;
 

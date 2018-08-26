@@ -89,6 +89,41 @@ class Distance3d
         t = Mathf.Max(t, 0.0f);
         return ray.m_rayOrigin + ray.m_rayDir * t;
     }
+
+    static Plane3d FromTriangle(Triangle3d t)
+    {
+        Plane3d result = new Plane3d(Vector3.Cross(t.m_point1 - t.m_point0, t.m_point2 - t.m_point0), t.m_point0);
+        return result;
+    }
+
+    Vector3 ClosestPointOfPoint3dWithTriangle3d(Triangle3d t, Vector3 p) 
+    {
+	    Plane3d plane = FromTriangle(t);
+        Vector3 closest = ClosestPointOfPoint3dWithPlane3d(p, plane);
+
+	    // Closest point was inside triangle
+        if (IntersectionTest3D.Point3dWithTriangle(closest, t))
+        {
+		    return closest;
+	    }
+
+        Vector3 c1 = ClosestPointOfPoint3dWithSegment3d(closest, new Segment3d(t.m_point0, t.m_point1)); // Line AB
+        Vector3 c2 = ClosestPointOfPoint3dWithSegment3d(closest, new Segment3d(t.m_point1, t.m_point2)); // Line BC
+        Vector3 c3 = ClosestPointOfPoint3dWithSegment3d(closest, new Segment3d(t.m_point2, t.m_point0)); // Line CA
+
+	    float magSq1 = (closest - c1).sqrMagnitude;
+        float magSq2 = (closest - c2).sqrMagnitude;
+        float magSq3 = (closest - c3).sqrMagnitude;
+
+	    if (magSq1 < magSq2 && magSq1 < magSq3) {
+		    return c1;
+	    }
+	    else if (magSq2 < magSq1 && magSq2 < magSq3) {
+		    return c2;
+	    }
+
+	    return c3;
+    }
 }
 
 

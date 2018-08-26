@@ -266,9 +266,9 @@ public class IntersectionTest2D
 
     public static bool Segment2dWithCircle2d(Segment2d segment, Circle2d circle)
     {
-        Segment3d segment3d = new Segment3d();
-        segment3d.m_point1 = new Vector3(segment.m_point1.x, 0, segment.m_point1.y);
-        segment3d.m_point2 = new Vector3(segment.m_point2.x, 0, segment.m_point2.y);
+        Segment3d segment3d = new Segment3d(
+            new Vector3(segment.m_point1.x, 0, segment.m_point1.y),
+            new Vector3(segment.m_point2.x, 0, segment.m_point2.y));
         Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithSegment3d(new Vector3(circle.m_pos.x, 0, circle.m_pos.y), segment3d);
         Vector2 distance = circle.m_pos - new Vector2(closestPoint.x, closestPoint.z);
         return distance.magnitude <= circle.m_radius;

@@ -31,23 +31,23 @@ public class IntersectionTest3D
     /// <param name="planeNormal"></param>
     /// <param name="planeOnePoint"></param>
     /// <returns></returns>
-    public static bool Ray3dWithPlane3d(Ray3d ray, Plane3d plane, out Vector3 result)
-    {
-        float t = (Vector3.Dot(plane.m_planeNormal, plane.m_planeOnePoint) - Vector3.Dot(plane.m_planeNormal, ray.m_rayOrigin))
-            / (Vector3.Dot(plane.m_planeNormal, ray.m_rayDir));
-
-        if (t < 0)
-        {
-            result = Vector3.zero;
-            return false;
-        }
-        else
-        {
-            result = ray.m_rayOrigin + ray.m_rayDir * t;
-            return true;
-        }
-
-    }
+//     public static bool Ray3dWithPlane3d(Ray3d ray, Plane3d plane, out Vector3 result)
+//     {
+//         float t = (Vector3.Dot(plane.m_planeNormal, plane.m_planeOnePoint) - Vector3.Dot(plane.m_planeNormal, ray.m_rayOrigin))
+//             / (Vector3.Dot(plane.m_planeNormal, ray.m_rayDir));
+// 
+//         if (t < 0)
+//         {
+//             result = Vector3.zero;
+//             return false;
+//         }
+//         else
+//         {
+//             result = ray.m_rayOrigin + ray.m_rayDir * t;
+//             return true;
+//         }
+// 
+//     }
 
     /// <summary>
     /// 来自于微软pick.cpp demo
@@ -58,58 +58,58 @@ public class IntersectionTest3D
     /// <param name="u"></param>
     /// <param name="v"></param>
     /// <returns></returns>
-    public static bool Ray3dWithTriangle3d(Ray3d ray3d,
-                    Triangle3d triangle3d,
-                    ref float t, ref float u, ref float v)
-    {
-        // Find vectors for two edges sharing vert0
-        Vector3 edge1 = triangle3d.m_point1 - triangle3d.m_point0;
-        Vector3 edge2 = triangle3d.m_point2 - triangle3d.m_point0;
-
-        // Begin calculating determinant - also used to calculate U parameter
-        Vector3 pvec;
-        pvec = Vector3.Cross(ray3d.m_rayDir, edge2);
-
-        // If determinant is near zero, ray lies in plane of triangle
-        float det = Vector3.Dot(edge1, pvec);
-
-        Vector3 tvec;
-        if (det > 0)
-        {
-            tvec = ray3d.m_rayOrigin - triangle3d.m_point0;
-        }
-        else
-        {
-            tvec = triangle3d.m_point0 - ray3d.m_rayOrigin;
-            det = -det;
-        }
-
-        if (det < 0.0001f)
-            return false;
-
-        // Calculate U parameter and test bounds
-        u = Vector3.Dot(tvec, pvec);
-        if (u < 0.0f || u > det)
-            return false;
-
-        // Prepare to test V parameter
-        Vector3 qvec;
-        qvec = Vector3.Cross(tvec, edge1);
-
-        // Calculate V parameter and test bounds
-        v = Vector3.Dot(ray3d.m_rayDir, qvec);
-        if (v < 0.0f || u + v > det)
-            return false;
-
-        // Calculate t, scale parameters, ray intersects triangle
-        t = Vector3.Dot(edge2, qvec);
-        float fInvDet = 1.0f / det;
-        t *= fInvDet;
-        u *= fInvDet;
-        v *= fInvDet;
-
-        return true;
-    }
+//     public static bool Ray3dWithTriangle3d(Ray3d ray3d,
+//                     Triangle3d triangle3d,
+//                     ref float t, ref float u, ref float v)
+//     {
+//         // Find vectors for two edges sharing vert0
+//         Vector3 edge1 = triangle3d.m_point1 - triangle3d.m_point0;
+//         Vector3 edge2 = triangle3d.m_point2 - triangle3d.m_point0;
+// 
+//         // Begin calculating determinant - also used to calculate U parameter
+//         Vector3 pvec;
+//         pvec = Vector3.Cross(ray3d.m_rayDir, edge2);
+// 
+//         // If determinant is near zero, ray lies in plane of triangle
+//         float det = Vector3.Dot(edge1, pvec);
+// 
+//         Vector3 tvec;
+//         if (det > 0)
+//         {
+//             tvec = ray3d.m_rayOrigin - triangle3d.m_point0;
+//         }
+//         else
+//         {
+//             tvec = triangle3d.m_point0 - ray3d.m_rayOrigin;
+//             det = -det;
+//         }
+// 
+//         if (det < 0.0001f)
+//             return false;
+// 
+//         // Calculate U parameter and test bounds
+//         u = Vector3.Dot(tvec, pvec);
+//         if (u < 0.0f || u > det)
+//             return false;
+// 
+//         // Prepare to test V parameter
+//         Vector3 qvec;
+//         qvec = Vector3.Cross(tvec, edge1);
+// 
+//         // Calculate V parameter and test bounds
+//         v = Vector3.Dot(ray3d.m_rayDir, qvec);
+//         if (v < 0.0f || u + v > det)
+//             return false;
+// 
+//         // Calculate t, scale parameters, ray intersects triangle
+//         t = Vector3.Dot(edge2, qvec);
+//         float fInvDet = 1.0f / det;
+//         t *= fInvDet;
+//         u *= fInvDet;
+//         v *= fInvDet;
+// 
+//         return true;
+//     }
 
     public bool Point3dWithOBB3d(Vector3 point, OBB3d obb)
     {
@@ -647,5 +647,39 @@ public class IntersectionTest3D
         float t = (plane.GetDistanceFromOrigin() - nA) / nAB;
         return t >= 0.0f && t <= 1.0f;
     }
+
+    public static bool Point3dWithTriangle(Vector3 p, Triangle3d t) 
+    {
+	    // Move the triangle so that the point is  
+	    // now at the origin of the triangle
+        Vector3 a = t.m_point0 - p;
+        Vector3 b = t.m_point1 - p;
+        Vector3 c = t.m_point2 - p;
+
+	    // The point should be moved too, so they are both
+	    // relative, but because we don't use p in the
+	    // equation anymore, we don't need it!
+	    // p -= p; // This would just equal the zero vector!
+
+        Vector3 normPBC = Vector3.Cross(b, c); // Normal of PBC (u)
+        Vector3 normPCA = Vector3.Cross(c, a); // Normal of PCA (v)
+        Vector3 normPAB = Vector3.Cross(a, b); // Normal of PAB (w)
+
+	    // Test to see if the normals are facing 
+	    // the same direction, return false if not
+        if (Vector3.Dot(normPBC, normPCA) < 0.0f)
+        {
+		    return false;
+	    }
+        else if (Vector3.Dot(normPBC, normPAB) < 0.0f)
+        {
+		    return false;
+	    }
+
+	    // All normals facing the same way, return true
+	    return true;
+    }
+
+
 }
 
