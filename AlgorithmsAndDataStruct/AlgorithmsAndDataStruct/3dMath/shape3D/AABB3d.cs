@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class AABB3d
+public class AABB3d
 {
     public Vector3 m_pos;
     public float m_xLength;

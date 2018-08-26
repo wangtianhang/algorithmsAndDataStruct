@@ -6,8 +6,17 @@ using System.Text;
 /// 预计实现point3d ray3d line3d plane3d sphere3d aabb3d obb3d triangle3d mesh3d 
 /// Capsule3d(胶囊 delay) cylinder(圆柱 delay) cone3d(圆锥 delay) frustum3d(视锥 平截头体 delay) polyhedron3d(多面体 delay)
 /// </summary>
-class IntersectionTest3D
+public class IntersectionTest3D
 {
+    public static void Test()
+    {
+        Plane3d plane = new Plane3d(new Vector3(1, 1, 1), new Vector3(10, 10, 10));
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithPlane3d(new Vector3(20, 20, 20), plane);
+        Debug.Log("最近点 " + closestPoint);
+        closestPoint = Distance3d.ClosestPointOfPoint3dWithPlane3d(new Vector3(-10, -10, -10), plane);
+        Debug.Log("最近点 " + closestPoint);
+    }
+
     /// <summary>
     /// 射线与平面相交
     /// </summary>
@@ -94,6 +103,31 @@ class IntersectionTest3D
         v *= fInvDet;
 
         return true;
+    }
+
+    public bool Point3dWithOBB3d(Vector3 point, OBB3d obb)
+    {
+        Vector3 objMin = obb.GetAABBMin();
+        Vector3 objMax = obb.GetAABBMax();
+        Matrix4x4 obj2World = obb.GetObjToWorld();
+        Matrix4x4 worldToObj = obj2World.inverse;
+        Vector3 objPoint = worldToObj * point;
+        if (objPoint.x < objMin.x || objPoint.y < objMin.y || objPoint.z < objMin.z)
+        {
+            return false;
+        }
+        if (objPoint.x > objMax.x || objPoint.y > objMax.y || objPoint.z > objMax.z)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool Point3dWithPlane3d(Vector3 point, Plane3d plane)
+    {
+        // 根据3d平面定义
+        float dot = Vector3.Dot(plane.m_planeOnePoint - point, plane.m_planeNormal);
+        return Mathf.Approximately(dot, 0);
     }
 }
 

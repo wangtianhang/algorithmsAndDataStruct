@@ -5,7 +5,18 @@ using System.Text;
 
 public class Plane3d
 {
+    public Plane3d(Vector3 normal, Vector3 point)
+    {
+        m_planeNormal = normal;
+        m_planeNormal.Normalize();
+        m_planeOnePoint = point;
+    }
     public Vector3 m_planeNormal;
     public Vector3 m_planeOnePoint;
+
+    public float GetDistanceFromOrigin()
+    {
+        return Vector3.Dot(m_planeOnePoint, m_planeNormal);
+    }
 }
 

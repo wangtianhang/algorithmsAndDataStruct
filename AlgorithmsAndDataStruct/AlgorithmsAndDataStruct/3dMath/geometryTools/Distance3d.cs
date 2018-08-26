@@ -25,7 +25,7 @@ class Distance3d
 
     public static Vector3 CloestPointOfPoint3dWithAABB3d(Vector3 point, AABB3d aabb)
     {
-        Vector3 result = new Vector3();
+        Vector3 result = point;
         Vector3 min = aabb.GetMin();
         Vector3 max = aabb.GetMax();
         result.x = (result.x < min.x) ? min.x : result.x;
@@ -35,6 +35,33 @@ class Distance3d
         result.y = (result.y > max.x) ? max.y : result.y;
         result.z = (result.z > max.x) ? max.z : result.z;
         return result;
+    }
+
+    public static Vector3 ClosestPointOfPoint3dWithOBB3d(Vector3 point, OBB3d obb)
+    {
+        Vector3 objMin = obb.GetAABBMin();
+        Vector3 objMax = obb.GetAABBMax();
+        Matrix4x4 obj2World = obb.GetObjToWorld();
+        Matrix4x4 worldToObj = obj2World.inverse;
+        Vector3 objPoint = worldToObj * point;
+        
+        Vector3 objResult = objPoint;
+        objResult.x = (objResult.x < objMin.x) ? objMin.x : objResult.x;
+        objResult.y = (objResult.y < objMin.x) ? objMin.y : objResult.y;
+        objResult.z = (objResult.z < objMin.x) ? objMin.z : objResult.z;
+        objResult.x = (objResult.x > objMax.x) ? objMax.x : objResult.x;
+        objResult.y = (objResult.y > objMax.x) ? objMax.y : objResult.y;
+        objResult.z = (objResult.z > objMax.x) ? objMax.z : objResult.z;
+
+        Vector3 worldResult = worldToObj * objResult;
+        return worldResult;
+    }
+
+    public static Vector3 ClosestPointOfPoint3dWithPlane3d(Vector3 point, Plane3d plane)
+    {
+        float dot = Vector3.Dot(plane.m_planeNormal, point);
+        float distance = dot - plane.GetDistanceFromOrigin();
+        return point - plane.m_planeNormal * distance;
     }
 }
 

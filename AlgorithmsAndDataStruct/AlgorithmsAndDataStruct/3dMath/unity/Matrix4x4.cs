@@ -8,7 +8,7 @@ using System.Text;
     /// <summary>
     /// 坐标系与unity保持一致 为左手坐标系
     /// </summary>
-    struct Matrix4x4
+public struct Matrix4x4
     {
         public static void Test()
         {
