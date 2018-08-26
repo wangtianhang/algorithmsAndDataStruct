@@ -5,6 +5,13 @@ using System.Text;
 
 public class Convex2d
 {
+    public Convex2d(Vector2 pos, Quaternion qua, List<Vector2> pointList)
+    {
+        m_pos = pos;
+        m_rotation = qua;
+        m_pointList = pointList;
+    }
+
     public Vector2 m_pos = Vector2.zero;
     // 假设为xz平面的2d物体
     public Quaternion m_rotation = Quaternion.identity;

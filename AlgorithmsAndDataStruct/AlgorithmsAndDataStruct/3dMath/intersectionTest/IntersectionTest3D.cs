@@ -186,11 +186,7 @@ public class IntersectionTest3D
             (aMin.z <= bMax.z && aMax.z >= bMin.z);
     }
 
-    public bool Plane3dWithPlane3d(Plane3d plane1, Plane3d plane2)
-    {
-        Vector3 d = Vector3.Cross(plane1.m_planeNormal, plane2.m_planeNormal);
-        return Mathf.Approximately(Vector3.Dot(d, d), 0);
-    }
+
 
     #region Separating Axis Theorem
     /// <summary>
@@ -275,5 +271,32 @@ public class IntersectionTest3D
 	    return true; // Seperating axis not found
     }
     #endregion
+
+    public static bool Obb3dWithPlane3d(OBB3d obb, Plane3d plane)
+    {
+        // Local variables for readability only
+	    float[] o = obb.GetOrientationMatrixArray();
+	    Vector3[] rot = { // rotation / orientation
+		    new Vector3(o[0], o[1], o[2]),
+		    new Vector3(o[3], o[4], o[5]),
+		    new Vector3(o[6], o[7], o[8]),
+	    };
+        Vector3 normal = plane.m_planeNormal;
+
+	    // Project the half extents of the AABB onto the plane normal
+        float pLen = obb.GetHalfSize().x * Mathf.Abs(Vector3.Dot(normal, rot[0])) +
+                    obb.GetHalfSize().y * Mathf.Abs(Vector3.Dot(normal, rot[1])) +
+                    obb.GetHalfSize().z * Mathf.Abs(Vector3.Dot(normal, rot[2]));
+	    // Find the distance from the center of the OBB to the plane
+	    float dist = Vector3.Dot(plane.m_planeNormal, obb.m_pos) - plane.GetDistanceFromOrigin();
+	    // Intersection occurs if the distance falls within the projected side
+	    return Mathf.Abs(dist) <= pLen;
+    }
+
+    public bool Plane3dWithPlane3d(Plane3d plane1, Plane3d plane2)
+    {
+        Vector3 d = Vector3.Cross(plane1.m_planeNormal, plane2.m_planeNormal);
+        return Mathf.Approximately(Vector3.Dot(d, d), 0);
+    }
 }
 

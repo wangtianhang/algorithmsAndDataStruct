@@ -26,6 +26,20 @@ public class IntersectionTest2D
         {
             Debug.Log("双线没有相交");
         }
+
+        List<Vector2> pointList = new List<Vector2>{new Vector2(-4.5f, -10f), 
+            new Vector2(-4.5f, 10f), 
+            new Vector2(4.5f, 10f), 
+            new Vector2(4.5f, -10f)};
+        Convex2d convex1 = new Convex2d(new Vector2(-5, 0), Quaternion.Euler(Vector3.zero), pointList);
+        Convex2d convex2 = new Convex2d(new Vector2(+5, 0), Quaternion.Euler(Vector3.zero), pointList);
+        Debug.Log("凸多边形相交测试1 " + (Convex2dWithConvex2d(convex1, convex2, false, true) != null));
+        Convex2d convex3 = new Convex2d(new Vector2(+5, 0), Quaternion.Euler(new Vector3(0, -90, 0)), pointList);
+        Debug.Log("凸多边形相交测试2 " + (Convex2dWithConvex2d(convex1, convex3, false, true) != null));
+
+        Circle2d circle = new Circle2d(new Vector3(-5, 0), 5);
+        Debug.Log("圆与凸多边形相交测试1 " + (Circle2dWithConvex2d(circle, convex2, false, true) != null));
+        Debug.Log("圆与凸多边形相交测试2 " + (Circle2dWithConvex2d(circle, convex3, false, true) != null));
     }
 
     /// <summary>
@@ -379,7 +393,7 @@ public class IntersectionTest2D
                 {
                     min0 = t;
                 }
-                if(t < max0)
+                if(t > max0)
                 {
                     max0 = t;
                 }
