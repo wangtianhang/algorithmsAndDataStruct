@@ -148,5 +148,42 @@ public class IntersectionTest3D
         float diff = Vector3.Dot(norm, ray.m_rayDir);
         return Mathf.Approximately(diff, 1);
     }
+
+    public bool Sphere3dWithAABB3d(Sphere3d sphere, AABB3d aabb)
+    {
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithAABB3d(sphere.m_pos, aabb);
+        return (sphere.m_pos - closestPoint).magnitude <= sphere.m_radius;
+    }
+
+    public bool Sphere3dWithObb3d(Sphere3d sphere, OBB3d obb)
+    {
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithOBB3d(sphere.m_pos, obb);
+        return (sphere.m_pos - closestPoint).magnitude <= sphere.m_radius;
+    }
+
+    public bool Sphere3dWithPlane3d(Sphere3d sphere, Plane3d plane)
+    {
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithPlane3d(sphere.m_pos, plane);
+        return (sphere.m_pos - closestPoint).magnitude <= sphere.m_radius;
+    }
+
+    public bool AABB3dWithAABB3d(AABB3d aabb1, AABB3d aabb2)
+    {
+        Vector3 aMin = aabb1.GetMin();
+        Vector3 aMax = aabb1.GetMax();
+
+        Vector3 bMin = aabb2.GetMin();
+        Vector3 bMax = aabb2.GetMax();
+
+        return (aMin.x <= bMax.x && aMax.x >= bMin.x) &&
+            (aMin.y <= bMax.y && aMax.y >= bMin.y) &&
+            (aMin.z <= bMax.z && aMax.z >= bMin.z);
+    }
+
+    public bool Plane3dWithPlane3d(Plane3d plane1, Plane3d plane2)
+    {
+        Vector3 d = Vector3.Cross(plane1.m_planeNormal, plane2.m_planeNormal);
+        return Mathf.Approximately(Vector3.Dot(d, d), 0);
+    }
 }
 

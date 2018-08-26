@@ -31,7 +31,7 @@ class Distance3d
         return line.m_point1 + lVec * t;
     }
 
-    public static Vector3 CloestPointOfPoint3dWithAABB3d(Vector3 point, AABB3d aabb)
+    public static Vector3 ClosestPointOfPoint3dWithAABB3d(Vector3 point, AABB3d aabb)
     {
         Vector3 result = point;
         Vector3 min = aabb.GetMin();
