@@ -293,10 +293,115 @@ public class IntersectionTest3D
 	    return Mathf.Abs(dist) <= pLen;
     }
 
-    public bool Plane3dWithPlane3d(Plane3d plane1, Plane3d plane2)
+    public static bool Plane3dWithPlane3d(Plane3d plane1, Plane3d plane2)
     {
         Vector3 d = Vector3.Cross(plane1.m_planeNormal, plane2.m_planeNormal);
         return Mathf.Approximately(Vector3.Dot(d, d), 0);
+    }
+
+    public class RaycastResult
+    {
+        public float m_t;
+        public bool m_hit = false;
+        public Vector3 m_point;
+        public Vector3 m_normal;
+    }
+
+    public static bool Ray3dWithSphere3d(Ray3d ray, Sphere3d sphere, ref RaycastResult result)
+    {
+        Vector3 e = sphere.m_pos - ray.m_rayOrigin;
+        float rSq = sphere.m_radius * sphere.m_radius;
+
+        float eSq = e.sqrMagnitude;
+        float a = Vector3.Dot(e, ray.m_rayDir); // ray.direction is assumed to be normalized
+        float bSq = /*sqrtf(*/eSq - (a * a)/*)*/;
+        float f = Mathf.Sqrt(Mathf.Abs((rSq) - /*(b * b)*/bSq));
+
+        // Assume normal intersection!
+        float t = a - f;
+
+        // No collision has happened
+        if (rSq - (eSq - a * a) < 0.0f)
+        {
+            return false;
+        }
+        // Ray starts inside the sphere
+        else if (eSq < rSq)
+        {
+            // Just reverse direction
+            t = a + f;
+        }
+        if (result != null)
+        {
+            result.m_t = t;
+            result.m_hit = true;
+            result.m_point = ray.m_rayOrigin + ray.m_rayDir * t;
+            result.m_normal = (result.m_point - sphere.m_pos).normalized;
+        }
+        return true;
+    }
+
+    public static bool Ray3dWithAABB3d(AABB3d aabb, Ray3d ray, ref RaycastResult outResult) 
+    {
+	    //ResetRaycastResult(outResult);
+
+	    Vector3 min = aabb.GetMin();
+	    Vector3 max = aabb.GetMax();
+
+	    // Any component of direction could be 0!
+	    // Address this by using a small number, close to
+	    // 0 in case any of directions components are 0
+	    float t1 = (min.x - ray.m_rayOrigin.x) / (Mathf.Approximately(ray.m_rayDir.x, 0.0f) ? 0.00001f : ray.m_rayDir.x);
+	    float t2 = (max.x - ray.m_rayOrigin.x) / (Mathf.Approximately(ray.m_rayDir.x, 0.0f) ? 0.00001f : ray.m_rayDir.x);
+	    float t3 = (min.y - ray.m_rayOrigin.y) / (Mathf.Approximately(ray.m_rayDir.y, 0.0f) ? 0.00001f : ray.m_rayDir.y);
+	    float t4 = (max.y - ray.m_rayOrigin.y) / (Mathf.Approximately(ray.m_rayDir.y, 0.0f) ? 0.00001f : ray.m_rayDir.y);
+	    float t5 = (min.z - ray.m_rayOrigin.z) / (Mathf.Approximately(ray.m_rayDir.z, 0.0f) ? 0.00001f : ray.m_rayDir.z);
+	    float t6 = (max.z - ray.m_rayOrigin.z) / (Mathf.Approximately(ray.m_rayDir.z, 0.0f) ? 0.00001f : ray.m_rayDir.z);
+
+	    float tmin = Mathf.Max(Mathf.Max(Mathf.Min(t1, t2), Mathf.Min(t3, t4)), Mathf.Min(t5, t6));
+	    float tmax = Mathf.Min(Mathf.Min(Mathf.Max(t1, t2), Mathf.Max(t3, t4)), Mathf.Max(t5, t6));
+
+	    // if tmax < 0, ray is intersecting AABB
+	    // but entire AABB is behing it's origin
+	    if (tmax < 0) {
+		    return false;
+	    }
+
+	    // if tmin > tmax, ray doesn't intersect AABB
+	    if (tmin > tmax) {
+		    return false;
+	    }
+
+	    float t_result = tmin;
+
+	    // If tmin is < 0, tmax is closer
+	    if (tmin < 0.0f) {
+		    t_result = tmax;
+	    }
+
+	    if (outResult != null) {
+		    outResult.m_t = t_result;
+		    outResult.m_hit = true;
+		    outResult.m_point = ray.m_rayOrigin + ray.m_rayDir * t_result;
+
+		    Vector3[] normals = {
+			    new Vector3(-1, 0, 0),
+			    new Vector3(1, 0, 0),
+			    new Vector3(0, -1, 0),
+			    new Vector3(0, 1, 0),
+			    new Vector3(0, 0, -1),
+			    new Vector3(0, 0, 1)
+		    };
+		    float[] t = { t1, t2, t3, t4, t5, t6 };
+
+		    for (int i = 0; i < 6; ++i) {
+			    if (Mathf.Approximately(t_result, t[i])) {
+				    outResult.m_normal = normals[i];
+			    }
+		    }
+	    }
+
+	    return true;
     }
 }
 
