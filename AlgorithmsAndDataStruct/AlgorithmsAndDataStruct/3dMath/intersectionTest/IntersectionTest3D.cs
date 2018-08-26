@@ -240,11 +240,40 @@ public class IntersectionTest3D
 	    return result;
     }
 
+    static Interval GetInterval(Triangle3d triangle, Vector3 axis) 
+    {
+	    Interval result = new Interval();
+
+        result.min = Vector3.Dot(axis, triangle.m_point0);
+	    result.max = result.min;
+	    for (int i = 1; i < 3; ++i) {
+            float value = Vector3.Dot(axis, triangle.GetPoint(i));
+		    result.min = Mathf.Min(result.min, value);
+		    result.max = Mathf.Max(result.max, value);
+	    }
+
+	    return result;
+    }
+
     static bool OverlapOnAxis(OBB3d obb1, OBB3d obb2, Vector3 axis)
     {
         Interval a = GetInterval(obb1, axis);
         Interval b = GetInterval(obb2, axis);
         return ((b.min <= a.max) && (a.min <= b.max));
+    }
+
+    static bool OverlapOnAxis(OBB3d obb, Triangle3d triangle, Vector3 axis) 
+    {
+        Interval a = GetInterval(obb, axis);
+	    Interval b = GetInterval(triangle, axis);
+	    return ((b.min <= a.max) && (a.min <= b.max));
+    }
+
+    static bool OverlapOnAxis(Triangle3d t1, Triangle3d t2, Vector3 axis) 
+    {
+	    Interval a = GetInterval(t1, axis);
+	    Interval b = GetInterval(t2, axis);
+	    return ((b.min <= a.max) && (a.min <= b.max));
     }
 
     public static bool OBB3dWithOBB3d(OBB3d obb1, OBB3d obb2) {
@@ -271,6 +300,47 @@ public class IntersectionTest3D
 
 	    for (int i = 0; i < 15; ++i) {
 		    if (!OverlapOnAxis(obb1, obb2, test[i])) {
+			    return false; // Seperating axis found
+		    }
+	    }
+
+	    return true; // Seperating axis not found
+    }
+
+    public static bool Triangle3dWithOBB3d(Triangle3d t, OBB3d o)
+    {
+        // Compute the edge vectors of the triangle  (ABC)
+	    Vector3 f0 = t.m_point1 - t.m_point0;
+	    Vector3 f1 = t.m_point2 - t.m_point1;
+	    Vector3 f2 = t.m_point0 - t.m_point2;
+
+	    // Compute the face normals of the AABB
+	    float[] orientation = o.GetOrientationMatrixAsArray();
+	    Vector3 u0 = new Vector3(orientation[0], orientation[1], orientation[2]);
+	    Vector3 u1 = new Vector3(orientation[3], orientation[4], orientation[5]);
+	    Vector3 u2 = new Vector3(orientation[6], orientation[7], orientation[8]);
+
+	    Vector3[] test = {
+		    // 3 Normals of AABB
+		    u0, // AABB Axis 1
+		    u1, // AABB Axis 2
+		    u2, // AABB Axis 3
+		    // 1 Normal of the Triangle
+		    Vector3.Cross(f0, f1),
+		    // 9 Axis, cross products of all edges
+		    Vector3.Cross(u0, f0),
+		    Vector3.Cross(u0, f1),
+		    Vector3.Cross(u0, f2),
+		    Vector3.Cross(u1, f0),
+		    Vector3.Cross(u1, f1),
+		    Vector3.Cross(u1, f2),
+		    Vector3.Cross(u2, f0),
+		    Vector3.Cross(u2, f1),
+		    Vector3.Cross(u2, f2)
+	    };
+
+	    for (int i = 0; i < 13; ++i) {
+		    if (!OverlapOnAxis(o, t, test[i])) {
 			    return false; // Seperating axis found
 		    }
 	    }
@@ -680,6 +750,94 @@ public class IntersectionTest3D
 	    return true;
     }
 
+    public static bool Triangle3dWithSphere3d(Triangle3d triangle, Sphere3d sphere)
+    {
+        Vector3 closest = Distance3d.ClosestPointOfPoint3dWithTriangle3d(triangle, sphere.m_pos);
+        return (closest - sphere.m_pos).magnitude <= sphere.m_radius;
+    }
 
+    public static bool Triangle3dWithPlane3d(Triangle3d t, Plane3d p)
+    {
+        float side1 = Plane3d.PlaneEquation(t.m_point0, p);
+        float side2 = Plane3d.PlaneEquation(t.m_point1, p);
+        float side3 = Plane3d.PlaneEquation(t.m_point2, p);
+
+        // On Plane
+        if (Mathf.Approximately(side1, 0) && Mathf.Approximately(side2, 0) && Mathf.Approximately(side3, 0))
+        {
+            return true;
+        }
+
+        // Triangle in front of plane
+        if (side1 > 0 && side2 > 0 && side3 > 0)
+        {
+            return false;
+        }
+
+        // Triangle behind plane
+        if (side1 < 0 && side2 < 0 && side3 < 0)
+        {
+            return false;
+        }
+
+        return true; // Intersection
+    }
+
+    static Vector3 SatCrossEdge(Vector3 a, Vector3 b, Vector3 c, Vector3 d) 
+    {
+        Vector3 ab = b - a;
+        Vector3 cd = d - c;
+
+        Vector3 result = Vector3.Cross(ab, cd);
+	    if (!Mathf.Approximately((result).sqrMagnitude, 0)) { // Is ab and cd parallel?
+		    return result; // Not parallel!
+	    }
+	    else { // ab and cd are parallel
+		    // Get an axis perpendicular to AB
+            Vector3 axis = Vector3.Cross(ab, c - a);
+            result = Vector3.Cross(ab, axis);
+            if (!Mathf.Approximately((result).sqrMagnitude, 0))
+            { // Still parallel?
+			    return result; // Not parallel
+		    }
+	    }
+	    // New axis being tested is parallel too.
+	    // This means that a, b, c and d are on a line
+	    // Nothing we can do!
+	    return Vector3.zero;
+    }
+
+    public static bool Triangle3dWithTriangle3d(Triangle3d t1, Triangle3d t2) 
+    {
+	    Vector3[] axisToTest = {
+		    // Triangle 1, Normal
+		    SatCrossEdge(t1.m_point0, t1.m_point1, t1.m_point1, t1.m_point2),
+		    // Triangle 2, Normal
+		    SatCrossEdge(t2.m_point0, t2.m_point1, t2.m_point1, t2.m_point2),
+
+		    // Cross Product of edges
+		    SatCrossEdge(t2.m_point0, t2.m_point1, t1.m_point0, t1.m_point1),
+		    SatCrossEdge(t2.m_point0, t2.m_point1, t1.m_point1, t1.m_point2),
+		    SatCrossEdge(t2.m_point0, t2.m_point1, t1.m_point2, t1.m_point0),
+
+		    SatCrossEdge(t2.m_point1, t2.m_point2, t1.m_point0, t1.m_point1),
+		    SatCrossEdge(t2.m_point1, t2.m_point2, t1.m_point1, t1.m_point2),
+		    SatCrossEdge(t2.m_point1, t2.m_point2, t1.m_point2, t1.m_point0),
+
+		    SatCrossEdge(t2.m_point2, t2.m_point0, t1.m_point0, t1.m_point1),
+		    SatCrossEdge(t2.m_point2, t2.m_point0, t1.m_point1, t1.m_point2),
+		    SatCrossEdge(t2.m_point2, t2.m_point0, t1.m_point2, t1.m_point0),
+	    };
+
+	    for (int i = 0; i < 11; ++i) {
+		    if (!OverlapOnAxis(t1, t2, axisToTest[i])) {
+			    if (!Mathf.Approximately((axisToTest[i]).sqrMagnitude, 0)) {
+				    return false; // Seperating axis found
+			    }
+		    }
+	    }
+
+	    return true; // Seperating axis not found
+    }
 }
 

@@ -96,7 +96,7 @@ class Distance3d
         return result;
     }
 
-    Vector3 ClosestPointOfPoint3dWithTriangle3d(Triangle3d t, Vector3 p) 
+    public static Vector3 ClosestPointOfPoint3dWithTriangle3d(Triangle3d t, Vector3 p) 
     {
 	    Plane3d plane = FromTriangle(t);
         Vector3 closest = ClosestPointOfPoint3dWithPlane3d(p, plane);

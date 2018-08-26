@@ -18,5 +18,10 @@ public class Plane3d
     {
         return Vector3.Dot(m_planeOnePoint, m_planeNormal);
     }
+
+    public static float PlaneEquation(Vector3 point, Plane3d plane)
+    {
+        return Vector3.Dot(point, plane.m_planeNormal) - plane.GetDistanceFromOrigin();
+    }
 }
 
