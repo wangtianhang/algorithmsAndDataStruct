@@ -75,6 +75,7 @@
     <Compile Include="3dMath\shape3D\Line3d.cs" />
     <Compile Include="3dMath\shape3D\OBB3d.cs" />
     <Compile Include="3dMath\shape3D\Point3d.cs" />
+    <Compile Include="3dMath\shape3D\Segment3d.cs" />
     <Compile Include="3dMath\shape3D\Sphere3d.cs" />
     <Compile Include="3dMath\shape3D\Triangle3d.cs" />
     <Compile Include="3dMath\TiledmapMathHelper.cs" />

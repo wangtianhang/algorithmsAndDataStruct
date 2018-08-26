@@ -36,7 +36,7 @@ public class OBB3d
         return Matrix4x4.TRS(m_pos, m_rotation, Vector3.one);
     }
 
-    public float[] GetOrientationMatrixArray()
+    public float[] GetOrientationMatrixAsArray()
     {
         Matrix4x4 trs = Matrix4x4.TRS(Vector3.zero, m_rotation, Vector3.one);
         float[] matrixArray = new float[9];
@@ -59,6 +59,15 @@ public class OBB3d
     public Vector3 GetHalfSize()
     {
         return new Vector3(m_xLength / 2, m_yLength / 2, m_zLength / 2);
+    }
+
+    public float[] GetHalfSizeAsArray()
+    {
+        float[] ret = new float[3];
+        ret[0] = m_xLength / 2;
+        ret[1] = m_yLength / 2;
+        ret[2] = m_zLength / 2;
+        return ret;
     }
 }
 

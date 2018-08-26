@@ -21,13 +21,19 @@ class Distance3d
 //         float sin_A = Mathf.Sqrt(1 - Mathf.Pow(cos_A, 2.0f));
 //         return as2 * sin_A;
 //     }
+    public static Vector3 ClosestPointOfPoint3dWithSegment3d(Vector3 point, Segment3d line)
+    {
+        Vector3 lVec = line.m_point2 - line.m_point1; // Line Vector
+        float t = Vector3.Dot(point - line.m_point1, lVec) / Vector3.Dot(lVec, lVec);
+        t = Mathf.Max(t, 0.0f); // Clamp to 0
+        t = Mathf.Min(t, 1.0f); // Clamp to 1
+        return line.m_point1 + lVec * t;
+    }
+
     public static Vector3 ClosestPointOfPoint3dWithLine3d(Vector3 point, Line3d line)
     {
         Vector3 lVec = line.m_point2 - line.m_point1; // Line Vector
-        float t = Vector3.Dot(point - line.m_point1, lVec) /
-        Vector3.Dot(lVec, lVec);
-        t = Mathf.Max(t, 0.0f); // Clamp to 0
-        t = Mathf.Min(t, 1.0f); // Clamp to 1
+        float t = Vector3.Dot(point - line.m_point1, lVec) / Vector3.Dot(lVec, lVec);
         return line.m_point1 + lVec * t;
     }
 

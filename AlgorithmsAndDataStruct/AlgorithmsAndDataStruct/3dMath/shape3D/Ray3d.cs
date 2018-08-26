@@ -9,6 +9,7 @@ public class Ray3d
     {
         m_rayOrigin = origin;
         m_rayDir = dir;
+        m_rayDir.Normalize();
     }
     public Vector3 m_rayOrigin;
     public Vector3 m_rayDir;

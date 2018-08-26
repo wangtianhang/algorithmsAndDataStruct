@@ -143,6 +143,13 @@ public class IntersectionTest3D
         return Mathf.Approximately(distanceSq, 0);
     }
 
+    public bool Point3dWithSegment3d(Vector3 point, Segment3d segment)
+    {
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithSegment3d(point, segment);
+        float distanceSq = (closestPoint - point).sqrMagnitude;
+        return Mathf.Approximately(distanceSq, 0);
+    }
+
     public bool Point3dWithRay3d(Vector3 point, Ray3d ray)
     {
         if(point == ray.m_rayOrigin)
@@ -205,7 +212,7 @@ public class IntersectionTest3D
 
 	    Vector3 C = obb.m_pos;	// OBB Center
 	    Vector3 E = obb.GetHalfSize();		// OBB Extents
-	    float[] o = obb.GetOrientationMatrixArray();
+	    float[] o = obb.GetOrientationMatrixAsArray();
 	    Vector3[] A = {			// OBB Axis
 		    new Vector3(o[0], o[1], o[2]),
 		    new Vector3(o[3], o[4], o[5]),
@@ -241,8 +248,8 @@ public class IntersectionTest3D
     }
 
     public static bool OBB3dWithOBB3d(OBB3d obb1, OBB3d obb2) {
-	    float[] o1 = obb1.GetOrientationMatrixArray();
-	    float[] o2 = obb2.GetOrientationMatrixArray();
+	    float[] o1 = obb1.GetOrientationMatrixAsArray();
+	    float[] o2 = obb2.GetOrientationMatrixAsArray();
 
 	    Vector3[] test2 = {
 		    new Vector3(o1[0], o1[1], o1[2]),
@@ -275,7 +282,7 @@ public class IntersectionTest3D
     public static bool Obb3dWithPlane3d(OBB3d obb, Plane3d plane)
     {
         // Local variables for readability only
-	    float[] o = obb.GetOrientationMatrixArray();
+	    float[] o = obb.GetOrientationMatrixAsArray();
 	    Vector3[] rot = { // rotation / orientation
 		    new Vector3(o[0], o[1], o[2]),
 		    new Vector3(o[3], o[4], o[5]),
@@ -402,6 +409,189 @@ public class IntersectionTest3D
 	    }
 
 	    return true;
+    }
+
+    public static bool Ray3dWithOBB3d(OBB3d obb, Ray3d ray, ref RaycastResult outResult) 
+    {
+	    //ResetRaycastResult(outResult);
+
+	    float[] o = obb.GetOrientationMatrixAsArray();
+	    float[] size = obb.GetHalfSizeAsArray();
+
+	    Vector3 p = obb.m_pos - ray.m_rayOrigin;
+
+	    Vector3 X = new Vector3(o[0], o[1], o[2]);
+	    Vector3 Y = new Vector3(o[3], o[4], o[5]);
+	    Vector3 Z = new Vector3(o[6], o[7], o[8]);
+
+	    Vector3 f = new Vector3(
+		    Vector3.Dot(X, ray.m_rayDir),
+		    Vector3.Dot(Y, ray.m_rayDir),
+		    Vector3.Dot(Z, ray.m_rayDir)
+	    );
+
+	    Vector3 e = new Vector3(
+		    Vector3.Dot(X, p),
+		    Vector3.Dot(Y, p),
+		    Vector3.Dot(Z, p)
+	    );
+
+    #if true
+	    float[] t = new float[]{ 0, 0, 0, 0, 0, 0 };
+	    for (int i = 0; i < 3; ++i) {
+		    if (Mathf.Approximately(f[i], 0)) {
+			    if (-e[i] - size[i] > 0 || -e[i] + size[i] < 0) {
+				    return false;
+			    }
+			    f[i] = 0.00001f; // Avoid div by 0!
+		    }
+
+		    t[i * 2 + 0] = (e[i] + size[i]) / f[i]; // tmin[x, y, z]
+		    t[i * 2 + 1] = (e[i] - size[i]) / f[i]; // tmax[x, y, z]
+	    }
+
+	    float tmin = Mathf.Max(Mathf.Max(Mathf.Min(t[0], t[1]), Mathf.Min(t[2], t[3])), Mathf.Min(t[4], t[5]));
+	    float tmax = Mathf.Min(Mathf.Min(Mathf.Max(t[0], t[1]), Mathf.Max(t[2], t[3])), Mathf.Max(t[4], t[5]));
+    #else 
+	    // The above loop simplifies the below if statements
+	    // this is done to make sure the sample fits into the book
+	    if (CMP(f.x, 0)) {
+		    if (-e.x - obb.size.x > 0 || -e.x + obb.size.x < 0) {
+			    return -1;
+		    }
+		    f.x = 0.00001f; // Avoid div by 0!
+	    }
+	    else if (CMP(f.y, 0)) {
+		    if (-e.y - obb.size.y > 0 || -e.y + obb.size.y < 0) {
+			    return -1;
+		    }
+		    f.y = 0.00001f; // Avoid div by 0!
+	    }
+	    else if (CMP(f.z, 0)) {
+		    if (-e.z - obb.size.z > 0 || -e.z + obb.size.z < 0) {
+			    return -1;
+		    }
+		    f.z = 0.00001f; // Avoid div by 0!
+	    }
+
+	    float t1 = (e.x + obb.size.x) / f.x;
+	    float t2 = (e.x - obb.size.x) / f.x;
+	    float t3 = (e.y + obb.size.y) / f.y;
+	    float t4 = (e.y - obb.size.y) / f.y;
+	    float t5 = (e.z + obb.size.z) / f.z;
+	    float t6 = (e.z - obb.size.z) / f.z;
+
+	    float tmin = fmaxf(fmaxf(fminf(t1, t2), fminf(t3, t4)), fminf(t5, t6));
+	    float tmax = fminf(fminf(fmaxf(t1, t2), fmaxf(t3, t4)), fmaxf(t5, t6));
+    #endif
+
+	    // if tmax < 0, ray is intersecting AABB
+	    // but entire AABB is behing it's origin
+	    if (tmax < 0) {
+		    return false;
+	    }
+
+	    // if tmin > tmax, ray doesn't intersect AABB
+	    if (tmin > tmax) {
+		    return false;
+	    }
+
+	    // If tmin is < 0, tmax is closer
+	    float t_result = tmin;
+
+	    if (tmin < 0.0f) {
+		    t_result = tmax;
+	    }
+
+	    if (outResult != null) {
+		    outResult.m_hit = true;
+		    outResult.m_t = t_result;
+		    outResult.m_point = ray.m_rayOrigin + ray.m_rayDir * t_result;
+
+		    Vector3[] normals = {
+			    X,			// +x
+			    X * -1.0f,	// -x
+			    Y,			// +y
+			    Y * -1.0f,	// -y
+			    Z,			// +z
+			    Z * -1.0f	// -z
+		    };
+
+		    for (int i = 0; i < 6; ++i) {
+			    if (Mathf.Approximately(t_result, t[i])) {
+				    outResult.m_normal = normals[i].normalized;
+			    }
+		    }
+	    }
+	    return true;
+    }
+
+    public static bool Ray3dWithPlane3d(Plane3d plane, Ray3d ray, ref RaycastResult outResult) 
+    {
+	    //ResetRaycastResult(outResult);
+
+	    float nd = Vector3.Dot(ray.m_rayDir, plane.m_planeNormal);
+        float pn = Vector3.Dot(ray.m_rayOrigin, plane.m_planeNormal);
+
+	    // nd must be negative, and not 0
+	    // if nd is positive, the ray and plane normals
+	    // point in the same direction. No intersection.
+	    if (nd >= 0.0f) {
+		    return false;
+	    }
+
+	    float t = (plane.GetDistanceFromOrigin() - pn) / nd;
+
+	    // t must be positive
+	    if (t >= 0.0f) {
+		    if (outResult != null) {
+			    outResult.m_t = t;
+			    outResult.m_hit = true;
+			    outResult.m_point = ray.m_rayOrigin + ray.m_rayDir * t;
+			    outResult.m_normal = plane.m_planeNormal;
+		    }
+		    return true;
+	    }
+
+	    return false;
+    }
+
+    public static bool Line3dWithSphere3d(Line3d line, Sphere3d sphere)
+    {
+        Vector3 closest = Distance3d.ClosestPointOfPoint3dWithLine3d(sphere.m_pos, line);
+        float distSq = (sphere.m_pos - closest).sqrMagnitude;
+        return distSq <= (sphere.m_radius * sphere.m_radius);
+    }
+
+    public static bool Segment3dWithSphere3d(Segment3d segment, Sphere3d sphere)
+    {
+        Vector3 closest = Distance3d.ClosestPointOfPoint3dWithSegment3d(sphere.m_pos, segment);
+        float distSq = (sphere.m_pos - closest).sqrMagnitude;
+        return distSq <= (sphere.m_radius * sphere.m_radius);
+    }
+
+    public static bool Line3dWithAABB3d(Line3d line, AABB3d aabb)
+    {
+        Ray3d ray = new Ray3d(line.m_point1, line.m_point2 - line.m_point1);
+        RaycastResult result = new RaycastResult();
+        Ray3dWithAABB3d(aabb, ray, ref result);
+        return result.m_hit;
+    }
+
+    public static bool Segment3dWithAABB3d(Segment3d segment, AABB3d aabb)
+    {
+        Ray3d ray = new Ray3d(segment.m_point1, segment.m_point2 - segment.m_point1);
+        RaycastResult result = new RaycastResult();
+        //float t = Raycast(aabb, ray);
+        Ray3dWithAABB3d(aabb, ray, ref result);
+        if (result.m_hit)
+        {
+            return result.m_t >= 0 && result.m_t * result.m_t <= segment.GetLengthSqr();
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
