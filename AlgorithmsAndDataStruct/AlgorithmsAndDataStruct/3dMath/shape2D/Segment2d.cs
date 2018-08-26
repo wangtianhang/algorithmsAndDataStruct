@@ -4,6 +4,6 @@ using System.Text;
 
 public class Segment2d
 {
-    public Vector2 pos1;
-    public Vector2 pos2;
+    public Vector2 m_point1;
+    public Vector2 m_point2;
 }

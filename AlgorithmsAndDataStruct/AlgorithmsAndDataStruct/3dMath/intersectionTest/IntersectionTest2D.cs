@@ -101,8 +101,8 @@ public class IntersectionTest2D
     {
         float resultX = 0;
         float resultY = 0;
-        bool ret = get_line_intersection(segment1.pos1.x, segment1.pos1.y, segment1.pos2.x, segment1.pos2.y,
-            segment2.pos1.x, segment2.pos1.y, segment2.pos2.x, segment2.pos2.y,
+        bool ret = get_line_intersection(segment1.m_point1.x, segment1.m_point1.y, segment1.m_point2.x, segment1.m_point2.y,
+            segment2.m_point1.x, segment2.m_point1.y, segment2.m_point2.x, segment2.m_point2.y,
             ref resultX, ref resultY);
         result.x = resultX;
         result.z = resultY;
@@ -264,6 +264,16 @@ public class IntersectionTest2D
         return Mathf.Approximately(point.y, M * point.x + B);
     }
 
+    public static bool Segment2dWithCircle2d(Segment2d segment, Circle2d circle)
+    {
+        Segment3d segment3d = new Segment3d();
+        segment3d.m_point1 = new Vector3(segment.m_point1.x, 0, segment.m_point1.y);
+        segment3d.m_point2 = new Vector3(segment.m_point2.x, 0, segment.m_point2.y);
+        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithSegment3d(new Vector3(circle.m_pos.x, 0, circle.m_pos.y), segment3d);
+        Vector2 distance = circle.m_pos - new Vector2(closestPoint.x, closestPoint.z);
+        return distance.magnitude <= circle.m_radius;
+    }
+
     /// <summary>
     /// 算法来自 game physics cookbook
     /// </summary>
@@ -319,10 +329,10 @@ public class IntersectionTest2D
         lineList.Add(new Vector2(d.x, d.z));
         for (int i = 0; i < lineList.Count; ++i)
         {
-            Line2d line = new Line2d();
-            line.m_point1 = lineList[i];
-            line.m_point2 = lineList[(i + 1) % lineList.Count];
-            if (Line2dWithCircle2d(line, circle))
+            Segment2d segment = new Segment2d();
+            segment.m_point1 = lineList[i];
+            segment.m_point2 = lineList[(i + 1) % lineList.Count];
+            if (Segment2dWithCircle2d(segment, circle))
             {
                 return true;
             }

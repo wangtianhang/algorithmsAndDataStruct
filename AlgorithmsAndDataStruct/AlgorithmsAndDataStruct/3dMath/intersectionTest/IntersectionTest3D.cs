@@ -312,10 +312,20 @@ public class IntersectionTest3D
         public bool m_hit = false;
         public Vector3 m_point;
         public Vector3 m_normal;
+
+        public void Reset()
+        {
+            m_t = -1;
+            m_hit = false;
+            m_point = Vector3.zero;
+            m_normal = Vector3.forward;
+        }
     }
 
     public static bool Ray3dWithSphere3d(Ray3d ray, Sphere3d sphere, ref RaycastResult result)
     {
+        result.Reset();
+
         Vector3 e = sphere.m_pos - ray.m_rayOrigin;
         float rSq = sphere.m_radius * sphere.m_radius;
 
@@ -351,6 +361,7 @@ public class IntersectionTest3D
     public static bool Ray3dWithAABB3d(AABB3d aabb, Ray3d ray, ref RaycastResult outResult) 
     {
 	    //ResetRaycastResult(outResult);
+        outResult.Reset();
 
 	    Vector3 min = aabb.GetMin();
 	    Vector3 max = aabb.GetMax();
@@ -414,6 +425,7 @@ public class IntersectionTest3D
     public static bool Ray3dWithOBB3d(OBB3d obb, Ray3d ray, ref RaycastResult outResult) 
     {
 	    //ResetRaycastResult(outResult);
+        outResult.Reset();
 
 	    float[] o = obb.GetOrientationMatrixAsArray();
 	    float[] size = obb.GetHalfSizeAsArray();
@@ -529,6 +541,7 @@ public class IntersectionTest3D
     public static bool Ray3dWithPlane3d(Plane3d plane, Ray3d ray, ref RaycastResult outResult) 
     {
 	    //ResetRaycastResult(outResult);
+        outResult.Reset();
 
 	    float nd = Vector3.Dot(ray.m_rayDir, plane.m_planeNormal);
         float pn = Vector3.Dot(ray.m_rayOrigin, plane.m_planeNormal);
@@ -572,10 +585,11 @@ public class IntersectionTest3D
 
     public static bool Line3dWithAABB3d(Line3d line, AABB3d aabb)
     {
-        Ray3d ray = new Ray3d(line.m_point1, line.m_point2 - line.m_point1);
+        Ray3d ray1 = new Ray3d(line.m_point1, line.m_point2 - line.m_point1);
+        Ray3d ray2 = new Ray3d(line.m_point2, line.m_point1 - line.m_point2);
         RaycastResult result = new RaycastResult();
-        Ray3dWithAABB3d(aabb, ray, ref result);
-        return result.m_hit;
+        return Ray3dWithAABB3d(aabb, ray1, ref result)
+            || Ray3dWithAABB3d(aabb, ray2, ref result);
     }
 
     public static bool Segment3dWithAABB3d(Segment3d segment, AABB3d aabb)
@@ -583,8 +597,7 @@ public class IntersectionTest3D
         Ray3d ray = new Ray3d(segment.m_point1, segment.m_point2 - segment.m_point1);
         RaycastResult result = new RaycastResult();
         //float t = Raycast(aabb, ray);
-        Ray3dWithAABB3d(aabb, ray, ref result);
-        if (result.m_hit)
+        if (Ray3dWithAABB3d(aabb, ray, ref result))
         {
             return result.m_t >= 0 && result.m_t * result.m_t <= segment.GetLengthSqr();
         }
@@ -592,6 +605,47 @@ public class IntersectionTest3D
         {
             return false;
         }
+    }
+
+    public static bool Line3dWithOBB3d(Line3d line, OBB3d obb)
+    {
+        Ray3d ray1 = new Ray3d(line.m_point1, line.m_point2 - line.m_point1);
+        Ray3d ray2 = new Ray3d(line.m_point2, line.m_point1 - line.m_point2);
+        RaycastResult result = new RaycastResult();
+        return Ray3dWithOBB3d(obb, ray1, ref result)
+            || Ray3dWithOBB3d(obb, ray2, ref result);
+    }
+
+    public static bool Segment3dWithOBB3d(Segment3d segment, OBB3d obb)
+    {
+        Ray3d ray = new Ray3d(segment.m_point1, segment.m_point2 - segment.m_point1);
+        RaycastResult result = new RaycastResult();
+        if(Ray3dWithOBB3d(obb, ray, ref result))
+        {
+            return result.m_t >= 0 && result.m_t * result.m_t <= segment.GetLengthSqr();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static bool Line3dWithPlane3d(Line3d line, Plane3d plane)
+    {
+        return Mathf.Approximately(Vector3.Dot(line.m_point2 - line.m_point1, plane.m_planeNormal), 0);
+    }
+
+    public static bool Segment3dWithPlane3d(Segment3d segment, Plane3d plane)
+    {
+        Vector3 ab = segment.m_point2 - segment.m_point1;
+        float nA = Vector3.Dot(plane.m_planeNormal, segment.m_point1);
+        float nAB = Vector3.Dot(plane.m_planeNormal, ab);
+        // If the line and plane are parallel, nAB will be 0
+        // This will cause a divide by 0 exception below
+        // If you plan on testing parallel lines and planes
+        // it is sage to early out when nAB is 0.
+        float t = (plane.GetDistanceFromOrigin() - nA) / nAB;
+        return t >= 0.0f && t <= 1.0f;
     }
 }
 
