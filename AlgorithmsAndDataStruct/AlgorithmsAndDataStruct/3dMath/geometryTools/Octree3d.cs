@@ -57,5 +57,106 @@ public class Octree3d
             }
         }
     }
+
+    public static void Insert(OctreeNode node, Model3d model)
+    {
+        OBB3d bounds = model.GetOBB();
+        if (IntersectionTest3D.AABB3dWithOBB3d(node.m_bounds, bounds))
+        {
+            if (node.m_children == null)
+            {
+                node.m_models.Add(model);
+            }
+            else
+            {
+                for (int i = 0; i < 8; ++i)
+                {
+                    Insert(node.m_children[i], model);
+                }
+            }
+        }
+    }
+
+    public static void Remove(OctreeNode node, Model3d model) 
+    {
+	    if (node.m_children == null) 
+        {
+// 		    std::vector<Model*>::iterator it = std::find(node->models.begin(), node->models.end(), model);
+// 		    if (it != node->models.end()) 
+//             {
+// 			    node->models.erase(it);
+// 		    }
+            node.m_models.Remove(model);
+	    }
+	    else 
+        {
+		    for (int i = 0; i < 8; ++i) 
+            {
+			    Remove(node.m_children[i], model);
+		    }
+	    }
+    }
+
+    public static void Update(OctreeNode node, Model3d model)
+    {
+        Remove(node, model);
+        Insert(node, model);
+    }
+
+    public static Model3d FindClosest(List<Model3d> set, Ray3d ray) 
+    {
+	    if (set.Count == 0) {
+		    return null;
+	    }
+
+	    Model3d closest = null;
+	    float closest_t = -1;
+
+	    for (int i = 0, size = set.Count; i < size; ++i) {
+		    float this_t = IntersectionTest3D.Ray3dWithModel3d(ray, set[i]);
+
+		    if (this_t < 0) {
+			    continue;
+		    }
+
+		    if (closest_t < 0 || this_t < closest_t) {
+			    closest_t = this_t;
+			    closest = set[i];
+		    }
+	    }
+
+	    return closest;
+    }
+
+    Model3d Raycast(OctreeNode node, Ray3d ray) 
+    {
+        IntersectionTest3D.RaycastResult raycast = new IntersectionTest3D.RaycastResult();
+        IntersectionTest3D.Ray3dWithAABB3d(node.m_bounds, ray, ref raycast);
+	    float t = raycast.m_t;
+
+	    if (t >= 0) 
+        {
+		    if (node.m_children == null) 
+            {
+			    return FindClosest(node.m_models, ray);
+		    }
+		    else 
+            {
+			    /*std::vector<Model*> results;*/
+                List<Model3d> results = new List<Model3d>();
+			    for (int i = 0; i < 8; ++i) 
+                {
+				    Model3d result = Raycast(node.m_children[i], ray);
+				    if (result != null) 
+                    {
+					    results.Add(result);
+				    }
+			    }
+			    return FindClosest(results, ray);
+		    }
+	    }
+
+	    return null;
+    }
 }
 
