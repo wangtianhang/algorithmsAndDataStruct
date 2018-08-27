@@ -74,6 +74,7 @@
     <Compile Include="3dMath\shape3D\AABB3d.cs" />
     <Compile Include="3dMath\shape3D\Line3d.cs" />
     <Compile Include="3dMath\shape3D\Mesh3d.cs" />
+    <Compile Include="3dMath\shape3D\Model3d.cs" />
     <Compile Include="3dMath\shape3D\OBB3d.cs" />
     <Compile Include="3dMath\shape3D\Point3d.cs" />
     <Compile Include="3dMath\shape3D\Segment3d.cs" />

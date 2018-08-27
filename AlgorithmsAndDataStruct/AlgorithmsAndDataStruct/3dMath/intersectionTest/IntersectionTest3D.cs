@@ -1065,6 +1065,62 @@ public class IntersectionTest3D
         return -1;
     }
 
+    public static bool Segment3dWithMesh3d(Mesh3d mesh, Segment3d segment)
+    {
+        if (mesh.m_accelerator == null)
+        {
+            for (int i = 0; i < mesh.m_triangleList.Count; ++i)
+            {
+                if (Segment3dWithTriangle3d(mesh.m_triangleList[i], segment))
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            //std::list<BVHNode*> toProcess;
+            //toProcess.push_front(mesh.accelerator);
+            List<Mesh3d.BVHNode> toProcess = new List<Mesh3d.BVHNode>();
+            toProcess.Add(mesh.m_accelerator);
+
+            // Recursivley walk the BVH tree
+            while (toProcess.Count != 0)
+            {
+                //BVHNode* iterator = *(toProcess.begin());
+                //toProcess.erase(toProcess.begin());
+                Mesh3d.BVHNode iterator = toProcess[0];
+                toProcess.RemoveAt(0);
+
+                if (iterator.m_triangles.Count >= 0)
+                {
+                    // Iterate trough all triangles of the node
+                    for (int i = 0; i < iterator.m_triangles.Count; ++i)
+                    {
+                        // Triangle indices in BVHNode index the mesh
+                        if (Segment3dWithTriangle3d(iterator.m_triangles[i], segment))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                if (iterator.m_children != null)
+                {
+                    for (int i = 8 - 1; i >= 0; --i)
+                    {
+                        // Only push children whos bounds intersect the test geometry
+                        if (Segment3dWithAABB3d(segment, iterator.m_children[i].m_bounds))
+                        {
+                            toProcess.Insert(0, iterator.m_children[i]);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static bool Mesh3dWithAABB3d(Mesh3d mesh, AABB3d aabb) 
     {
 	    if (mesh.m_accelerator == null) {
@@ -1112,6 +1168,33 @@ public class IntersectionTest3D
 		    }
 	    }
 	    return false;
+    }
+
+    public static float Ray3dWithModel3d(Ray3d ray, Model3d model)
+    {
+        Matrix4x4 obj2world = model.GetObj2WorldMatrix();
+        Matrix4x4 world2Obj = obj2world.inverse;
+        Ray3d local = new Ray3d(world2Obj * ray.m_rayOrigin, world2Obj * ray.m_rayDir /*貌似只有scale不变形的法线 才能这么变换*/);
+        //local.origin = MultiplyPoint(ray.origin, inv);
+        //local.direction = MultiplyVector(ray.direction, inv);
+        //local.NormalizeDirection();
+        if (model.GetMesh() != null)
+        {
+            return Ray3dWithMesh3d(model.GetMesh(), local);
+        }
+        return -1;
+    }
+
+    public static bool Segment3dWithModel3d(Segment3d segment, Model3d model)
+    {
+        Matrix4x4 obj2world = model.GetObj2WorldMatrix();
+        Matrix4x4 world2Obj = obj2world.inverse;
+        Segment3d local = new Segment3d(world2Obj * segment.m_point1, world2Obj * segment.m_point2);
+        if(model.GetMesh() != null)
+        {
+            return Segment3dWithMesh3d(model.GetMesh(), segment);
+        }
+        return false;
     }
 }
 
