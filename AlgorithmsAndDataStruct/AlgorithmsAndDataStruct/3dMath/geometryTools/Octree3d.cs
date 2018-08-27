@@ -158,5 +158,74 @@ public class Octree3d
 
 	    return null;
     }
+
+    public static List<Model3d> Query(OctreeNode node, Sphere3d sphere) 
+    {
+	    //std::vector<Model*> result;
+        List<Model3d> result = new List<Model3d>();
+
+	    if (IntersectionTest3D.Sphere3dWithAABB3d(sphere, node.m_bounds)) 
+        {
+		    if (node.m_children == null) {
+			    for (int i = 0, size = node.m_models.Count; i < size; ++i) 
+                {
+				    OBB3d bounds = node.m_models[i].GetOBB();
+                    if (IntersectionTest3D.Sphere3dWithObb3d(sphere, bounds))
+                    {
+					    result.Add(node.m_models[i]);
+				    }
+			    }
+		    }
+		    else 
+            {
+			    for (int i = 0; i < 8; ++i) 
+                {
+				    List<Model3d> child = Query(node.m_children[i], sphere);
+				    if (child.Count > 0) 
+                    {
+					    //result.insert(result.end(), child.begin(), child.end());
+                        result.AddRange(child);
+				    }
+			    }
+		    }
+	    }
+
+	    return result;
+    }
+
+    public static List<Model3d> Query(OctreeNode node, AABB3d aabb)
+    {
+        //std::vector<Model*> result;
+        List<Model3d> result = new List<Model3d>();
+
+        if (IntersectionTest3D.AABB3dWithAABB3d(aabb, node.m_bounds))
+        {
+            if (node.m_children == null)
+            {
+                for (int i = 0, size = node.m_models.Count; i < size; ++i)
+                {
+                    OBB3d bounds = node.m_models[i].GetOBB();
+                    if (IntersectionTest3D.AABB3dWithOBB3d(aabb, bounds))
+                    {
+                        result.Add(node.m_models[i]);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 8; ++i)
+                {
+                    List<Model3d> child = Query(node.m_children[i], aabb);
+                    if (child.Count > 0)
+                    {
+                        //result.insert(result.end(), child.begin(), child.end());
+                        result.AddRange(child);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 }
 
