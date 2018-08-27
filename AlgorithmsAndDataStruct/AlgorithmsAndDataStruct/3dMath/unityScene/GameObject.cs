@@ -20,13 +20,14 @@ public class MonoBehaviour : Behaviour
 
 class GameObject
 {
+    Transform m_transform = new Transform();
     List<Component> m_componentList = new List<Component>();
 
     public Transform transform
     {
         get 
-        { 
-            return GetComponent<Transform>(); 
+        {
+            return m_transform;
         }
     }
 

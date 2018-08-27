@@ -27,15 +27,15 @@ class Transform : Component
     }
 
     // 旋转转朝向
-    public static Vector3 GetForward(Quaternion rotation)
-    {
-        return rotation * Vector3.forward;
-    }
+//     public static Vector3 GetForward(Quaternion rotation)
+//     {
+//         return rotation * Vector3.forward;
+//     }
 
     // 朝向转旋转
-    public static Quaternion LookAt(Vector3 dir)
-    {
-        return Quaternion.LookRotation(dir, Vector3.up);
-    }
+//     public static Quaternion LookAt(Vector3 dir)
+//     {
+//         return Quaternion.LookRotation(dir, Vector3.up);
+//     }
 }
 
