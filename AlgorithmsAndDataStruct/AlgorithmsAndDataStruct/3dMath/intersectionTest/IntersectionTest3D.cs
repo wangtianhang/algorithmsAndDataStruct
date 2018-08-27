@@ -111,7 +111,7 @@ public class IntersectionTest3D
 //         return true;
 //     }
 
-    public bool Point3dWithOBB3d(Vector3 point, OBB3d obb)
+    public static bool Point3dWithOBB3d(Vector3 point, OBB3d obb)
     {
         Vector3 objMin = obb.GetAABBMin();
         Vector3 objMax = obb.GetAABBMax();
@@ -129,28 +129,28 @@ public class IntersectionTest3D
         return true;
     }
 
-    public bool Point3dWithPlane3d(Vector3 point, Plane3d plane)
+    public static bool Point3dWithPlane3d(Vector3 point, Plane3d plane)
     {
         // 根据3d平面定义
         float dot = Vector3.Dot(plane.m_planeOnePoint - point, plane.m_planeNormal);
         return Mathf.Approximately(dot, 0);
     }
 
-    public bool Point3dWithLine3d(Vector3 point, Line3d line)
+    public static bool Point3dWithLine3d(Vector3 point, Line3d line)
     {
         Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithLine3d(point, line);
         float distanceSq = (closestPoint - point).sqrMagnitude;
         return Mathf.Approximately(distanceSq, 0);
     }
 
-    public bool Point3dWithSegment3d(Vector3 point, Segment3d segment)
+    public static bool Point3dWithSegment3d(Vector3 point, Segment3d segment)
     {
         Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithSegment3d(point, segment);
         float distanceSq = (closestPoint - point).sqrMagnitude;
         return Mathf.Approximately(distanceSq, 0);
     }
 
-    public bool Point3dWithRay3d(Vector3 point, Ray3d ray)
+    public static bool Point3dWithRay3d(Vector3 point, Ray3d ray)
     {
         if(point == ray.m_rayOrigin)
         {
@@ -162,25 +162,25 @@ public class IntersectionTest3D
         return Mathf.Approximately(diff, 1);
     }
 
-    public bool Sphere3dWithAABB3d(Sphere3d sphere, AABB3d aabb)
+    public static bool Sphere3dWithAABB3d(Sphere3d sphere, AABB3d aabb)
     {
         Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithAABB3d(sphere.m_pos, aabb);
         return (sphere.m_pos - closestPoint).magnitude <= sphere.m_radius;
     }
 
-    public bool Sphere3dWithObb3d(Sphere3d sphere, OBB3d obb)
+    public static bool Sphere3dWithObb3d(Sphere3d sphere, OBB3d obb)
     {
         Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithOBB3d(sphere.m_pos, obb);
         return (sphere.m_pos - closestPoint).magnitude <= sphere.m_radius;
     }
 
-    public bool Sphere3dWithPlane3d(Sphere3d sphere, Plane3d plane)
+    public static bool Sphere3dWithPlane3d(Sphere3d sphere, Plane3d plane)
     {
         Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithPlane3d(sphere.m_pos, plane);
         return (sphere.m_pos - closestPoint).magnitude <= sphere.m_radius;
     }
 
-    public bool AABB3dWithAABB3d(AABB3d aabb1, AABB3d aabb2)
+    public static bool AABB3dWithAABB3d(AABB3d aabb1, AABB3d aabb2)
     {
         Vector3 aMin = aabb1.GetMin();
         Vector3 aMax = aabb1.GetMax();
@@ -998,6 +998,120 @@ public class IntersectionTest3D
 	    float t = result.m_t;
 
 	    return t >= 0 && t * t <= segment.GetLengthSqr();
+    }
+
+    public static float Ray3dWithMesh3d(Mesh3d mesh, Ray3d ray)
+    {
+        if (mesh.m_accelerator == null)
+        {
+            for (int i = 0; i < mesh.m_triangleList.Count; ++i)
+            {
+                RaycastResult raycast = new RaycastResult();
+                Ray3dWithTriangle3d(mesh.m_triangleList[i], ray, ref raycast);
+                float result = raycast.m_t;
+                if (result >= 0)
+                {
+                    return result;
+                }
+            }
+        }
+        else
+        {
+            //std::list<BVHNode*> toProcess;
+            //toProcess.push_front(mesh.accelerator);
+            List<Mesh3d.BVHNode> toProcess = new List<Mesh3d.BVHNode>();
+            toProcess.Add(mesh.m_accelerator);
+
+            // Recursivley walk the BVH tree
+            while (toProcess.Count != 0)
+            {
+                //BVHNode* iterator = *(toProcess.begin());
+                //toProcess.erase(toProcess.begin());
+                Mesh3d.BVHNode iterator = toProcess[0];
+                toProcess.RemoveAt(0);
+
+                if (iterator.m_triangles.Count >= 0)
+                {
+                    // Iterate trough all triangles of the node
+                    for (int i = 0; i < iterator.m_triangles.Count; ++i)
+                    {
+                        // Triangle indices in BVHNode index the mesh
+                        RaycastResult raycast = new RaycastResult();
+                        Ray3dWithTriangle3d(iterator.m_triangles[i], ray, ref raycast);
+                        float r = raycast.m_t;
+                        if (r >= 0)
+                        {
+                            return r;
+                        }
+                    }
+                }
+
+                if (iterator.m_children != null)
+                {
+                    for (int i = 8 - 1; i >= 0; --i)
+                    {
+                        // Only push children whos bounds intersect the test geometry
+                        RaycastResult raycast = new RaycastResult();
+                        Ray3dWithAABB3d(iterator.m_children[i].m_bounds, ray, ref raycast);
+                        if (raycast.m_t >= 0)
+                        {
+                            //toProcess.push_front(&iterator->children[i]);
+                            toProcess.Insert(0, iterator.m_children[i]);
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static bool Mesh3dWithAABB3d(Mesh3d mesh, AABB3d aabb) 
+    {
+	    if (mesh.m_accelerator == null) {
+		    for (int i = 0; i < mesh.m_triangleList.Count; ++i) {
+                if (Triangle3dWithAABB3d(mesh.m_triangleList[i], aabb))
+                {
+				    return true;
+			    }
+		    }
+	    }
+	    else {
+		    //std::list<BVHNode*> toProcess;
+		    //toProcess.push_front(mesh.accelerator);
+            List<Mesh3d.BVHNode> toProcess = new List<Mesh3d.BVHNode>();
+            toProcess.Add(mesh.m_accelerator);
+
+		    // Recursivley walk the BVH tree
+            while (toProcess.Count != 0)
+            {
+			    //BVHNode* iterator = *(toProcess.begin());
+			    //toProcess.erase(toProcess.begin());
+                Mesh3d.BVHNode iterator = toProcess[0];
+                toProcess.RemoveAt(0);
+
+			    if (iterator.m_triangles.Count >= 0) {
+				    // Iterate trough all triangles of the node
+				    for (int i = 0; i < iterator.m_triangles.Count; ++i) {
+					    // Triangle indices in BVHNode index the mesh
+                        if (Triangle3dWithAABB3d(iterator.m_triangles[i], aabb))
+                        {
+						    return true;
+					    }
+				    }
+			    }
+
+			    if (iterator.m_children != null) {
+				    for (int i = 8 - 1; i >= 0; --i) {
+					    // Only push children whos bounds intersect the test geometry
+                        if (AABB3dWithAABB3d(iterator.m_children[i].m_bounds, aabb))
+                        {
+						    toProcess.Insert(0, iterator.m_children[i]);
+					    }
+				    }
+			    }
+		    }
+	    }
+	    return false;
     }
 }
 

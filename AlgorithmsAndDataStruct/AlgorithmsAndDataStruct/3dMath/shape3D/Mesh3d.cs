@@ -12,7 +12,7 @@ public class Mesh3d
     }
 
     public List<Triangle3d> m_triangleList = new List<Triangle3d>();
-    BVHNode m_accelerator = null;
+    public BVHNode m_accelerator = null;
     //public Vector3[] vertices = null;
 
     public Mesh3d(List<Triangle3d> triangleList)
