@@ -7,6 +7,8 @@ public class Scene3d
 {
     List<Model3d> m_modleList = new List<Model3d>();
 
+    OctreeNode m_octree;
+
     public void AddModel(Model3d model)
     {
         if(m_modleList.Contains(model))
@@ -41,6 +43,11 @@ public class Scene3d
 
     public Model3d Raycast(Ray3d ray)
     {
+        if (m_octree != null) {
+		    // :: lets the compiler know to look outside class scope
+            return Octree3d.Raycast(m_octree, ray);
+	    }
+
         Model3d result = null;
         float result_t = -1;
 
@@ -64,6 +71,12 @@ public class Scene3d
 
     public List<Model3d> Query(Sphere3d sphere)
     {
+        if (m_octree != null)
+        {
+            // :: lets the compiler know to look outside class scope
+            return Octree3d.Query(m_octree, sphere);
+        }
+
         List<Model3d> result = new List<Model3d>();
         for (int i = 0, size = m_modleList.Count; i < size; ++i)
         {
@@ -78,6 +91,12 @@ public class Scene3d
 
     public List<Model3d> Query(AABB3d aabb)
     {
+        if (m_octree != null)
+        {
+            // :: lets the compiler know to look outside class scope
+            return Octree3d.Query(m_octree, aabb);
+        }
+
         List<Model3d> result = new List<Model3d>();
         for (int i = 0, size = m_modleList.Count; i < size; ++i)
         {
@@ -88,6 +107,29 @@ public class Scene3d
             }
         }
         return result;
+    }
+
+    bool Accelerate(Vector3 position, float size) 
+    {
+	    if (m_octree != null) {
+		    return false;
+	    }
+
+	    Vector3 min = new Vector3(position.x - size, position.y - size, position.z - size);
+        Vector3 max = new Vector3(position.x + size, position.y + size, position.z + size);
+
+	    // Construct tree root
+        m_octree = new OctreeNode();
+        m_octree.m_bounds = Mesh3d.FromMinMax(min, max);
+        m_octree.m_children = null;
+        for (int i = 0, size2 = m_modleList.Count; i < size2; ++i)
+        {
+            m_octree.m_models.Add(m_modleList[i]);
+	    }
+
+	    // Create tree
+        Octree3d.SplitTree(m_octree, 5);
+	    return true;
     }
 }
 

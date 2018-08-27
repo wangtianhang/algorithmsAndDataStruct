@@ -128,7 +128,7 @@ public class Octree3d
 	    return closest;
     }
 
-    Model3d Raycast(OctreeNode node, Ray3d ray) 
+    public static Model3d Raycast(OctreeNode node, Ray3d ray) 
     {
         IntersectionTest3D.RaycastResult raycast = new IntersectionTest3D.RaycastResult();
         IntersectionTest3D.Ray3dWithAABB3d(node.m_bounds, ray, ref raycast);
