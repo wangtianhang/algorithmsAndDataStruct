@@ -83,6 +83,7 @@
     <Compile Include="3dMath\Trigonometry.cs" />
     <Compile Include="3dMath\shape3D\Plane3d.cs" />
     <Compile Include="3dMath\shape3D\Ray3d.cs" />
+    <Compile Include="3dMath\unityScene\MeshFilter.cs" />
     <Compile Include="Other\Coroutine.cs" />
     <Compile Include="3dMath\unityScene\GameObject.cs" />
     <Compile Include="3dMath\unityMath\Mathf.cs" />

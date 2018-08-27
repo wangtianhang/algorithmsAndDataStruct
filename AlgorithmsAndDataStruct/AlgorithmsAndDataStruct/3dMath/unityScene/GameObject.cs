@@ -31,6 +31,14 @@ class GameObject
         }
     }
 
+    public MeshFilter meshFilter
+    {
+        get
+        {
+            return GetComponent<MeshFilter>();
+        }
+    }
+
     public T AddComponent<T>() where T : Component
     {
         T ret = default(T);

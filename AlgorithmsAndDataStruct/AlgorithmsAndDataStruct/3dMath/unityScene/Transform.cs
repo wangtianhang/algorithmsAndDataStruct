@@ -10,13 +10,23 @@ using System.Text;
 
 class Transform : Component
 {
-    Vector3 m_position;
+    Vector3 m_position = Vector3.zero;
 
     //Vector3 m_localScale;
 
-    Quaternion m_rotation;
+    Quaternion m_rotation = Quaternion.identity;
 
-    Vector3 m_scale;
+    Vector3 m_scale = Vector3.one;
+
+    Transform m_parent = null;
+
+    public Transform parent
+    {
+        get
+        {
+            return m_parent;
+        }
+    }
 
     public Matrix4x4 localToWorldMatrix
     {
