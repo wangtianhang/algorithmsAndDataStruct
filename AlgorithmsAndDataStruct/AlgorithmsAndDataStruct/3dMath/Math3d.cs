@@ -20,7 +20,15 @@ public class Math3d
 
     }
 
-
+    /// <summary>
+    /// 从矩阵中提取position分量
+    /// </summary>
+    /// <param name="m"></param>
+    /// <returns></returns>
+    public static Vector3 GetPositionFromMatrix(Matrix4x4 m)
+    {
+        return m.GetColumn(3);
+    }
 
     //public const float Deg2Rad = 0.0174533f;
     //public const float Rad2Deg = 57.2958f;

@@ -24,5 +24,15 @@ class RotateHelper
     {
         return Quaternion.LookRotation(dir, Vector3.up);
     }
+
+    /// <summary>
+    /// 从矩阵中提取Quaternion
+    /// </summary>
+    /// <param name="m"></param>
+    /// <returns></returns>
+    public static Quaternion GetRotationFromMatrix(Matrix4x4 m)
+    {
+        return Quaternion.LookRotation(m.GetColumn(2), m.GetColumn(1));
+    }
 }
 

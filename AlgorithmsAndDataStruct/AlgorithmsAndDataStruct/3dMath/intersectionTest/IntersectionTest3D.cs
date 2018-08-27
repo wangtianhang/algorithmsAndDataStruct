@@ -311,6 +311,13 @@ public class IntersectionTest3D
 	    return ((b.min <= a.max) && (a.min <= b.max));
     }
 
+    static bool OverlapOnAxis(AABB3d aabb, OBB3d obb, Vector3 axis) 
+    {
+	    Interval a = GetInterval(aabb, axis);
+	    Interval b = GetInterval(obb, axis);
+	    return ((b.min <= a.max) && (a.min <= b.max));
+    }
+
     public static bool OBB3dWithOBB3d(OBB3d obb1, OBB3d obb2) {
 	    float[] o1 = obb1.GetOrientationMatrixAsArray();
 	    float[] o2 = obb2.GetOrientationMatrixAsArray();
@@ -416,6 +423,37 @@ public class IntersectionTest3D
 
 	    for (int i = 0; i < 13; ++i) {
 		    if (!OverlapOnAxis(a, t, test[i])) {
+			    return false; // Seperating axis found
+		    }
+	    }
+
+	    return true; // Seperating axis not found
+    }
+
+    public static bool AABB3dWithOBB3d(AABB3d aabb, OBB3d obb)
+    {
+        float[] o = obb.GetOrientationMatrixAsArray();
+
+	    Vector3[] test2 = {
+		    new Vector3(1, 0, 0), // AABB axis 1
+		    new Vector3(0, 1, 0), // AABB axis 2
+		    new Vector3(0, 0, 1), // AABB axis 3
+		    new Vector3(o[0], o[1], o[2]),
+		    new Vector3(o[3], o[4], o[5]),
+		    new Vector3(o[6], o[7], o[8])
+	    };
+
+        Vector3[] test = new Vector3[15];
+        Array.Copy(test2, test, test2.Length);
+
+	    for (int i = 0; i < 3; ++i) { // Fill out rest of axis
+            test[6 + i * 3 + 0] = Vector3.Cross(test[i], test[0]);
+            test[6 + i * 3 + 1] = Vector3.Cross(test[i], test[1]);
+            test[6 + i * 3 + 2] = Vector3.Cross(test[i], test[2]);
+	    }
+
+	    for (int i = 0; i < 15; ++i) {
+		    if (!OverlapOnAxis(aabb, obb, test[i])) {
 			    return false; // Seperating axis found
 		    }
 	    }
@@ -1226,6 +1264,62 @@ public class IntersectionTest3D
         return false;
     }
 
+    public static bool Mesh3dWithOBB3d(Mesh3d mesh, OBB3d obb)
+    {
+        if (mesh.m_accelerator == null)
+        {
+            for (int i = 0; i < mesh.m_triangleList.Count; ++i)
+            {
+                if (Triangle3dWithOBB3d(mesh.m_triangleList[i], obb))
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            //std::list<BVHNode*> toProcess;
+            //toProcess.push_front(mesh.accelerator);
+            List<Mesh3d.BVHNode> toProcess = new List<Mesh3d.BVHNode>();
+            toProcess.Add(mesh.m_accelerator);
+
+            // Recursivley walk the BVH tree
+            while (toProcess.Count != 0)
+            {
+                //BVHNode* iterator = *(toProcess.begin());
+                //toProcess.erase(toProcess.begin());
+                Mesh3d.BVHNode iterator = toProcess[0];
+                toProcess.RemoveAt(0);
+
+                if (iterator.m_triangles.Count >= 0)
+                {
+                    // Iterate trough all triangles of the node
+                    for (int i = 0; i < iterator.m_triangles.Count; ++i)
+                    {
+                        // Triangle indices in BVHNode index the mesh
+                        if (Triangle3dWithOBB3d(iterator.m_triangles[i], obb))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                if (iterator.m_children != null)
+                {
+                    for (int i = 8 - 1; i >= 0; --i)
+                    {
+                        // Only push children whos bounds intersect the test geometry
+                        if (AABB3dWithOBB3d(iterator.m_children[i].m_bounds, obb))
+                        {
+                            toProcess.Insert(0, iterator.m_children[i]);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static float Ray3dWithModel3d(Ray3d ray, Model3d model)
     {
         Matrix4x4 obj2world = model.GetObj2WorldMatrix();
@@ -1262,6 +1356,32 @@ public class IntersectionTest3D
         if (model.GetMesh() != null)
         {
             return Mesh3dWithSphere3d(model.GetMesh(), local);
+        }
+        return false;
+    }
+
+    public static bool Model3dWithAABB3d(Model3d model, AABB3d aabb)
+    {
+        Matrix4x4 obj2world = model.GetObj2WorldMatrix();
+        Matrix4x4 world2Obj = obj2world.inverse;
+        Quaternion roation = RotateHelper.GetRotationFromMatrix(world2Obj);
+        OBB3d local = new OBB3d(world2Obj * aabb.m_pos, roation, aabb.m_xLength, aabb.m_yLength, aabb.m_zLength);
+        if(model.GetMesh() != null)
+        {
+            return Mesh3dWithOBB3d(model.GetMesh(), local);
+        }
+        return false;
+    }
+
+    public static bool Model3dWithOBB3d(Model3d model, OBB3d obb)
+    {
+        Matrix4x4 obj2world = model.GetObj2WorldMatrix();
+        Matrix4x4 world2Obj = obj2world.inverse;
+        Quaternion roation =  obb.m_rotation * RotateHelper.GetRotationFromMatrix(world2Obj);
+        OBB3d local = new OBB3d(world2Obj * obb.m_pos, roation, obb.m_xLength, obb.m_yLength, obb.m_zLength);
+        if (model.GetMesh() != null)
+        {
+            return Mesh3dWithOBB3d(model.GetMesh(), local);
         }
         return false;
     }
