@@ -1388,6 +1388,62 @@ public class IntersectionTest3D
         return false;
     }
 
+    public static bool Mesh3dWithTriangle3d(Mesh3d mesh, Triangle3d triangle)
+    {
+        if (mesh.m_accelerator == null)
+        {
+            for (int i = 0; i < mesh.m_triangleList.Count; ++i)
+            {
+                if (Triangle3dWithTriangle3d(mesh.m_triangleList[i], triangle))
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            //std::list<BVHNode*> toProcess;
+            //toProcess.push_front(mesh.accelerator);
+            List<Mesh3d.BVHNode> toProcess = new List<Mesh3d.BVHNode>();
+            toProcess.Add(mesh.m_accelerator);
+
+            // Recursivley walk the BVH tree
+            while (toProcess.Count != 0)
+            {
+                //BVHNode* iterator = *(toProcess.begin());
+                //toProcess.erase(toProcess.begin());
+                Mesh3d.BVHNode iterator = toProcess[0];
+                toProcess.RemoveAt(0);
+
+                if (iterator.m_triangles.Count >= 0)
+                {
+                    // Iterate trough all triangles of the node
+                    for (int i = 0; i < iterator.m_triangles.Count; ++i)
+                    {
+                        // Triangle indices in BVHNode index the mesh
+                        if (Triangle3dWithTriangle3d(iterator.m_triangles[i], triangle))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                if (iterator.m_children != null)
+                {
+                    for (int i = 8 - 1; i >= 0; --i)
+                    {
+                        // Only push children whos bounds intersect the test geometry
+                        if (Triangle3dWithAABB3d(triangle, iterator.m_children[i].m_bounds))
+                        {
+                            toProcess.Insert(0, iterator.m_children[i]);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static float Ray3dWithModel3d(Ray3d ray, Model3d model)
     {
         Matrix4x4 obj2world = model.GetObj2WorldMatrix();
@@ -1465,6 +1521,18 @@ public class IntersectionTest3D
             return Mesh3dWithPlane3d(model.GetMesh(), local);
 	    }
 	    return false;
+    }
+
+    public static bool ModelTriangle(Model3d model, Triangle3d triangle) 
+    {
+        Matrix4x4 obj2world = model.GetObj2WorldMatrix();
+        Matrix4x4 world2Obj = obj2world.inverse;
+        Triangle3d local = new Triangle3d(world2Obj * triangle.m_point0, world2Obj * triangle.m_point1, world2Obj * triangle.m_point2);
+        if (model.GetMesh() != null)
+        {
+            return Mesh3dWithTriangle3d(model.GetMesh(), local);
+        }
+        return false;
     }
 }
 

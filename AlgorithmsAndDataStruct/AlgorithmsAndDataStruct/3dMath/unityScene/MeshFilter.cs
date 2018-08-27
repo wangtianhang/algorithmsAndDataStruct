@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class MeshFilter : Component
+public class MeshFilter : Component
 {
     Mesh3d m_mesh3d = null;
 

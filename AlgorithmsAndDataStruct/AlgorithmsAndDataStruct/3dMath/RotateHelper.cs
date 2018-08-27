@@ -33,6 +33,6 @@ class RotateHelper
     public static Quaternion GetRotationFromMatrix(Matrix4x4 m)
     {
         return Quaternion.LookRotation(m.GetColumn(2), m.GetColumn(1));
-    }
+     }
 }
 

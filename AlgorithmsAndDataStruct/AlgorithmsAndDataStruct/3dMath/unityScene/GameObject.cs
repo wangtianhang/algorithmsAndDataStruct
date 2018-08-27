@@ -18,7 +18,7 @@ public class MonoBehaviour : Behaviour
 }
 
 
-class GameObject
+public class GameObject
 {
     Transform m_transform = new Transform();
     List<Component> m_componentList = new List<Component>();

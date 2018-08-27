@@ -30,6 +30,17 @@ public class Math3d
         return m.GetColumn(3);
     }
 
+    /// <summary>
+    /// 从矩阵中提取scale分量
+    /// </summary>
+    /// <param name="m"></param>
+    /// <returns></returns>
+    public static Vector3 GetScaleFromMatrix(Matrix4x4 m)
+    {
+        return new Vector3
+             (m.GetColumn(0).magnitude, m.GetColumn(1).magnitude, m.GetColumn(2).magnitude);
+    }
+
     //public const float Deg2Rad = 0.0174533f;
     //public const float Rad2Deg = 57.2958f;
 

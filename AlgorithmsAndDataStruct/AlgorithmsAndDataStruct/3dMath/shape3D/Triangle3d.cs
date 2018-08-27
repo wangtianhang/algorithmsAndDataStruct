@@ -4,6 +4,13 @@ using System.Text;
 
 public class Triangle3d
 {
+    public Triangle3d(Vector3 pos0, Vector3 pos1, Vector3 pos2)
+    {
+        m_point0 = pos0;
+        m_point1 = pos1;
+        m_point2 = pos2;
+    }
+
     public Vector3 m_point0;
     public Vector3 m_point1;
     public Vector3 m_point2;
