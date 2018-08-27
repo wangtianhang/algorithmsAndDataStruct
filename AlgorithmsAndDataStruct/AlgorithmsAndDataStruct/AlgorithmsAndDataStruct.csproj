@@ -56,6 +56,7 @@
     <Compile Include="3dMath\FixPoint\Vector3L.cs" />
     <Compile Include="3dMath\FixPoint\Vector4L.cs" />
     <Compile Include="3dMath\geometryTools\Distance3d.cs" />
+    <Compile Include="3dMath\geometryTools\Scene3d.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest2D.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest3D.cs" />
     <Compile Include="3dMath\Math2d.cs" />

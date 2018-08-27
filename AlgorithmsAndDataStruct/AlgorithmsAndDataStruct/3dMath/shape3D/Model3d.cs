@@ -8,6 +8,8 @@ public class Model3d
     public Vector3 m_pos;
     public Quaternion m_rotation = Quaternion.identity;
 
+    public Model3d m_parent = null;
+
     Mesh3d m_mesh3d;
 
     public Mesh3d GetMesh()

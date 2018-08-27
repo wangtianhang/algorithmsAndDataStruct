@@ -1523,7 +1523,7 @@ public class IntersectionTest3D
 	    return false;
     }
 
-    public static bool ModelTriangle(Model3d model, Triangle3d triangle) 
+    public static bool Model3dWithTriangle3d(Model3d model, Triangle3d triangle) 
     {
         Matrix4x4 obj2world = model.GetObj2WorldMatrix();
         Matrix4x4 world2Obj = obj2world.inverse;
