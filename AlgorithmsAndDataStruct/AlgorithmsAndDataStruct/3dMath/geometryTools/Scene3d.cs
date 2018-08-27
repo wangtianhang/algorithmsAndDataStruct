@@ -76,9 +76,18 @@ public class Scene3d
         return result;
     }
 
-//     public List<Model3d> Query(AABB3d aabb)
-//     {
-//         return null;
-//     }
+    public List<Model3d> Query(AABB3d aabb)
+    {
+        List<Model3d> result = new List<Model3d>();
+        for (int i = 0, size = m_modleList.Count; i < size; ++i)
+        {
+            OBB3d bounds = m_modleList[i].GetOBB();
+            if (IntersectionTest3D.AABB3dWithOBB3d(aabb, bounds))
+            {
+                result.Add(m_modleList[i]);
+            }
+        }
+        return result;
+    }
 }
 

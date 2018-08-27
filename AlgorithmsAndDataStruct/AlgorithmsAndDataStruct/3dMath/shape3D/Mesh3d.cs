@@ -91,16 +91,16 @@ public class Mesh3d
 			    node.m_children = new BVHNode[8];
 
 			    Vector3 c = node.m_bounds.m_pos;
-			    Vector3 e = node.m_bounds.GetHalfSize();
+			    Vector3 e = node.m_bounds.GetHalfSize() * 0.5f;
 
-			    node.m_children[0].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, -e.z), e);
-			    node.m_children[1].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, -e.z), e);
-			    node.m_children[2].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, +e.z), e);
-			    node.m_children[3].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, +e.z), e);
-			    node.m_children[4].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, -e.z), e);
-			    node.m_children[5].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, -e.z), e);
-			    node.m_children[6].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, +e.z), e);
-			    node.m_children[7].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, +e.z), e);
+                node.m_children[0].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[1].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[2].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[3].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[4].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[5].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[6].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[7].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
 
 		    }
 	    }
