@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="3dMath\ConvexHull.cs" />
     <Compile Include="3dMath\Fix64\Fix64.cs" />
+    <Compile Include="3dMath\Fix64\Fix64Math.cs" />
     <Compile Include="3dMath\Fix64\Fix64SinLut.cs" />
     <Compile Include="3dMath\Fix64\Fix64TanLut.cs" />
     <Compile Include="3dMath\FixPoint\FixPointMath.cs" />

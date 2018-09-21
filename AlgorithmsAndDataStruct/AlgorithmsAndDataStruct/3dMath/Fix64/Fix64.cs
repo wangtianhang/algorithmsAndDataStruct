@@ -922,34 +922,34 @@ namespace FixMath.NET
 
 
 
-        public static explicit operator Fix64(long value)
-        {
-            return new Fix64(value * ONE);
-        }
+//         public static explicit operator Fix64(long value)
+//         {
+//             return new Fix64(value * ONE);
+//         }
         public static explicit operator long(Fix64 value)
         {
             return value.m_rawValue >> FRACTIONAL_PLACES;
         }
-        public static explicit operator Fix64(float value)
-        {
-            return new Fix64((long)(value * ONE));
-        }
+//         public static explicit operator Fix64(float value)
+//         {
+//             return new Fix64((long)(value * ONE));
+//         }
         public static explicit operator float(Fix64 value)
         {
             return (float)value.m_rawValue / ONE;
         }
-        public static explicit operator Fix64(double value)
-        {
-            return new Fix64((long)(value * ONE));
-        }
+//         public static explicit operator Fix64(double value)
+//         {
+//             return new Fix64((long)(value * ONE));
+//         }
         public static explicit operator double(Fix64 value)
         {
             return (double)value.m_rawValue / ONE;
         }
-        public static explicit operator Fix64(decimal value)
-        {
-            return new Fix64((long)(value * ONE));
-        }
+//         public static explicit operator Fix64(decimal value)
+//         {
+//             return new Fix64((long)(value * ONE));
+//         }
         public static explicit operator decimal(Fix64 value)
         {
             return (decimal)value.m_rawValue / ONE;
@@ -1082,6 +1082,24 @@ namespace FixMath.NET
         public Fix64(int value)
         {
             m_rawValue = value * ONE;
+        }
+
+        public static implicit operator Fix64(int n)
+        {
+            Fix64 ret = new Fix64(n);
+            return ret;
+        }
+
+        public static implicit operator Fix64(float n)
+        {
+            Fix64 ret = (Fix64)(n);
+            return ret;
+        }
+
+        public static implicit operator Fix64(double n)
+        {
+            Fix64 ret = (Fix64)(n);
+            return ret;
         }
     }
 }
