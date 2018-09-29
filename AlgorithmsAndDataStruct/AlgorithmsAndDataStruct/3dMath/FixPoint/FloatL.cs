@@ -113,7 +113,8 @@ namespace FixPoint
 
         public float ToFloat()
         {
-            return (float)m_numerator / (float)m_denominator;
+            // 据说各平台double降级为float会比较一致 有待实际测试
+            return (float)((double)m_numerator / (double)m_denominator);
         }
 
         public double ToDouble()
