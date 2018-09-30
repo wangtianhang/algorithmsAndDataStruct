@@ -11,7 +11,7 @@ namespace FixPoint
         public const Int32 MinValue = -2147483648;
 
         public long m_numerator; // 分子
-        public const long m_denominator = 100000L;
+        public const long m_denominator = 1000L;
         public FloatL(float a)
         {
             m_numerator = (long)(a * m_denominator);
