@@ -9,7 +9,7 @@ class Math2d
     /// 三点确定一个圆
     /// </summary>
     /// <returns></returns>
-    public Circle2d ThreePointCalculateCircle(Vector2 pt1, Vector2 pt2, Vector2 pt3)
+    public bool ThreePointCalculateCircle(Vector2 pt1, Vector2 pt2, Vector2 pt3, ref Circle2d result)
     {
         //Tuple<Vector2, double> ret = new Tuple<Vector2, double>();
 
@@ -30,13 +30,14 @@ class Math2d
         if (Math.Abs(det) < 1e-5)
         {
             //ret.Item2 = -1f;
-            return null;
+            return false;
         }
 
         double x0 = -(d * e - b * f) / det;
         double y0 = -(a * f - c * e) / det;
         double radius = Math.Sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
-        return new Circle2d(new Vector2((float)x0, (float)y0), (float)radius);
+        result = new Circle2d(new Vector2((float)x0, (float)y0), (float)radius);
+        return true;
     }
 
     /// <summary>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-public class Plane3d
+public struct Plane3d
 {
     public Plane3d(Vector3 normal, Vector3 point)
     {

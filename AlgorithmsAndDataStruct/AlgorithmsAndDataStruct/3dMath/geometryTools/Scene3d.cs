@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using UnityEngine;
 
 public class Scene3d
 {
@@ -130,6 +130,69 @@ public class Scene3d
 	    // Create tree
         Octree3d.SplitTree(m_octree, 5);
 	    return true;
+    }
+
+    public List<Model3d> CullByFrustum(Plane3d[] planeArray)
+    {
+        List<Model3d> result = new List<Model3d>();
+        foreach(var iter in m_modleList)
+        {
+            iter.m_cullFlag = false;
+        }
+
+        if(m_octree == null)
+        {
+            foreach(var iter in m_modleList)
+            {
+                OBB3d bounds = iter.GetOBB();
+                if(IntersectionTest3D.Frustum3dWithOBB3d(planeArray, bounds))
+                {
+                    result.Add(iter);
+                }
+            }
+        }
+        else
+        {
+            List<OctreeNode> nodes = new List<OctreeNode>();
+            nodes.Add(m_octree);
+
+            while(nodes.Count > 0)
+            {
+                OctreeNode active = nodes[0];
+                nodes.RemoveAt(0);
+
+                if(active.m_children != null)
+                {
+                    // Has child nodes
+                    for(int i = 0; i < 8; ++i)
+                    {
+                        AABB3d bounds = active.m_children[i].m_bounds;
+                        if(IntersectionTest3D.Frustum3dWithAABB3d(planeArray, bounds))
+                        {
+                            nodes.Add(active.m_children[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    // Is leaf node
+                    for(int i = 0; i < active.m_models.Count; ++i)
+                    {
+                        if(!active.m_models[i].m_cullFlag)
+                        {
+                            OBB3d bounds = active.m_models[i].GetOBB();
+                            if(IntersectionTest3D.Frustum3dWithOBB3d(planeArray, bounds))
+                            {
+                                active.m_models[i].m_cullFlag = true;
+                                result.Add(active.m_models[i]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }
 

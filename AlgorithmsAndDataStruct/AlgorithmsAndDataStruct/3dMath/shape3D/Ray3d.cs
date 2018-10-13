@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-public class Ray3d
+public struct Ray3d
 {
     public Ray3d(Vector3 origin, Vector3 dir)
     {

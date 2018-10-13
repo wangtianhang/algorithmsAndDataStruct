@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 public class Mesh3d
 {
     public class BVHNode
     {
-        public AABB3d m_bounds = null;
+        public AABB3d m_bounds;
         public BVHNode[] m_children = null;
         public List<Triangle3d> m_triangles = new List<Triangle3d>();
     }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-public class Circle2d
+public struct Circle2d
 {
     public Circle2d(Vector2 pos, float radius)
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-public class Triangle3d
+public struct Triangle3d
 {
     public Triangle3d(Vector3 pos0, Vector3 pos1, Vector3 pos2)
     {

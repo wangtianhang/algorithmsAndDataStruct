@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-public class Segment3d
+public struct Segment3d
 {
     public Segment3d(Vector3 point1, Vector3 point2)
     {

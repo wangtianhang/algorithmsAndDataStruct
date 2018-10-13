@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-public class OBB3d
+public struct OBB3d
 {
     public Vector3 m_pos;
-    public Quaternion m_rotation = Quaternion.identity;
+    public Quaternion m_rotation;
     public float m_xLength;
     public float m_yLength;
     public float m_zLength;

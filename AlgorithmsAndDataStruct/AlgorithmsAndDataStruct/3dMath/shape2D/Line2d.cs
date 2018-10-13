@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using UnityEngine;
 
 // class Line2d
 // {
@@ -16,7 +16,7 @@ using System.Text;
 //     }
 // }
 
-public class Line2d
+public struct Line2d
 {
     public Vector2 m_point1;
     public Vector2 m_point2;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-public class AABB3d
+public struct AABB3d
 {
     public AABB3d(Vector3 pos, Vector3 size)
     {

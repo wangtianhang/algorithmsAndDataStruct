@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
+namespace UnityEngine
+{
+
+}
+
 public class Component
 {
 

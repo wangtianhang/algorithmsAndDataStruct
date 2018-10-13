@@ -92,6 +92,16 @@
     <Compile Include="3dMath\shape3D\Ray3d.cs" />
     <Compile Include="3dMath\unityMath\Matrix4x4Ext.cs" />
     <Compile Include="3dMath\unityScene\MeshFilter.cs" />
+    <Compile Include="3dMath\VMath\AcosLookupTable.cs" />
+    <Compile Include="3dMath\VMath\Atan2LookupTable.cs" />
+    <Compile Include="3dMath\VMath\IntMath.cs" />
+    <Compile Include="3dMath\VMath\SinCosLookupTable.cs" />
+    <Compile Include="3dMath\VMath\VFactor.cs" />
+    <Compile Include="3dMath\VMath\VInt.cs" />
+    <Compile Include="3dMath\VMath\VInt2.cs" />
+    <Compile Include="3dMath\VMath\VInt3.cs" />
+    <Compile Include="3dMath\VMath\VLine.cs" />
+    <Compile Include="3dMath\VMath\VRect.cs" />
     <Compile Include="Other\Coroutine.cs" />
     <Compile Include="3dMath\unityScene\GameObject.cs" />
     <Compile Include="3dMath\unityMath\Mathf.cs" />

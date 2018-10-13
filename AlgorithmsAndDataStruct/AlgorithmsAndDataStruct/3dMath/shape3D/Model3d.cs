@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using UnityEngine;
 
 public class Model3d
 {
@@ -12,6 +12,8 @@ public class Model3d
 
     Mesh3d m_mesh3d;
     AABB3d m_aabb;
+
+    public bool m_cullFlag = false;
 
     public void SetContent(Mesh3d mesh)
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-class AARectangle
+struct AARectangle
 {
     public AARectangle(Vector2 pos, float xWidth, float zLength)
     {
@@ -12,7 +12,7 @@ class AARectangle
         m_length = zLength;
     }
     public Vector2 m_pos;
-    public float m_width = 0; // 对应x轴
-    public float m_length = 0; // 对应z轴
+    public float m_width; // 对应x轴
+    public float m_length; // 对应z轴
 }
 

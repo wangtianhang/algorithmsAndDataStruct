@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 /// <summary>
 /// 预计实现point3d ray3d line3d plane3d sphere3d aabb3d obb3d triangle3d mesh3d 
@@ -1533,6 +1534,99 @@ public class IntersectionTest3D
             return Mesh3dWithTriangle3d(model.GetMesh(), local);
         }
         return false;
+    }
+
+    public static bool Frustum3dWithSphere3d(Plane3d[] planeArray, Sphere3d sphere)
+    {
+        foreach (var iter in planeArray)
+        {
+            Vector3 normal = iter.m_planeNormal;
+            float dist = iter.GetDistanceFromOrigin();
+            float side = Vector3.Dot(sphere.m_pos, normal) + dist;
+            if (side < -sphere.m_radius)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static float Classify(AABB3d aabb, Plane3d plane)
+    {
+	    // maximum extent in direction of plane normal 
+	    float r = Math.Abs(aabb.GetHalfSize().x * plane.m_planeNormal.x)
+            + Math.Abs(aabb.GetHalfSize().y * plane.m_planeNormal.y)
+            + Math.Abs(aabb.GetHalfSize().z * plane.m_planeNormal.z);
+
+        // signed distance between box center and plane
+        //float d = plane.Test(mCenter);
+        float d = Vector3.Dot(plane.m_planeNormal, aabb.m_pos) + plane.GetDistanceFromOrigin();
+
+	    // return signed distance
+	    if (Math.Abs(d) < r)
+        {
+		    return 0.0f;
+	    }
+	    else if (d< 0.0f)
+        {
+		    return d + r;
+	    }
+	    return d - r;
+    }
+
+    public static bool Frustum3dWithAABB3d(Plane3d[] planeArray, AABB3d aabb)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            float side = Classify(aabb, planeArray[i]);
+            if (side < 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static float Classify(OBB3d obb, Plane3d plane) 
+    {
+        Matrix4x4 obj2world = obb.GetObjToWorld();
+        Matrix4x4 world2Obj = obj2world.inverse;
+
+        //Vector3 normal = MultiplyVector(plane.normal, obb.orientation);
+        Vector3 normal = world2Obj * plane.m_planeNormal;
+
+        // maximum extent in direction of plane normal 
+        float r = Mathf.Abs(obb.GetHalfSize().x * normal.x)
+            + Mathf.Abs(obb.GetHalfSize().y * normal.y)
+            + Mathf.Abs(obb.GetHalfSize().z * normal.z);
+
+        // signed distance between box center and plane
+        //float d = plane.Test(mCenter);
+        float d = Vector3.Dot(plane.m_planeNormal, obb.m_pos) + plane.GetDistanceFromOrigin();
+
+	    // return signed distance
+	    if (Mathf.Abs(d) < r)
+        {
+		    return 0.0f;
+	    }
+	    else if (d< 0.0f)
+        {
+		    return d + r;
+	    }
+	    return d - r;
+    }
+
+    public static bool Frustum3dWithOBB3d(Plane3d[] planeArray, OBB3d obb)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            float side = Classify(obb, planeArray[i]);
+            if (side < 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

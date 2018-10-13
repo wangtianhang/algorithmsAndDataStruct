@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
-
-public class Sphere3d
+public struct Sphere3d
 {
     public Sphere3d(Vector3 pos, float radius)
     {
