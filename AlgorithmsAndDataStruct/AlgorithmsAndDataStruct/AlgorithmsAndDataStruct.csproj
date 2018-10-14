@@ -61,6 +61,11 @@
     <Compile Include="3dMath\FixPoint\Vector4L.cs" />
     <Compile Include="3dMath\geometryTools\Distance3d.cs" />
     <Compile Include="3dMath\geometryTools\Octree3d.cs" />
+    <Compile Include="3dMath\geometryTools\Ogre\OgreOctree.cs" />
+    <Compile Include="3dMath\geometryTools\Ogre\OgreOctreeCamera.cs" />
+    <Compile Include="3dMath\geometryTools\Ogre\OgreOctreeNode.cs" />
+    <Compile Include="3dMath\geometryTools\Ogre\OgreSceneManager.cs" />
+    <Compile Include="3dMath\geometryTools\Ogre\OgreSceneQuery.cs" />
     <Compile Include="3dMath\geometryTools\Scene3d.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest2D.cs" />
     <Compile Include="3dMath\intersectionTest\IntersectionTest3D.cs" />
@@ -82,6 +87,7 @@
     <Compile Include="3dMath\shape3D\Mesh3d.cs" />
     <Compile Include="3dMath\shape3D\Model3d.cs" />
     <Compile Include="3dMath\shape3D\OBB3d.cs" />
+    <Compile Include="3dMath\shape3D\PlaneBoundedVolume.cs" />
     <Compile Include="3dMath\shape3D\Point3d.cs" />
     <Compile Include="3dMath\shape3D\Segment3d.cs" />
     <Compile Include="3dMath\shape3D\Sphere3d.cs" />
