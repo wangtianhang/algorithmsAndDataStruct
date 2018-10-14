@@ -50,5 +50,10 @@ class OgreOctree
             mParent._unref();
         }
     }
+
+//     public AABB3d _getCullBounds()
+//     {
+// 
+//     }
 }
 
