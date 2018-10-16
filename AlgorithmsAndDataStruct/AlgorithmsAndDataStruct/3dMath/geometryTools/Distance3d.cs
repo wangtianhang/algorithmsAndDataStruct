@@ -53,10 +53,12 @@ class Distance3d
 
     public static Vector3 ClosestPointOfPoint3dWithOBB3d(Vector3 point, OBB3d obb)
     {
-        Vector3 objMin = obb.GetAABBMin();
-        Vector3 objMax = obb.GetAABBMax();
+        //Vector3 objMin = obb.GetAABBMin();
+        //Vector3 objMax = obb.GetAABBMax();
         Matrix4x4 obj2World = obb.GetObjToWorld();
         Matrix4x4 worldToObj = obj2World.inverse;
+        Vector3 objMin = (Vector3)(worldToObj * obb.m_pos) - obb.GetHalfSize();
+        Vector3 objMax = (Vector3)(worldToObj * obb.m_pos) + obb.GetHalfSize();
         Vector3 objPoint = worldToObj * point;
         
         Vector3 objResult = objPoint;

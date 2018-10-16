@@ -114,10 +114,12 @@ public class IntersectionTest3D
 
     public static bool Point3dWithOBB3d(Vector3 point, OBB3d obb)
     {
-        Vector3 objMin = obb.GetAABBMin();
-        Vector3 objMax = obb.GetAABBMax();
+        //Vector3 objMin = obb.GetAABBMin();
+        //Vector3 objMax = obb.GetAABBMax();
         Matrix4x4 obj2World = obb.GetObjToWorld();
         Matrix4x4 worldToObj = obj2World.inverse;
+        Vector3 objMin = (Vector3)(worldToObj * obb.m_pos) - obb.GetHalfSize();
+        Vector3 objMax = (Vector3)(worldToObj * obb.m_pos) + obb.GetHalfSize();
         Vector3 objPoint = worldToObj * point;
         if (objPoint.x < objMin.x || objPoint.y < objMin.y || objPoint.z < objMin.z)
         {
@@ -1503,7 +1505,7 @@ public class IntersectionTest3D
         Matrix4x4 obj2world = model.GetObj2WorldMatrix();
         Matrix4x4 world2Obj = obj2world.inverse;
         Quaternion roation =  obb.m_rotation * RotateHelper.GetRotationFromMatrix(world2Obj);
-        OBB3d local = new OBB3d(world2Obj * obb.m_pos, roation, obb.m_xLength, obb.m_yLength, obb.m_zLength);
+        OBB3d local = new OBB3d(world2Obj * obb.m_pos, roation, obb.m_size.x, obb.m_size.y, obb.m_size.z);
         if (model.GetMesh() != null)
         {
             return Mesh3dWithOBB3d(model.GetMesh(), local);
