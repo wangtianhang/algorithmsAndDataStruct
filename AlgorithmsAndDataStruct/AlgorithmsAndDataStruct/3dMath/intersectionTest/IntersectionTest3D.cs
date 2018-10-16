@@ -1542,7 +1542,7 @@ public class IntersectionTest3D
         {
             Vector3 normal = iter.m_planeNormal;
             float dist = iter.GetDistanceFromOrigin();
-            float side = Vector3.Dot(sphere.m_pos, normal) + dist;
+            float side = Vector3.Dot(sphere.m_pos, normal) - dist;
             if (side < -sphere.m_radius)
             {
                 return false;
@@ -1560,7 +1560,7 @@ public class IntersectionTest3D
 
         // signed distance between box center and plane
         //float d = plane.Test(mCenter);
-        float d = Vector3.Dot(plane.m_planeNormal, aabb.m_pos) + plane.GetDistanceFromOrigin();
+        float d = Vector3.Dot(plane.m_planeNormal, aabb.m_pos) - plane.GetDistanceFromOrigin();
 
 	    // return signed distance
 	    if (Math.Abs(d) < r)
@@ -1602,7 +1602,7 @@ public class IntersectionTest3D
 
         // signed distance between box center and plane
         //float d = plane.Test(mCenter);
-        float d = Vector3.Dot(plane.m_planeNormal, obb.m_pos) + plane.GetDistanceFromOrigin();
+        float d = Vector3.Dot(plane.m_planeNormal, obb.m_pos) - plane.GetDistanceFromOrigin();
 
 	    // return signed distance
 	    if (Mathf.Abs(d) < r)

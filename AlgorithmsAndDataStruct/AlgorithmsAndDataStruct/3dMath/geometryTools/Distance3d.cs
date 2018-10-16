@@ -67,7 +67,7 @@ class Distance3d
         objResult.y = (objResult.y > objMax.x) ? objMax.y : objResult.y;
         objResult.z = (objResult.z > objMax.x) ? objMax.z : objResult.z;
 
-        Vector3 worldResult = worldToObj * objResult;
+        Vector3 worldResult = obj2World * objResult;
         return worldResult;
     }
 
