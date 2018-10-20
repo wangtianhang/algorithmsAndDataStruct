@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-
+/*
 class OgreOctreeNode
 {
     OgreOctree mOctant;
@@ -21,5 +21,5 @@ class OgreOctreeNode
 
 
 }
-
+*/
 

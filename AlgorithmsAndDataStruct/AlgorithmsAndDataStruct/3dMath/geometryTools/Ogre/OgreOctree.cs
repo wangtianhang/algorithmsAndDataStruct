@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-
+/*
 class OgreOctree
 {
     int mNumNodes = 0;
@@ -56,4 +56,4 @@ class OgreOctree
 // 
 //     }
 }
-
+*/

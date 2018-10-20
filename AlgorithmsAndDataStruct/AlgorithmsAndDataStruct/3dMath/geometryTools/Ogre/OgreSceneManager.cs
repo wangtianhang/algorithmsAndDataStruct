@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-
+/*
 class OgreSceneManager
 {
     OgreOctree mOctree;
@@ -36,3 +36,4 @@ class OgreSceneManager
     }
 }
 
+*/

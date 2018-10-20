@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-class OgreSceneQuery
+/*class OgreSceneQuery
 {
 
     public static List<Model3d> Query(AABB3d aabb, OgreSceneManager sceneManager)
@@ -79,5 +79,5 @@ class OgreSceneQuery
         }
         return result;
     }
-}
+}*/
 
