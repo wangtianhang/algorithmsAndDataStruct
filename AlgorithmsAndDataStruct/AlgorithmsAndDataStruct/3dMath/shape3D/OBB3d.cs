@@ -7,29 +7,40 @@ public struct OBB3d
 {
     public Vector3 m_pos;
     public Quaternion m_rotation;
-    public float m_xLength;
-    public float m_yLength;
-    public float m_zLength;
-    //public Vector3 m_size = Vector3.one;
+    //public float m_xLength;
+    //public float m_yLength;
+    //public float m_zLength;
+    public Vector3 m_size;
 
     public OBB3d(Vector3 pos, Quaternion qua, float xLength, float yLength, float zLength)
     {
         m_pos = pos;
         m_rotation = qua;
-        m_xLength = xLength;
-        m_yLength = yLength;
-        m_zLength = zLength;
+        //m_xLength = xLength;
+        //m_yLength = yLength;
+        //m_zLength = zLength;
+        m_size.x = xLength;
+        m_size.y = yLength;
+        m_size.z = zLength;
     }
 
-    public Vector3 GetAABBMin()
+    public OBB3d(Vector3 pos, Quaternion qua, Vector3 size)
     {
-        return new Vector3(m_pos.x - m_xLength * 0.5f, m_pos.y - m_yLength * 0.5f, m_pos.z - m_zLength * 0.5f);
+        m_pos = pos;
+        m_rotation = qua;
+
+        m_size = size;
     }
 
-    public Vector3 GetAABBMax()
-    {
-        return new Vector3(m_pos.x + m_xLength * 0.5f, m_pos.y + m_yLength * 0.5f, m_pos.z + m_zLength * 0.5f);
-    }
+//     public Vector3 GetAABBMin()
+//     {
+//         return new Vector3(m_pos.x - m_xLength * 0.5f, m_pos.y - m_yLength * 0.5f, m_pos.z - m_zLength * 0.5f);
+//     }
+// 
+//     public Vector3 GetAABBMax()
+//     {
+//         return new Vector3(m_pos.x + m_xLength * 0.5f, m_pos.y + m_yLength * 0.5f, m_pos.z + m_zLength * 0.5f);
+//     }
 
     public Matrix4x4 GetObjToWorld()
     {
@@ -58,15 +69,15 @@ public struct OBB3d
 
     public Vector3 GetHalfSize()
     {
-        return new Vector3(m_xLength / 2, m_yLength / 2, m_zLength / 2);
+        return m_size / 2;
     }
 
     public float[] GetHalfSizeAsArray()
     {
         float[] ret = new float[3];
-        ret[0] = m_xLength / 2;
-        ret[1] = m_yLength / 2;
-        ret[2] = m_zLength / 2;
+        ret[0] = m_size.x / 2;
+        ret[1] = m_size.y / 2;
+        ret[2] = m_size.z / 2;
         return ret;
     }
 }

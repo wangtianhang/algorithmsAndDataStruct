@@ -114,10 +114,12 @@ public class IntersectionTest3D
 
     public static bool Point3dWithOBB3d(Vector3 point, OBB3d obb)
     {
-        Vector3 objMin = obb.GetAABBMin();
-        Vector3 objMax = obb.GetAABBMax();
+        //Vector3 objMin = obb.GetAABBMin();
+        //Vector3 objMax = obb.GetAABBMax();
         Matrix4x4 obj2World = obb.GetObjToWorld();
         Matrix4x4 worldToObj = obj2World.inverse;
+        Vector3 objMin = (Vector3)(worldToObj * obb.m_pos) - obb.GetHalfSize();
+        Vector3 objMax = (Vector3)(worldToObj * obb.m_pos) + obb.GetHalfSize();
         Vector3 objPoint = worldToObj * point;
         if (objPoint.x < objMin.x || objPoint.y < objMin.y || objPoint.z < objMin.z)
         {
@@ -1503,7 +1505,7 @@ public class IntersectionTest3D
         Matrix4x4 obj2world = model.GetObj2WorldMatrix();
         Matrix4x4 world2Obj = obj2world.inverse;
         Quaternion roation =  obb.m_rotation * RotateHelper.GetRotationFromMatrix(world2Obj);
-        OBB3d local = new OBB3d(world2Obj * obb.m_pos, roation, obb.m_xLength, obb.m_yLength, obb.m_zLength);
+        OBB3d local = new OBB3d(world2Obj * obb.m_pos, roation, obb.m_size.x, obb.m_size.y, obb.m_size.z);
         if (model.GetMesh() != null)
         {
             return Mesh3dWithOBB3d(model.GetMesh(), local);
@@ -1542,7 +1544,7 @@ public class IntersectionTest3D
         {
             Vector3 normal = iter.m_planeNormal;
             float dist = iter.GetDistanceFromOrigin();
-            float side = Vector3.Dot(sphere.m_pos, normal) + dist;
+            float side = Vector3.Dot(sphere.m_pos, normal) - dist;
             if (side < -sphere.m_radius)
             {
                 return false;
@@ -1560,7 +1562,7 @@ public class IntersectionTest3D
 
         // signed distance between box center and plane
         //float d = plane.Test(mCenter);
-        float d = Vector3.Dot(plane.m_planeNormal, aabb.m_pos) + plane.GetDistanceFromOrigin();
+        float d = Vector3.Dot(plane.m_planeNormal, aabb.m_pos) - plane.GetDistanceFromOrigin();
 
 	    // return signed distance
 	    if (Math.Abs(d) < r)
@@ -1602,7 +1604,7 @@ public class IntersectionTest3D
 
         // signed distance between box center and plane
         //float d = plane.Test(mCenter);
-        float d = Vector3.Dot(plane.m_planeNormal, obb.m_pos) + plane.GetDistanceFromOrigin();
+        float d = Vector3.Dot(plane.m_planeNormal, obb.m_pos) - plane.GetDistanceFromOrigin();
 
 	    // return signed distance
 	    if (Mathf.Abs(d) < r)
