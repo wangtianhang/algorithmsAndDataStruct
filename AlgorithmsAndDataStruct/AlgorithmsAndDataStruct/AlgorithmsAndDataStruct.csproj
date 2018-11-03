@@ -167,6 +167,8 @@
     <Compile Include="Other\Sudoku.cs" />
     <Compile Include="CommonDataStruct\ThreadSafeQueue.cs" />
     <Compile Include="CommonDataStruct\Tuple.cs" />
+    <Compile Include="SortAndSearch\SearchOther.cs" />
+    <Compile Include="SortAndSearch\SortOther.cs" />
     <Compile Include="String\StringMatch.cs" />
     <Compile Include="String\NFA.cs" />
     <Compile Include="SortAndSearch\BinarySearch.cs" />
