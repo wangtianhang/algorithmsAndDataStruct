@@ -108,6 +108,8 @@
     <Compile Include="3dMath\VMath\VInt3.cs" />
     <Compile Include="3dMath\VMath\VLine.cs" />
     <Compile Include="3dMath\VMath\VRect.cs" />
+    <Compile Include="CommonAlgorithms\BitOperation.cs" />
+    <Compile Include="CommonAlgorithms\ConvertHelper.cs" />
     <Compile Include="Other\Coroutine.cs" />
     <Compile Include="3dMath\unityScene\GameObject.cs" />
     <Compile Include="3dMath\unityMath\Mathf.cs" />
@@ -121,7 +123,7 @@
     <Compile Include="3dMath\Vector2Double.cs" />
     <Compile Include="3dMath\Vector2ixy.cs" />
     <Compile Include="CommonAlgorithms\Algebra.cs" />
-    <Compile Include="CommonAlgorithms\Algorithms.cs" />
+    <Compile Include="CommonAlgorithms\AlgorithmsMisc.cs" />
     <Compile Include="CombineMath\31Next Permutation.cs" />
     <Compile Include="3dMath\BezierCurve.cs" />
     <Compile Include="CombineMath\CombineIterator.cs" />
@@ -129,7 +131,7 @@
     <Compile Include="CombineMath\PermutationIterator.cs" />
     <Compile Include="CommonAlgorithms\DynamicProgramming.cs" />
     <Compile Include="CommonAlgorithms\GaussianElimination.cs" />
-    <Compile Include="CommonAlgorithms\MathHelper.cs" />
+    <Compile Include="CommonAlgorithms\DrawFunctionHelper.cs" />
     <Compile Include="CommonAlgorithms\NumberTheory.cs" />
     <Compile Include="CommonAlgorithms\ProbabilityAndStatistics.cs" />
     <Compile Include="CommonDataStruct\FastGetMaxQueue.cs" />
@@ -156,7 +158,6 @@
     <Compile Include="Other\ObjectPool.cs" />
     <Compile Include="Other\Sudoku.cs" />
     <Compile Include="CommonDataStruct\ThreadSafeQueue.cs" />
-    <Compile Include="CommonAlgorithms\Trick.cs" />
     <Compile Include="CommonDataStruct\Tuple.cs" />
     <Compile Include="String\StringMatch.cs" />
     <Compile Include="String\NFA.cs" />

@@ -18,17 +18,17 @@ public class FunctionDraw
     //public double m_endX = 0;
 }
 
-public class MathHelper
+public class DrawFunctionHelper
 {
     public static void Test()
     {
-        string tmp = TenToTwo(10);
-        Debug.Log(tmp);
-        Debug.Log(TwoToTen(tmp).ToString());
-
-        string tmp2 = TenToSixteen(10);
-        Debug.Log(tmp2);
-        Debug.Log(SixteenToTen(tmp2).ToString());
+//         string tmp = TenToTwo(10);
+//         Debug.Log(tmp);
+//         Debug.Log(TwoToTen(tmp).ToString());
+// 
+//         string tmp2 = TenToSixteen(10);
+//         Debug.Log(tmp2);
+//         Debug.Log(SixteenToTen(tmp2).ToString());
 
         //Bitmap bitmap = MathCommon.DrawFunction( (x) =>  1 / Math.Sqrt(4 - x * x)  , 0.001d, -2, 2,
         //    -3, 3, -1, +10, "y = 1 divide sqrt(4 - power(x, 2)");
@@ -141,40 +141,6 @@ public class MathHelper
         return bitmap;
     }
 
-    /// <summary>
-    /// 十进制转二进制
-    /// </summary>
-    /// <returns></returns>
-    public static string TenToTwo(int x)
-    {
-        return System.Convert.ToString(x, 2);
-    }
 
-    /// <summary>
-    /// 二进制转十进制
-    /// </summary>
-    /// <returns></returns>
-    public static int TwoToTen(string s)
-    {
-        return System.Convert.ToInt32(s, 2);
-    }
-
-    /// <summary>
-    /// 十进制转十六进制
-    /// </summary>
-    /// <returns></returns>
-    public static string TenToSixteen(int x)
-    {
-        return string.Format("{0:X}", x);
-    }
-
-    /// <summary>
-    /// 十六进制转十进制
-    /// </summary>
-    /// <returns></returns>
-    public static int SixteenToTen(string s)
-    {
-        return System.Convert.ToInt32(s, 16);
-    }
 }
 
