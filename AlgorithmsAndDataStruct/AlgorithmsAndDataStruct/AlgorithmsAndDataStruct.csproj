@@ -156,7 +156,7 @@
     <Compile Include="Other\ObjectPool.cs" />
     <Compile Include="Other\Sudoku.cs" />
     <Compile Include="CommonDataStruct\ThreadSafeQueue.cs" />
-    <Compile Include="Other\Trick.cs" />
+    <Compile Include="CommonAlgorithms\Trick.cs" />
     <Compile Include="CommonDataStruct\Tuple.cs" />
     <Compile Include="String\StringMatch.cs" />
     <Compile Include="String\NFA.cs" />
