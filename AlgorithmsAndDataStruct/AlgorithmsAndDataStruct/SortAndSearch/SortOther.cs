@@ -284,5 +284,340 @@ In arrays, we can do random access as elements are continuous in memory. Let us 
         }
     } 
     #endregion
+
+    #region RadixSort
+
+    // A utility function to get maximum value in arr[] 
+    static int getMax(int[] arr, int n) 
+    { 
+        int mx = arr[0]; 
+        for (int i = 1; i < n; i++) 
+            if (arr[i] > mx) 
+                mx = arr[i]; 
+        return mx; 
+    } 
+  
+    // A function to do counting sort of arr[] according to 
+    // the digit represented by exp. 
+    static void countSort(int[] arr, int n, int exp) 
+    { 
+        int[] output = new int[n]; // output array 
+        int i; 
+        int[] count = new int[10]; 
+        //Arrays.fill(count,0); 
+  
+        // Store count of occurrences in count[] 
+        for (i = 0; i < n; i++) 
+            count[ (arr[i]/exp)%10 ]++; 
+  
+        // Change count[i] so that count[i] now contains 
+        // actual position of this digit in output[] 
+        for (i = 1; i < 10; i++) 
+            count[i] += count[i - 1]; 
+  
+        // Build the output array 
+        for (i = n - 1; i >= 0; i--) 
+        { 
+            output[count[ (arr[i]/exp)%10 ] - 1] = arr[i]; 
+            count[ (arr[i]/exp)%10 ]--; 
+        } 
+  
+        // Copy the output array to arr[], so that arr[] now 
+        // contains sorted numbers according to curent digit 
+        for (i = 0; i < n; i++) 
+            arr[i] = output[i]; 
+    } 
+  
+    // The main function to that sorts arr[] of size n using 
+    // Radix Sort 基数排序
+    /*
+     * Is Radix Sort preferable to Comparison based sorting algorithms like Quick-Sort?
+If we have log2n bits for every digit, the running time of Radix appears to be better than Quick Sort for a wide range of input numbers. The constant factors hidden in asymptotic notation are higher for Radix Sort and Quick-Sort uses hardware caches more effectively. Also, Radix sort uses counting sort as a subroutine and counting sort takes extra space to sort numbers.
+     */
+    static void radixsort(int[] arr) 
+    {
+        int n = arr.Length;
+        // Find the maximum number to know number of digits 
+        int m = getMax(arr, n); 
+  
+        // Do counting sort for every digit. Note that instead 
+        // of passing digit number, exp is passed. exp is 10^i 
+        // where i is current digit number 
+        for (int exp = 1; m/exp > 0; exp *= 10) 
+            countSort(arr, n, exp); 
+    } 
+
+    #endregion
+
+    /// <summary>
+    /// 计数排序 适合输入数据集在一个小范围内的情况
+    /// </summary>
+    /// <param name="arr"></param>
+    static void countsort(char[] arr)
+    {
+        int n = arr.Length;
+
+        // The output character array that 
+        // will have sorted arr 
+        char[] output = new char[n];
+
+        // Create a count array to store  
+        // count of inidividul characters  
+        // and initialize count array as 0 
+        int[] count = new int[256];
+
+        for (int i = 0; i < 256; ++i)
+            count[i] = 0;
+
+        // store count of each character 
+        for (int i = 0; i < n; ++i)
+            ++count[arr[i]];
+
+        // Change count[i] so that count[i]  
+        // now contains actual position of  
+        // this character in output array 
+        for (int i = 1; i <= 255; ++i)
+            count[i] += count[i - 1];
+
+        // Build the output character array 
+        // To make it stable we are operating in reverse order. 
+        for (int i = n - 1; i >= 0; i--)
+        {
+            output[count[arr[i]] - 1] = arr[i];
+            --count[arr[i]];
+        }
+
+        // Copy the output array to arr, so 
+        // that arr now contains sorted  
+        // characters 
+        for (int i = 0; i < n; ++i)
+            arr[i] = output[i];
+    } 
+
+    // Function to sort arr[] of size n using bucket sort
+    // 桶排序 可以适用于浮点数的情况
+    void BucketSort(float[] arr)
+    {
+        int n = arr.Length;
+         // 1) Create n empty buckets 
+        //float[] b = new float[n]; 
+        List<float>[] b = new List<float>[n];
+        for (int i = 0; i < n; ++i )
+        {
+            b[i] = new List<float>();
+        }
+     
+        // 2) Put array elements in different buckets 
+        for (int i=0; i<n; i++) 
+        { 
+           int bi = (int)(n*arr[i]); // Index in bucket 
+           b[bi].Add(arr[i]); 
+        } 
+  
+        // 3) Sort individual buckets 
+        for (int i=0; i<n; i++) 
+           b[i].Sort(); 
+  
+        // 4) Concatenate all buckets into arr[] 
+        int index = 0; 
+        for (int i = 0; i < n; i++) 
+            for (int j = 0; j < b[i].Count; j++) 
+              arr[index++] = b[i][j];
+ 
+     }
+
+
+    /* function to sort arr using shellSort */
+    // 希尔排序
+    int ShellSort(int[] arr)
+    {
+        int n = arr.Length;
+
+        // Start with a big gap,  
+        // then reduce the gap 
+        for (int gap = n / 2; gap > 0; gap /= 2)
+        {
+            // Do a gapped insertion sort for this gap size. 
+            // The first gap elements a[0..gap-1] are already 
+            // in gapped order keep adding one more element 
+            // until the entire array is gap sorted 
+            for (int i = gap; i < n; i += 1)
+            {
+                // add a[i] to the elements that have 
+                // been gap sorted save a[i] in temp and 
+                // make a hole at position i 
+                int temp = arr[i];
+
+                // shift earlier gap-sorted elements up until 
+                // the correct location for a[i] is found 
+                int j;
+                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap)
+                    arr[j] = arr[j - gap];
+
+                // put temp (the original a[i])  
+                // in its correct location 
+                arr[j] = temp;
+            }
+        }
+        return 0;
+    }
+
+    #region CombSort
+
+    // To find gap between elements 
+    static int getNextGap(int gap)
+    {
+        // Shrink gap by Shrink factor 
+        gap = (gap * 10) / 13;
+        if (gap < 1)
+            return 1;
+        return gap;
+    }
+
+    // Function to sort arr[] using Comb Sort 
+    // 冒泡排序的变种（貌似间隔比较 类似希尔排序）
+    static void CombSort(int[] arr)
+    {
+        int n = arr.Length;
+
+        // initialize gap 
+        int gap = n;
+
+        // Initialize swapped as true to  
+        // make sure that loop runs 
+        bool swapped = true;
+
+        // Keep running while gap is more than  
+        // 1 and last iteration caused a swap 
+        while (gap != 1 || swapped == true)
+        {
+            // Find next gap 
+            gap = getNextGap(gap);
+
+            // Initialize swapped as false so that we can 
+            // check if swap happened or not 
+            swapped = false;
+
+            // Compare all elements with current gap 
+            for (int i = 0; i < n - gap; i++)
+            {
+                if (arr[i] > arr[i + gap])
+                {
+                    // Swap arr[i] and arr[i+gap] 
+                    int temp = arr[i];
+                    arr[i] = arr[i + gap];
+                    arr[i + gap] = temp;
+
+                    // Set swapped 
+                    swapped = true;
+                }
+            }
+        }
+    } 
+
+    #endregion
+
+    /// <summary>
+    /// 鸽巢排序 桶排序变种 额 文档上都说适用环境很少。。
+    /// </summary>
+    /// <param name="arr"></param>
+    /// <param name="n"></param>
+    public static void PigeonholeSort(int[] arr,
+                                   int n)
+    {
+        int min = arr[0];
+        int max = arr[0];
+        int range, i, j, index;
+
+        for (int a = 0; a < n; a++)
+        {
+            if (arr[a] > max)
+                max = arr[a];
+            if (arr[a] < min)
+                min = arr[a];
+        }
+
+        range = max - min + 1;
+        int[] phole = new int[range];
+
+        for (i = 0; i < n; i++)
+            phole[i] = 0;
+
+        for (i = 0; i < n; i++)
+            phole[arr[i] - min]++;
+
+
+        index = 0;
+
+        for (j = 0; j < range; j++)
+            while (phole[j]-- > 0)
+                arr[index++] = j + min;
+
+    }
+
+    // Function sort the array using Cycle sort 
+    // 圈排序(交换次数最少的排序，适合写内存非常costly的情况) 时间复杂度 O^2 
+    public static void CycleSort(int[] arr, int n)
+    {
+        // count number of memory writes 
+        int writes = 0;
+
+        // traverse array elements and  
+        // put it to on the right place 
+        for (int cycle_start = 0; cycle_start <= n - 2; cycle_start++)
+        {
+            // initialize item as starting point 
+            int item = arr[cycle_start];
+
+            // Find position where we put the item.  
+            // We basically count all smaller elements  
+            // on right side of item. 
+            int pos = cycle_start;
+            for (int i = cycle_start + 1; i < n; i++)
+                if (arr[i] < item)
+                    pos++;
+
+            // If item is already in correct position 
+            if (pos == cycle_start)
+                continue;
+
+            // ignore all duplicate elements 
+            while (item == arr[pos])
+                pos += 1;
+
+            // put the item to it's right position 
+            if (pos != cycle_start)
+            {
+                int temp = item;
+                item = arr[pos];
+                arr[pos] = temp;
+                writes++;
+            }
+
+            // Rotate rest of the cycle 
+            while (pos != cycle_start)
+            {
+                pos = cycle_start;
+
+                // Find position where we put the element 
+                for (int i = cycle_start + 1; i < n; i++)
+                    if (arr[i] < item)
+                        pos += 1;
+
+                // ignore all duplicate elements 
+                while (item == arr[pos])
+                    pos += 1;
+
+                // put the item to it's right position 
+                if (item != arr[pos])
+                {
+                    int temp = item;
+                    item = arr[pos];
+                    arr[pos] = temp;
+                    writes++;
+                }
+            }
+        }
+    } 
 }
 
