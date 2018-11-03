@@ -440,6 +440,11 @@ namespace UnityEngine
             Vector3 vector = (Vector3)other;
             return this.x.Equals(vector.x) && this.y.Equals(vector.y) && this.z.Equals(vector.z);
         }
+
+//         public static implicit operator Vector2(UnityEngine.Vector3 vec)
+//         {
+//             return new Vector2(vec.x, vec.y);
+//         }
     }
 
 }

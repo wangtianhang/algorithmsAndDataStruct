@@ -49,11 +49,11 @@ public class Scene3d
 	    }
 
         Model3d result = null;
-        float result_t = -1;
+        FloatL result_t = -1;
 
         for (int i = 0, size = m_modleList.Count; i < size; ++i)
         {
-            float t = IntersectionTest3D.Ray3dWithModel3d(ray, m_modleList[i]);
+            FloatL t = IntersectionTest3D.Ray3dWithModel3d(ray, m_modleList[i]);
             if (result == null && t >= 0)
             {
                 result = m_modleList[i];
@@ -109,14 +109,14 @@ public class Scene3d
         return result;
     }
 
-    bool Accelerate(Vector3 position, float size) 
+    bool Accelerate(Vector3L position, FloatL size) 
     {
 	    if (m_octree != null) {
 		    return false;
 	    }
 
-	    Vector3 min = new Vector3(position.x - size, position.y - size, position.z - size);
-        Vector3 max = new Vector3(position.x + size, position.y + size, position.z + size);
+	    Vector3L min = new Vector3L(position.x - size, position.y - size, position.z - size);
+        Vector3L max = new Vector3L(position.x + size, position.y + size, position.z + size);
 
 	    // Construct tree root
         m_octree = new OctreeNode();
@@ -132,7 +132,7 @@ public class Scene3d
 	    return true;
     }
 
-    public List<Model3d> CullByFrustum(Plane3d[] planeArray)
+    public List<Model3d> CullByFrustum(Frustum3d frustum)
     {
         List<Model3d> result = new List<Model3d>();
         foreach(var iter in m_modleList)
@@ -145,7 +145,7 @@ public class Scene3d
             foreach(var iter in m_modleList)
             {
                 OBB3d bounds = iter.GetOBB();
-                if(IntersectionTest3D.Frustum3dWithOBB3d(planeArray, bounds))
+                if(IntersectionTest3D.Frustum3dWithOBB3d(frustum, bounds))
                 {
                     result.Add(iter);
                 }
@@ -167,7 +167,7 @@ public class Scene3d
                     for(int i = 0; i < 8; ++i)
                     {
                         AABB3d bounds = active.m_children[i].m_bounds;
-                        if(IntersectionTest3D.Frustum3dWithAABB3d(planeArray, bounds))
+                        if(IntersectionTest3D.Frustum3dWithAABB3d(frustum, bounds))
                         {
                             nodes.Add(active.m_children[i]);
                         }
@@ -181,7 +181,7 @@ public class Scene3d
                         if(!active.m_models[i].m_cullFlag)
                         {
                             OBB3d bounds = active.m_models[i].GetOBB();
-                            if(IntersectionTest3D.Frustum3dWithOBB3d(planeArray, bounds))
+                            if(IntersectionTest3D.Frustum3dWithOBB3d(frustum, bounds))
                             {
                                 active.m_models[i].m_cullFlag = true;
                                 result.Add(active.m_models[i]);

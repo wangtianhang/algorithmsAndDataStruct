@@ -5,7 +5,7 @@ using System.Text;
 
 // class Point2d
 // {
-//     public float x;
-//     public float y;
+//     public FloatL x;
+//     public FloatL y;
 // }
 

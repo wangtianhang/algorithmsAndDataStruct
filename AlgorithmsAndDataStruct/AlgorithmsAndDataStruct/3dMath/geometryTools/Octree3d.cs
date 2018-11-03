@@ -23,17 +23,17 @@ public class Octree3d
         {
             node.m_children = new OctreeNode[8];
 
-            Vector3 c = node.m_bounds.m_pos;
-            Vector3 e = node.m_bounds.GetHalfSize() * 0.5f;
+            Vector3L c = node.m_bounds.m_pos;
+            Vector3L e = node.m_bounds.GetHalfSize() * 0.5f;
 
-            node.m_children[0].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
-            node.m_children[1].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
-            node.m_children[2].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
-            node.m_children[3].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
-            node.m_children[4].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
-            node.m_children[5].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
-            node.m_children[6].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
-            node.m_children[7].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
+            node.m_children[0].m_bounds = new AABB3d(c + new Vector3L(-e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
+            node.m_children[1].m_bounds = new AABB3d(c + new Vector3L(+e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
+            node.m_children[2].m_bounds = new AABB3d(c + new Vector3L(-e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
+            node.m_children[3].m_bounds = new AABB3d(c + new Vector3L(+e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
+            node.m_children[4].m_bounds = new AABB3d(c + new Vector3L(-e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
+            node.m_children[5].m_bounds = new AABB3d(c + new Vector3L(+e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
+            node.m_children[6].m_bounds = new AABB3d(c + new Vector3L(-e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
+            node.m_children[7].m_bounds = new AABB3d(c + new Vector3L(+e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
         }
 
         if (node.m_children != null && node.m_models.Count > 0)
@@ -111,10 +111,10 @@ public class Octree3d
 	    }
 
 	    Model3d closest = null;
-	    float closest_t = -1;
+	    FloatL closest_t = -1;
 
 	    for (int i = 0, size = set.Count; i < size; ++i) {
-		    float this_t = IntersectionTest3D.Ray3dWithModel3d(ray, set[i]);
+		    FloatL this_t = IntersectionTest3D.Ray3dWithModel3d(ray, set[i]);
 
 		    if (this_t < 0) {
 			    continue;
@@ -133,7 +133,7 @@ public class Octree3d
     {
         IntersectionTest3D.RaycastResult raycast = new IntersectionTest3D.RaycastResult();
         IntersectionTest3D.Ray3dWithAABB3d(node.m_bounds, ray, ref raycast);
-	    float t = raycast.m_t;
+	    FloatL t = raycast.m_t;
 
 	    if (t >= 0) 
         {

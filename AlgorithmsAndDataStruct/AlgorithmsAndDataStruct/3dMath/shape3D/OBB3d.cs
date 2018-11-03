@@ -5,14 +5,15 @@ using UnityEngine;
 
 public struct OBB3d
 {
-    public Vector3 m_pos;
-    public Quaternion m_rotation;
-    //public float m_xLength;
-    //public float m_yLength;
-    //public float m_zLength;
-    public Vector3 m_size;
+    public Vector3L m_pos;
+    public QuaternionL m_rotation;
+    //public FloatL m_xLength;
+    //public FloatL m_yLength;
+    //public FloatL m_zLength;
+    //public Vector3L m_size = Vector3L.one;
+    public Vector3L m_size;
 
-    public OBB3d(Vector3 pos, Quaternion qua, float xLength, float yLength, float zLength)
+    public OBB3d(Vector3L pos, QuaternionL qua, FloatL xLength, FloatL yLength, FloatL zLength)
     {
         m_pos = pos;
         m_rotation = qua;
@@ -24,33 +25,36 @@ public struct OBB3d
         m_size.z = zLength;
     }
 
-    public OBB3d(Vector3 pos, Quaternion qua, Vector3 size)
+    public OBB3d(Vector3L pos, QuaternionL qua, Vector3L size)
     {
         m_pos = pos;
         m_rotation = qua;
 
+        //m_xLength = size.x;
+        //m_yLength = size.y;
+        //m_zLength = size.z;
         m_size = size;
     }
 
-//     public Vector3 GetAABBMin()
+//     public Vector3L GetAABBMin()
 //     {
-//         return new Vector3(m_pos.x - m_xLength * 0.5f, m_pos.y - m_yLength * 0.5f, m_pos.z - m_zLength * 0.5f);
+//         return new Vector3L(m_pos.x - m_xLength * 0.5f, m_pos.y - m_yLength * 0.5f, m_pos.z - m_zLength * 0.5f);
 //     }
 // 
-//     public Vector3 GetAABBMax()
+//     public Vector3L GetAABBMax()
 //     {
-//         return new Vector3(m_pos.x + m_xLength * 0.5f, m_pos.y + m_yLength * 0.5f, m_pos.z + m_zLength * 0.5f);
+//         return new Vector3L(m_pos.x + m_xLength * 0.5f, m_pos.y + m_yLength * 0.5f, m_pos.z + m_zLength * 0.5f);
 //     }
 
-    public Matrix4x4 GetObjToWorld()
+    public Matrix4x4L GetObjToWorld()
     {
-        return Matrix4x4.TRS(m_pos, m_rotation, Vector3.one);
+        return Matrix4x4L.TRS(m_pos, m_rotation, Vector3L.one);
     }
 
-    public float[] GetOrientationMatrixAsArray()
+    public FloatL[] GetOrientationMatrixAsArray()
     {
-        Matrix4x4 trs = Matrix4x4.TRS(Vector3.zero, m_rotation, Vector3.one);
-        float[] matrixArray = new float[9];
+        Matrix4x4L trs = Matrix4x4L.TRS(Vector3L.zero, m_rotation, Vector3L.one);
+        FloatL[] matrixArray = new FloatL[9];
 
         matrixArray[0] = trs.m00;
         matrixArray[1] = trs.m01;
@@ -67,14 +71,14 @@ public struct OBB3d
         return matrixArray;
     }
 
-    public Vector3 GetHalfSize()
+    public Vector3L GetHalfSize()
     {
         return m_size / 2;
     }
 
-    public float[] GetHalfSizeAsArray()
+    public FloatL[] GetHalfSizeAsArray()
     {
-        float[] ret = new float[3];
+        FloatL[] ret = new FloatL[3];
         ret[0] = m_size.x / 2;
         ret[1] = m_size.y / 2;
         ret[2] = m_size.z / 2;

@@ -14,7 +14,7 @@ public class Mesh3d
 
     public List<Triangle3d> m_triangleList = new List<Triangle3d>();
     public BVHNode m_accelerator = null;
-    //public Vector3[] vertices = null;
+    //public Vector3L[] vertices = null;
 
     public Mesh3d(List<Triangle3d> triangleList)
     {
@@ -23,9 +23,9 @@ public class Mesh3d
         //AccelerateMesh(this);
     }
 
-    public Vector3[] GetVertices()
+    public Vector3L[] GetVertices()
     {
-        Vector3[] vertices = new Vector3[m_triangleList.Count * 3];
+        Vector3L[] vertices = new Vector3L[m_triangleList.Count * 3];
         for(int i = 0; i < m_triangleList.Count; ++i)
         {
             vertices[i * 3 + 0] = m_triangleList[i].GetPoint(0);
@@ -35,7 +35,7 @@ public class Mesh3d
         return vertices;
     }
 
-    public static AABB3d FromMinMax(Vector3 min, Vector3 max) 
+    public static AABB3d FromMinMax(Vector3L min, Vector3L max) 
     {
 	    return new AABB3d((min + max) * 0.5f, (max - min));
     }
@@ -47,19 +47,19 @@ public class Mesh3d
 		    return;
 	    }
 
-        Vector3[] vertices = mesh.GetVertices();
-	    Vector3 min = vertices[0];
-	    Vector3 max = vertices[0];
+        Vector3L[] vertices = mesh.GetVertices();
+	    Vector3L min = vertices[0];
+	    Vector3L max = vertices[0];
 
         for (int i = 1; i < mesh.m_triangleList.Count * 3; ++i)
         {
-		    min.x = Mathf.Min(vertices[i].x, min.x);
-            min.y = Mathf.Min(vertices[i].y, min.y);
-            min.z = Mathf.Min(vertices[i].z, min.z);
+		    min.x = FixPointMath.Min(vertices[i].x, min.x);
+            min.y = FixPointMath.Min(vertices[i].y, min.y);
+            min.z = FixPointMath.Min(vertices[i].z, min.z);
 
-            max.x = Mathf.Max(vertices[i].x, max.x);
-            max.y = Mathf.Max(vertices[i].y, max.y);
-            max.z = Mathf.Max(vertices[i].z, max.z);
+            max.x = FixPointMath.Max(vertices[i].x, max.x);
+            max.y = FixPointMath.Max(vertices[i].y, max.y);
+            max.z = FixPointMath.Max(vertices[i].z, max.z);
 	    }
 
         mesh.m_accelerator = new BVHNode();
@@ -91,17 +91,17 @@ public class Mesh3d
 		    if (node.m_triangles.Count > 0) {
 			    node.m_children = new BVHNode[8];
 
-			    Vector3 c = node.m_bounds.m_pos;
-			    Vector3 e = node.m_bounds.GetHalfSize() * 0.5f;
+			    Vector3L c = node.m_bounds.m_pos;
+			    Vector3L e = node.m_bounds.GetHalfSize() * 0.5f;
 
-                node.m_children[0].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
-                node.m_children[1].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
-                node.m_children[2].m_bounds = new AABB3d(c + new Vector3(-e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
-                node.m_children[3].m_bounds = new AABB3d(c + new Vector3(+e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
-                node.m_children[4].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
-                node.m_children[5].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
-                node.m_children[6].m_bounds = new AABB3d(c + new Vector3(-e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
-                node.m_children[7].m_bounds = new AABB3d(c + new Vector3(+e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[0].m_bounds = new AABB3d(c + new Vector3L(-e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[1].m_bounds = new AABB3d(c + new Vector3L(+e.x, +e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[2].m_bounds = new AABB3d(c + new Vector3L(-e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[3].m_bounds = new AABB3d(c + new Vector3L(+e.x, +e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[4].m_bounds = new AABB3d(c + new Vector3L(-e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[5].m_bounds = new AABB3d(c + new Vector3L(+e.x, -e.y, -e.z), node.m_bounds.GetHalfSize());
+                node.m_children[6].m_bounds = new AABB3d(c + new Vector3L(-e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
+                node.m_children[7].m_bounds = new AABB3d(c + new Vector3L(+e.x, -e.y, +e.z), node.m_bounds.GetHalfSize());
 
 		    }
 	    }

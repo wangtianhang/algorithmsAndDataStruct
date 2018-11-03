@@ -5,23 +5,23 @@ using UnityEngine;
 
 public struct Plane3d
 {
-    public Plane3d(Vector3 normal, Vector3 point)
+    public Plane3d(Vector3L normal, Vector3L point)
     {
         m_planeNormal = normal;
         m_planeNormal.Normalize();
         m_planeOnePoint = point;
     }
-    public Vector3 m_planeNormal;
-    public Vector3 m_planeOnePoint;
+    public Vector3L m_planeNormal;
+    public Vector3L m_planeOnePoint;
 
-    public float GetDistanceFromOrigin()
+    public FloatL GetDistanceFromOrigin()
     {
-        return Vector3.Dot(m_planeOnePoint, m_planeNormal);
+        return Vector3L.Dot(m_planeOnePoint, m_planeNormal);
     }
 
-    public static float PlaneEquation(Vector3 point, Plane3d plane)
+    public static FloatL PlaneEquation(Vector3L point, Plane3d plane)
     {
-        return Vector3.Dot(point, plane.m_planeNormal) - plane.GetDistanceFromOrigin();
+        return Vector3L.Dot(point, plane.m_planeNormal) - plane.GetDistanceFromOrigin();
     }
 }
 

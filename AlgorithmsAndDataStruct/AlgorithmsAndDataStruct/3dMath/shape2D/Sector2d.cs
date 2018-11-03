@@ -5,10 +5,10 @@ using UnityEngine;
 
 public struct Sector2d
 {
-    public Vector2 m_pos;
+    public Vector2L m_pos;
     // 假设为xz平面的2d物体
-    public Quaternion m_rotation;
-    public float m_radius;
-    public float m_theraDegree;
+    public QuaternionL m_rotation;
+    public FloatL m_radius;
+    public FloatL m_theraDegree;
 }
 

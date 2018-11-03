@@ -61,6 +61,8 @@
     <Compile Include="3dMath\FixPoint\Vector2L.cs" />
     <Compile Include="3dMath\FixPoint\Vector3L.cs" />
     <Compile Include="3dMath\FixPoint\Vector4L.cs" />
+    <Compile Include="3dMath\geometryTools\AABBTree.cs" />
+    <Compile Include="3dMath\geometryTools\CustomPhysics.cs" />
     <Compile Include="3dMath\geometryTools\Distance3d.cs" />
     <Compile Include="3dMath\geometryTools\Octree3d.cs" />
     <Compile Include="3dMath\geometryTools\Ogre\OgreOctree.cs" />
@@ -85,6 +87,8 @@
     <Compile Include="3dMath\shape2D\Sector2d.cs" />
     <Compile Include="3dMath\shape2D\Segment2d.cs" />
     <Compile Include="3dMath\shape3D\AABB3d.cs" />
+    <Compile Include="3dMath\shape3D\Capsule3d.cs" />
+    <Compile Include="3dMath\shape3D\Frustum3d.cs" />
     <Compile Include="3dMath\shape3D\Line3d.cs" />
     <Compile Include="3dMath\shape3D\Mesh3d.cs" />
     <Compile Include="3dMath\shape3D\Model3d.cs" />
@@ -152,6 +156,7 @@
     <Compile Include="DirectedGraph\TransitiveClosure.cs" />
     <Compile Include="3dMath\BillBorad.cs" />
     <Compile Include="Other\CpuUsage.cs" />
+    <Compile Include="Other\GUtil.cs" />
     <Compile Include="Other\MagicSquare.cs" />
     <Compile Include="Other\Maze.cs" />
     <Compile Include="Other\MyQuaternion.cs" />

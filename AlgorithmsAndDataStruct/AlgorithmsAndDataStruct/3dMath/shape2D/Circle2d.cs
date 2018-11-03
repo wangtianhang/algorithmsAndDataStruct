@@ -5,12 +5,12 @@ using UnityEngine;
 
 public struct Circle2d
 {
-    public Circle2d(Vector2 pos, float radius)
+    public Circle2d(Vector2L pos, FloatL radius)
     {
         m_pos = pos;
         m_radius = radius;
     }
-    public Vector2 m_pos;
-    public float m_radius;
+    public Vector2L m_pos;
+    public FloatL m_radius;
 }
 

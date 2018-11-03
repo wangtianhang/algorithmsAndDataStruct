@@ -87,7 +87,9 @@ class Math2d
         Vector3 pos = (max - min) / 2;
         float length = max.y - min.y;
         float width = max.x - min.x;
-        return new AARectangle(pos, width, length);
+
+        Vector2 posV2 = pos;
+        return new AARectangle(posV2, width, length);
     }
 
     #region 高速线段相交判定

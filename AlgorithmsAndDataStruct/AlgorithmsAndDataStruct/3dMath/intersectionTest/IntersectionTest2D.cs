@@ -11,14 +11,14 @@ public class IntersectionTest2D
     public static void Test()
     {
         Line2d line1 = new Line2d();
-        line1.m_point1 = new Vector2(0, 0);
-        line1.m_point2 = new Vector2(100, 100);
+        line1.m_point1 = new Vector2L(0, 0);
+        line1.m_point2 = new Vector2L(100, 100);
 
         Line2d line2 = new Line2d();
-        line2.m_point1 = new Vector2(0, 100);
-        line2.m_point2 = new Vector2(100, 0);
+        line2.m_point1 = new Vector2L(0, 100);
+        line2.m_point2 = new Vector2L(100, 0);
 
-        Vector2 intersectionPoint = new Vector2();
+        Vector2L intersectionPoint = new Vector2L();
         if (Line2dWithLine2d(line1, line2, ref intersectionPoint))
         {
             Debug.Log("双线相交 交点 " + intersectionPoint);
@@ -28,17 +28,17 @@ public class IntersectionTest2D
             Debug.Log("双线没有相交");
         }
 
-        List<Vector2> pointList = new List<Vector2>{new Vector2(-4.5f, -10f), 
-            new Vector2(-4.5f, 10f), 
-            new Vector2(4.5f, 10f), 
-            new Vector2(4.5f, -10f)};
-        Convex2d convex1 = new Convex2d(new Vector2(-5, 0), Quaternion.Euler(Vector3.zero), pointList);
-        Convex2d convex2 = new Convex2d(new Vector2(+5, 0), Quaternion.Euler(Vector3.zero), pointList);
+        List<Vector2L> pointList = new List<Vector2L>{new Vector2L(-4.5f, -10f), 
+            new Vector2L(-4.5f, 10f), 
+            new Vector2L(4.5f, 10f), 
+            new Vector2L(4.5f, -10f)};
+        Convex2d convex1 = new Convex2d(new Vector2L(-5, 0), QuaternionL.Euler(Vector3L.zero), pointList);
+        Convex2d convex2 = new Convex2d(new Vector2L(+5, 0), QuaternionL.Euler(Vector3L.zero), pointList);
         Debug.Log("凸多边形相交测试1 " + (Convex2dWithConvex2d(convex1, convex2, false, true) != null));
-        Convex2d convex3 = new Convex2d(new Vector2(+5, 0), Quaternion.Euler(new Vector3(0, -90, 0)), pointList);
+        Convex2d convex3 = new Convex2d(new Vector2L(+5, 0), QuaternionL.Euler(new Vector3L(0, -90, 0)), pointList);
         Debug.Log("凸多边形相交测试2 " + (Convex2dWithConvex2d(convex1, convex3, false, true) != null));
 
-        Circle2d circle = new Circle2d(new Vector3(-5, 0), 5);
+        Circle2d circle = new Circle2d(new Vector3L(-5, 0), 5);
         Debug.Log("圆与凸多边形相交测试1 " + (Circle2dWithConvex2d(circle, convex2, false, true) != null));
         Debug.Log("圆与凸多边形相交测试2 " + (Circle2dWithConvex2d(circle, convex3, false, true) != null));
     }
@@ -53,19 +53,19 @@ public class IntersectionTest2D
 //         return Math.Abs(line1.m_slope - line2.m_slope) > Line2d.epsilon
 //             || Math.Abs(line1.m_y_interept - line2.m_y_interept) < Line2d.epsilon;
 //     }
-    public static bool Line2dWithLine2d(Line2d line1, Line2d line2, ref Vector2 intersectionPoint)
+    public static bool Line2dWithLine2d(Line2d line1, Line2d line2, ref Vector2L intersectionPoint)
     {
         return linesCross(line1.m_point1, line1.m_point2, line2.m_point1, line2.m_point2, ref intersectionPoint);
     }
 
     /// Perform the cross product on a scalar and a vector. In 2D this produces
     /// a vector.
-    static Vector2 b2Cross(float s, Vector2 a)
+    static Vector2L b2Cross(FloatL s, Vector2L a)
     {
-        return new Vector2(-s * a.y, s * a.x);
+        return new Vector2L(-s * a.y, s * a.x);
     }
 
-    static bool linesCross(Vector2 v0, Vector2 v1, Vector2 t0, Vector2 t1, ref Vector2 intersectionPoint)
+    static bool linesCross(Vector2L v0, Vector2L v1, Vector2L t0, Vector2L t1, ref Vector2L intersectionPoint)
     {
         if (v1 == t0 ||
             v0 == t0 ||
@@ -73,21 +73,21 @@ public class IntersectionTest2D
             v0 == t1)
             return false;
 
-        Vector2 vnormal = v1 - v0;
+        Vector2L vnormal = v1 - v0;
         vnormal = b2Cross(1.0f, vnormal);
-        float v0d = Vector2.Dot(vnormal, v0);
-        float t0d = Vector2.Dot(vnormal, t0);
-        float t1d = Vector2.Dot(vnormal, t1);
+        FloatL v0d = Vector2L.Dot(vnormal, v0);
+        FloatL t0d = Vector2L.Dot(vnormal, t0);
+        FloatL t1d = Vector2L.Dot(vnormal, t1);
         if (t0d > v0d && t1d > v0d)
             return false;
         if (t0d < v0d && t1d < v0d)
             return false;
 
-        Vector2 tnormal = t1 - t0;
+        Vector2L tnormal = t1 - t0;
         tnormal = b2Cross(1.0f, tnormal);
-        t0d = Vector2.Dot(tnormal, t0);
-        v0d = Vector2.Dot(tnormal, v0);
-        float v1d = Vector2.Dot(tnormal, v1);
+        t0d = Vector2L.Dot(tnormal, t0);
+        v0d = Vector2L.Dot(tnormal, v0);
+        FloatL v1d = Vector2L.Dot(tnormal, v1);
         if (v0d > t0d && v1d > t0d)
             return false;
         if (v0d < t0d && v1d < t0d)
@@ -98,10 +98,10 @@ public class IntersectionTest2D
         return true;
     }
 
-    public static bool Segment2dWithSegment2d(Segment2d segment1, Segment2d segment2, ref Vector3 result)
+    public static bool Segment2dWithSegment2d(Segment2d segment1, Segment2d segment2, ref Vector3L result)
     {
-        float resultX = 0;
-        float resultY = 0;
+        FloatL resultX = 0;
+        FloatL resultY = 0;
         bool ret = get_line_intersection(segment1.m_point1.x, segment1.m_point1.y, segment1.m_point2.x, segment1.m_point2.y,
             segment2.m_point1.x, segment2.m_point1.y, segment2.m_point2.x, segment2.m_point2.y,
             ref resultX, ref resultY);
@@ -110,14 +110,14 @@ public class IntersectionTest2D
         return ret;
     }
 
-    static bool get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
-        float p2_x, float p2_y, float p3_x, float p3_y, ref float i_x, ref float i_y)
+    static bool get_line_intersection(FloatL p0_x, FloatL p0_y, FloatL p1_x, FloatL p1_y,
+        FloatL p2_x, FloatL p2_y, FloatL p3_x, FloatL p3_y, ref FloatL i_x, ref FloatL i_y)
     {
-        float s1_x, s1_y, s2_x, s2_y;
+        FloatL s1_x, s1_y, s2_x, s2_y;
         s1_x = p1_x - p0_x; s1_y = p1_y - p0_y;
         s2_x = p3_x - p2_x; s2_y = p3_y - p2_y;
 
-        float s, t;
+        FloatL s, t;
         s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
         t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
 
@@ -132,16 +132,16 @@ public class IntersectionTest2D
         return false; // No collision
     }
 
-    public static bool Point2dWithRectangle2d(Vector2 point2d, OrientedRectangle2d rectangle2d)
+    public static bool Point2dWithRectangle2d(Vector2L point2d, OrientedRectangle2d rectangle2d)
     {
-        Vector3 forward = RotateHelper.GetForward(rectangle2d.m_rotation);
-        Vector3 right = Vector3.Cross(Vector3.up, forward);
-        Vector3 pos = new Vector3(rectangle2d.m_pos.x, 0, rectangle2d.m_pos.y);
-        Vector3 a = pos + forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
-        Vector3 b = pos + forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
-        Vector3 c = pos + -forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
-        Vector3 d = pos + -forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
-        return IsInRectangle2d(a, b, c, d, new Vector3(point2d.x, 0, point2d.y));
+        Vector3L forward = RotateHelper.GetForward(rectangle2d.m_rotation);
+        Vector3L right = Vector3L.Cross(Vector3L.up, forward);
+        Vector3L pos = new Vector3L(rectangle2d.m_pos.x, 0, rectangle2d.m_pos.y);
+        Vector3L a = pos + forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        Vector3L b = pos + forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3L c = pos + -forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3L d = pos + -forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        return IsInRectangle2d(a, b, c, d, new Vector3L(point2d.x, 0, point2d.y));
     }
 
     /// <summary>
@@ -153,28 +153,28 @@ public class IntersectionTest2D
     /// <param name="c"></param>
     /// <param name="d"></param>
     /// <returns></returns>
-    static bool IsInRectangle2d(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+    static bool IsInRectangle2d(Vector3L p, Vector3L a, Vector3L b, Vector3L c, Vector3L d)
     {
-        Vector3 v11 = p - a;
-        Vector3 v12 = b - a;
+        Vector3L v11 = p - a;
+        Vector3L v12 = b - a;
 
-        Vector3 v21 = p - b;
-        Vector3 v22 = c - b;
+        Vector3L v21 = p - b;
+        Vector3L v22 = c - b;
 
-        Vector3 v31 = p - c;
-        Vector3 v32 = d - c;
+        Vector3L v31 = p - c;
+        Vector3L v32 = d - c;
 
-        Vector3 v41 = p - d;
-        Vector3 v42 = a - d;
+        Vector3L v41 = p - d;
+        Vector3L v42 = a - d;
 
-        Vector3 cross1 = Vector3.Cross(v11, v12);
-        Vector3 cross2 = Vector3.Cross(v21, v22);
-        Vector3 cross3 = Vector3.Cross(v31, v32);
-        Vector3 cross4 = Vector3.Cross(v41, v42);
+        Vector3L cross1 = Vector3L.Cross(v11, v12);
+        Vector3L cross2 = Vector3L.Cross(v21, v22);
+        Vector3L cross3 = Vector3L.Cross(v31, v32);
+        Vector3L cross4 = Vector3L.Cross(v41, v42);
 
-        if (Vector3.Dot(cross1, cross2) > 0
-            && Vector3.Dot(cross2, cross3) > 0
-            && Vector3.Dot(cross3, cross4) > 0)
+        if (Vector3L.Dot(cross1, cross2) > 0
+            && Vector3L.Dot(cross2, cross3) > 0
+            && Vector3L.Dot(cross3, cross4) > 0)
         {
             return true;
         }
@@ -184,12 +184,12 @@ public class IntersectionTest2D
         }
     }
 
-    public static bool Point2dWithPolygon2d(Vector2 pos, Polygon2d polygon2d)
+    public static bool Point2dWithPolygon2d(Vector2L pos, Polygon2d polygon2d)
     {
         var edgePoint = (polygon2d.m_pointList[1] + polygon2d.m_pointList[0]) * 0.5f;
-        Vector2 outPoint = (edgePoint - pos).normalized * 10000;
+        Vector2L outPoint = (edgePoint - pos).normalized * 10000;
         int count = 0;
-        List<Vector2> pointList = polygon2d.GetWorldPosList();
+        List<Vector2L> pointList = polygon2d.GetWorldPosList();
         for (int i = 0; i < pointList.Count; i++)
         {
             var a = pointList[i % pointList.Count];
@@ -217,61 +217,61 @@ public class IntersectionTest2D
     /// <param name="c"></param>
     /// <param name="d"></param>
     /// <returns></returns>
-    static bool IsTwoSegmentIntersection(Vector2 a2d, Vector2 b2d, Vector2 c2d, Vector2 d2d)
+    static bool IsTwoSegmentIntersection(Vector2L a2d, Vector2L b2d, Vector2L c2d, Vector2L d2d)
     {
-        Vector3 a = new Vector3(a2d.x, 0, a2d.y);
-        Vector3 b = new Vector3(b2d.x, 0, b2d.y);
-        Vector3 c = new Vector3(c2d.x, 0, c2d.y);
-        Vector3 d = new Vector3(d2d.x, 0, d2d.y);
+        Vector3L a = new Vector3L(a2d.x, 0, a2d.y);
+        Vector3L b = new Vector3L(b2d.x, 0, b2d.y);
+        Vector3L c = new Vector3L(c2d.x, 0, c2d.y);
+        Vector3L d = new Vector3L(d2d.x, 0, d2d.y);
 
-        var crossA = Mathf.Sign(Vector3.Cross(d - c, a - c).y);
-        var crossB = Mathf.Sign(Vector3.Cross(d - c, b - c).y);
+        var crossA = FixPointMath.Sign(Vector3L.Cross(d - c, a - c).y);
+        var crossB = FixPointMath.Sign(Vector3L.Cross(d - c, b - c).y);
 
-        if (Mathf.Approximately(crossA, crossB)) 
+        if (FixPointMath.Approximately(crossA, crossB)) 
             return false;
 
-        var crossC = Mathf.Sign(Vector3.Cross(b - a, c - a).y);
-        var crossD = Mathf.Sign(Vector3.Cross(b - a, d - a).y);
+        var crossC = FixPointMath.Sign(Vector3L.Cross(b - a, c - a).y);
+        var crossD = FixPointMath.Sign(Vector3L.Cross(b - a, d - a).y);
 
-        if (Mathf.Approximately(crossC, crossD)) 
+        if (FixPointMath.Approximately(crossC, crossD)) 
             return false;
 
         return true;
     }
 
-    public static bool Point2dWithSector2d(Vector2 pos, Sector2d sector2d)
+    public static bool Point2dWithSector2d(Vector2L pos, Sector2d sector2d)
     {
-        Vector2 distance = pos - sector2d.m_pos;
+        Vector2L distance = pos - sector2d.m_pos;
         if (distance.magnitude > sector2d.m_radius)
         {
             return false;
         }
 
-        Vector3 sectorForward = RotateHelper.GetForward(sector2d.m_rotation);
-        float cosTarget = Vector3.Dot(sectorForward, distance) / sectorForward.magnitude / distance.magnitude;
-        float cosHalfDegree = Mathf.Cos((Mathf.Deg2Rad * sector2d.m_theraDegree / 2));
+        Vector3L sectorForward = RotateHelper.GetForward(sector2d.m_rotation);
+        FloatL cosTarget = Vector3L.Dot(sectorForward, distance) / sectorForward.magnitude / distance.magnitude;
+        FloatL cosHalfDegree = FixPointMath.Cos((FixPointMath.Deg2Rad * sector2d.m_theraDegree / 2));
         return cosTarget > cosHalfDegree;
     }
 
-    public static bool Point2dWithLine2d(Vector2 point, Line2d line2d)
+    public static bool Point2dWithLine2d(Vector2L point, Line2d line2d)
     {
         // Find the slope
-        float dy = (line2d.m_point2.y - line2d.m_point1.y);
-        float dx = (line2d.m_point2.x - line2d.m_point1.x);
-        float M = dy / dx;
+        FloatL dy = (line2d.m_point2.y - line2d.m_point1.y);
+        FloatL dx = (line2d.m_point2.x - line2d.m_point1.x);
+        FloatL M = dy / dx;
         // Find the Y-Intercept
-        float B = line2d.m_point1.y - M * line2d.m_point1.x;
+        FloatL B = line2d.m_point1.y - M * line2d.m_point1.x;
         // Check line equation
-        return Mathf.Approximately(point.y, M * point.x + B);
+        return FixPointMath.Approximately(point.y, M * point.x + B);
     }
 
     public static bool Segment2dWithCircle2d(Segment2d segment, Circle2d circle)
     {
         Segment3d segment3d = new Segment3d(
-            new Vector3(segment.m_point1.x, 0, segment.m_point1.y),
-            new Vector3(segment.m_point2.x, 0, segment.m_point2.y));
-        Vector3 closestPoint = Distance3d.ClosestPointOfPoint3dWithSegment3d(new Vector3(circle.m_pos.x, 0, circle.m_pos.y), segment3d);
-        Vector2 distance = circle.m_pos - new Vector2(closestPoint.x, closestPoint.z);
+            new Vector3L(segment.m_point1.x, 0, segment.m_point1.y),
+            new Vector3L(segment.m_point2.x, 0, segment.m_point2.y));
+        Vector3L closestPoint = Distance3d.ClosestPointOfPoint3dWithSegment3d(new Vector3L(circle.m_pos.x, 0, circle.m_pos.y), segment3d);
+        Vector2L distance = circle.m_pos - new Vector2L(closestPoint.x, closestPoint.z);
         return distance.magnitude <= circle.m_radius;
     }
 
@@ -283,26 +283,26 @@ public class IntersectionTest2D
     /// <returns></returns>
     public static bool Line2dWithCircle2d(Line2d line, Circle2d circle)
     {
-        Vector2 ab = line.m_point2 - line.m_point1;
-        float t = Vector2.Dot(circle.m_pos - line.m_point1, ab) / Vector2.Dot(ab, ab);
-        Vector2 closestPoint = line.m_point1 + ab * t;
+        Vector2L ab = line.m_point2 - line.m_point1;
+        FloatL t = Vector2L.Dot(circle.m_pos - line.m_point1, ab) / Vector2L.Dot(ab, ab);
+        Vector2L closestPoint = line.m_point1 + ab * t;
         return (circle.m_pos - closestPoint).sqrMagnitude < circle.m_radius * circle.m_radius;
     }
 
     public static bool Line2dWithOrientedRectangle2d(Line2d line, OrientedRectangle2d rectangle2d)
     {
-        Vector3 forward = RotateHelper.GetForward(rectangle2d.m_rotation);
-        Vector3 right = Vector3.Cross(Vector3.up, forward);
-        Vector3 pos = new Vector3(rectangle2d.m_pos.x, 0, rectangle2d.m_pos.y);
-        Vector3 a = pos + forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
-        Vector3 b = pos + forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
-        Vector3 c = pos + -forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
-        Vector3 d = pos + -forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
-        List<Vector2> lineList = new List<Vector2>();
-        lineList.Add(new Vector2(a.x, a.z));
-        lineList.Add(new Vector2(b.x, b.z));
-        lineList.Add(new Vector2(c.x, c.z));
-        lineList.Add(new Vector2(d.x, d.z));
+        Vector3L forward = RotateHelper.GetForward(rectangle2d.m_rotation);
+        Vector3L right = Vector3L.Cross(Vector3L.up, forward);
+        Vector3L pos = new Vector3L(rectangle2d.m_pos.x, 0, rectangle2d.m_pos.y);
+        Vector3L a = pos + forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        Vector3L b = pos + forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3L c = pos + -forward * rectangle2d.m_length * 0.5f + right * rectangle2d.m_width * 0.5f;
+        Vector3L d = pos + -forward * rectangle2d.m_length * 0.5f + -right * rectangle2d.m_width * 0.5f;
+        List<Vector2L> lineList = new List<Vector2L>();
+        lineList.Add(new Vector2L(a.x, a.z));
+        lineList.Add(new Vector2L(b.x, b.z));
+        lineList.Add(new Vector2L(c.x, c.z));
+        lineList.Add(new Vector2L(d.x, d.z));
         for (int i = 0; i < lineList.Count; ++i )
         {
             if (IsTwoSegmentIntersection(lineList[i], lineList[(i + 1) % lineList.Count], line.m_point1, line.m_point2))
@@ -316,18 +316,18 @@ public class IntersectionTest2D
 
     public static bool Circle2dWithOrientedRectangle2d(Circle2d circle, OrientedRectangle2d rectangle)
     {
-        Vector3 forward = RotateHelper.GetForward(rectangle.m_rotation);
-        Vector3 right = Vector3.Cross(Vector3.up, forward);
-        Vector3 pos = new Vector3(rectangle.m_pos.x, 0, rectangle.m_pos.y);
-        Vector3 a = pos + forward * rectangle.m_length * 0.5f + -right * rectangle.m_width * 0.5f;
-        Vector3 b = pos + forward * rectangle.m_length * 0.5f + right * rectangle.m_width * 0.5f;
-        Vector3 c = pos + -forward * rectangle.m_length * 0.5f + right * rectangle.m_width * 0.5f;
-        Vector3 d = pos + -forward * rectangle.m_length * 0.5f + -right * rectangle.m_width * 0.5f;
-        List<Vector2> lineList = new List<Vector2>();
-        lineList.Add(new Vector2(a.x, a.z));
-        lineList.Add(new Vector2(b.x, b.z));
-        lineList.Add(new Vector2(c.x, c.z));
-        lineList.Add(new Vector2(d.x, d.z));
+        Vector3L forward = RotateHelper.GetForward(rectangle.m_rotation);
+        Vector3L right = Vector3L.Cross(Vector3L.up, forward);
+        Vector3L pos = new Vector3L(rectangle.m_pos.x, 0, rectangle.m_pos.y);
+        Vector3L a = pos + forward * rectangle.m_length * 0.5f + -right * rectangle.m_width * 0.5f;
+        Vector3L b = pos + forward * rectangle.m_length * 0.5f + right * rectangle.m_width * 0.5f;
+        Vector3L c = pos + -forward * rectangle.m_length * 0.5f + right * rectangle.m_width * 0.5f;
+        Vector3L d = pos + -forward * rectangle.m_length * 0.5f + -right * rectangle.m_width * 0.5f;
+        List<Vector2L> lineList = new List<Vector2L>();
+        lineList.Add(new Vector2L(a.x, a.z));
+        lineList.Add(new Vector2L(b.x, b.z));
+        lineList.Add(new Vector2L(c.x, c.z));
+        lineList.Add(new Vector2L(d.x, d.z));
         for (int i = 0; i < lineList.Count; ++i)
         {
             Segment2d segment = new Segment2d();
@@ -349,15 +349,15 @@ public class IntersectionTest2D
         public System.Object shapeB;
         public bool shapeAContained;
         public bool shapeBContained;
-        public float distance;
-        public Vector2 vector;
+        public FloatL distance;
+        public Vector2L vector;
     }
 
-    static Vector2 GetAxisNormal(List<Vector2> vertexArray, int pointIndex)
+    static Vector2L GetAxisNormal(List<Vector2L> vertexArray, int pointIndex)
     {
-        Vector2 pt1 = vertexArray[pointIndex];
-        Vector2 pt2 = pointIndex >= vertexArray.Count - 1 ? vertexArray[0] : vertexArray[pointIndex + 1];
-        Vector2 p = new Vector2(-(pt2.y - pt1.y), pt2.x - pt1.x);
+        Vector2L pt1 = vertexArray[pointIndex];
+        Vector2L pt2 = pointIndex >= vertexArray.Count - 1 ? vertexArray[0] : vertexArray[pointIndex + 1];
+        Vector2L p = new Vector2L(-(pt2.y - pt1.y), pt2.x - pt1.x);
         p.Normalize();
         return p;
     }
@@ -379,27 +379,27 @@ public class IntersectionTest2D
         result.shapeBContained = true;
 
         // get the vertices
-        List<Vector2> p1 = polygonA.GetRotateList();
-        List<Vector2> p2 = polygonB.GetRotateList();
+        List<Vector2L> p1 = polygonA.GetRotateList();
+        List<Vector2L> p2 = polygonB.GetRotateList();
 
         // get the offset
-        Vector2 vOffset = new Vector2(polygonA.m_pos.x - polygonB.m_pos.x, polygonA.m_pos.y - polygonB.m_pos.y);
+        Vector2L vOffset = new Vector2L(polygonA.m_pos.x - polygonB.m_pos.x, polygonA.m_pos.y - polygonB.m_pos.y);
 
-        float shortestDist = float.MaxValue;
+        FloatL shortestDist = FloatL.MaxValue;
 
         // loop through all of the axis on the first polygon
         for (int i = 0; i < p1.Count; ++i )
         {
             // find the axis that we will project onto
-            Vector2 vAxis = GetAxisNormal(p1, i);
+            Vector2L vAxis = GetAxisNormal(p1, i);
 
             // project polygon A
-            float min0 = Vector2.Dot(vAxis, p1[0]);
-            float max0 = min0;
+            FloatL min0 = Vector2L.Dot(vAxis, p1[0]);
+            FloatL max0 = min0;
 
             for (int j = 1; j < p1.Count; ++j )
             {
-                float t = Vector2.Dot(vAxis, p1[j]);
+                FloatL t = Vector2L.Dot(vAxis, p1[j]);
                 if(t < min0)
                 {
                     min0 = t;
@@ -411,11 +411,11 @@ public class IntersectionTest2D
             }
 
             // project polygon B
-            float min1 = Vector2.Dot(vAxis, p2[0]);
-            float max1 = min1;
+            FloatL min1 = Vector2L.Dot(vAxis, p2[0]);
+            FloatL max1 = min1;
             for (int j = 1; j < p2.Count; ++j )
             {
-                float t = Vector2.Dot(vAxis, p2[j]);
+                FloatL t = Vector2L.Dot(vAxis, p2[j]);
                 if(t < min1)
                 {
                     min1 = t;
@@ -427,13 +427,13 @@ public class IntersectionTest2D
             }
 
             // shift polygonA's projected points
-            float sOffset = Vector2.Dot(vAxis, vOffset);
+            FloatL sOffset = Vector2L.Dot(vAxis, vOffset);
             min0 += sOffset;
             max0 += sOffset;
 
             // test for intersections
-            float d0 = min0 - max1;
-            float d1 = min1 - max0;
+            FloatL d0 = min0 - max1;
+            FloatL d1 = min1 - max0;
             if(d0 > 0 || d1 > 0)
             {
                 // gap found
@@ -466,12 +466,12 @@ public class IntersectionTest2D
                     }
                 }
 
-                float distmin = (max1 - min0) * -1;
+                FloatL distmin = (max1 - min0) * -1;
                 if(flip)
                 {
                     distmin *= -1;
                 }
-                float distminAbs = (distmin < 0) ? distmin * -1 : distmin;
+                FloatL distminAbs = (distmin < 0) ? distmin * -1 : distmin;
                 if (distminAbs < shortestDist)
                 {
                     // this distance is shorter so use it...
@@ -513,17 +513,17 @@ public class IntersectionTest2D
         result.shapeBContained = true;
 
         // get the offset
-        Vector2 vOffset = new Vector2(polygonA.m_pos.x - circleA.m_pos.x, polygonA.m_pos.y - circleA.m_pos.y);
+        Vector2L vOffset = new Vector2L(polygonA.m_pos.x - circleA.m_pos.x, polygonA.m_pos.y - circleA.m_pos.y);
 
         // get the vertices
-        List<Vector2> p1 = polygonA.GetRotateList();
+        List<Vector2L> p1 = polygonA.GetRotateList();
 
         // find the closest point
-        Vector2 closestPoint = new Vector2();
-        float minDist = float.MaxValue;
+        Vector2L closestPoint = new Vector2L();
+        FloatL minDist = FloatL.MaxValue;
         foreach(var iter in p1)
         {
-            float currentDist = (circleA.m_pos - (polygonA.m_pos + iter)).sqrMagnitude;
+            FloatL currentDist = (circleA.m_pos - (polygonA.m_pos + iter)).sqrMagnitude;
             if(currentDist < minDist)
             {
                 minDist = currentDist;
@@ -532,16 +532,16 @@ public class IntersectionTest2D
         }
 
         // make a normal of this vector
-        Vector2 vAxis = closestPoint - circleA.m_pos;
+        Vector2L vAxis = closestPoint - circleA.m_pos;
         vAxis.Normalize();
 
         // project polygon A
-        float min0 = Vector2.Dot(vAxis, p1[0]);
-        float max0 = min0;
+        FloatL min0 = Vector2L.Dot(vAxis, p1[0]);
+        FloatL max0 = min0;
 
         for (int j = 1; j < p1.Count; ++j )
         {
-            float t = Vector2.Dot(vAxis, p1[j]);
+            FloatL t = Vector2L.Dot(vAxis, p1[j]);
             if(t < min0)
             {
                 min0 = t;
@@ -553,18 +553,18 @@ public class IntersectionTest2D
         }
 
         // project circle A
-        float min1 = Vector2.Dot(vAxis, Vector2.zero);
-        float max1 = min1 + circleA.m_radius;
+        FloatL min1 = Vector2L.Dot(vAxis, Vector2L.zero);
+        FloatL max1 = min1 + circleA.m_radius;
         min1 -= circleA.m_radius;
 
         // shift polygonA's projected points
-        float sOffset = Vector2.Dot(vAxis, vOffset);
+        FloatL sOffset = Vector2L.Dot(vAxis, vOffset);
         min0 += sOffset;
         max0 += sOffset;
 
         // test for intersections
-        float d0 = min0 - max1;
-        float d1 = min1 - max0;
+        FloatL d0 = min0 - max1;
+        FloatL d1 = min1 - max0;
 
         if (d0 > 0 || d1 > 0)
         {
@@ -572,11 +572,11 @@ public class IntersectionTest2D
             return null;
         }
 
-        float shortestDist = float.MaxValue;
+        FloatL shortestDist = FloatL.MaxValue;
         if(docalc) {
-			float distmin = (max1 - min0) * -1;  //Math.min(dist0, dist1);
+			FloatL distmin = (max1 - min0) * -1;  //Math.min(dist0, dist1);
             if (flip) distmin *= -1;
-			float distminAbs = (distmin < 0) ? distmin * -1 : distmin;
+			FloatL distminAbs = (distmin < 0) ? distmin * -1 : distmin;
 							
 			// check for containment
 			if (!flip) {
@@ -600,23 +600,23 @@ public class IntersectionTest2D
 			vAxis = GetAxisNormal(p1, i);
 				
 			// project polygon A
-			min0 = Vector2.Dot(vAxis, p1[0]);
+			min0 = Vector2L.Dot(vAxis, p1[0]);
 			max0 = min0;
 				
 			//
 			for (int j = 1; j < p1.Count; j++) {
-				float t = Vector2.Dot(vAxis, p1[j]);
+				FloatL t = Vector2L.Dot(vAxis, p1[j]);
 				if (t < min0) min0 = t;
 				if (t > max0) max0 = t;
 			}
 				
 			// project circle A
-			min1 = Vector2.Dot(vAxis, new Vector2(0,0) );
+			min1 = Vector2L.Dot(vAxis, new Vector2L(0,0) );
 			max1 = min1 + circleA.m_radius;
 			min1 -= circleA.m_radius;				
 				
 			// shift polygonA's projected points
-			sOffset = Vector2.Dot(vAxis, vOffset);
+			sOffset = Vector2L.Dot(vAxis, vOffset);
 			min0 += sOffset;
 			max0 += sOffset;				
 				
@@ -640,9 +640,9 @@ public class IntersectionTest2D
 					if (max1 < max0 || min1 > min0) result.shapeBContained = false;				
 				}				
 					
-				float distmin = (max1 - min0) * -1;
+				FloatL distmin = (max1 - min0) * -1;
                 if (flip) distmin *= -1;
-				float distminAbs = (distmin < 0) ? distmin * -1 : distmin;
+				FloatL distminAbs = (distmin < 0) ? distmin * -1 : distmin;
 				if (distminAbs < shortestDist) {
 					// this distance is shorter so use it...
 					result.distance = distmin;

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Model3d
 {
-    public Vector3 m_pos;
-    public Quaternion m_rotation = Quaternion.identity;
+    public Vector3L m_pos;
+    public QuaternionL m_rotation = QuaternionL.identity;
 
     public Model3d m_parent = null;
 
@@ -19,19 +19,19 @@ public class Model3d
     {
         m_mesh3d = mesh;
 
-        Vector3[] vertices = mesh.GetVertices();
-        Vector3 min = vertices[0];
-        Vector3 max = vertices[0];
+        Vector3L[] vertices = mesh.GetVertices();
+        Vector3L min = vertices[0];
+        Vector3L max = vertices[0];
 
         for (int i = 1; i < mesh.m_triangleList.Count * 3; ++i)
         {
-            min.x = Mathf.Min(vertices[i].x, min.x);
-            min.y = Mathf.Min(vertices[i].y, min.y);
-            min.z = Mathf.Min(vertices[i].z, min.z);
+            min.x = FixPointMath.Min(vertices[i].x, min.x);
+            min.y = FixPointMath.Min(vertices[i].y, min.y);
+            min.z = FixPointMath.Min(vertices[i].z, min.z);
 
-            max.x = Mathf.Max(vertices[i].x, max.x);
-            max.y = Mathf.Max(vertices[i].y, max.y);
-            max.z = Mathf.Max(vertices[i].z, max.z);
+            max.x = FixPointMath.Max(vertices[i].x, max.x);
+            max.y = FixPointMath.Max(vertices[i].y, max.y);
+            max.z = FixPointMath.Max(vertices[i].z, max.z);
         }
         m_aabb = Mesh3d.FromMinMax(min, max);
     }
@@ -47,8 +47,8 @@ public class Model3d
 
     public OBB3d GetOBB()
     {
-        Matrix4x4 obj2World = GetObj2WorldMatrix();
-        OBB3d obb = new OBB3d(obj2World * m_aabb.m_pos, m_rotation, m_aabb.m_xLength, m_aabb.m_yLength, m_aabb.m_zLength);
+        Matrix4x4L obj2World = GetObj2WorldMatrix();
+        OBB3d obb = new OBB3d(obj2World * m_aabb.m_pos, m_rotation, m_aabb.m_size.x, m_aabb.m_size.y, m_aabb.m_size.z);
         return obb;
     }
 
@@ -57,9 +57,9 @@ public class Model3d
         return m_mesh3d;
     }
 
-    public Matrix4x4 GetObj2WorldMatrix()
+    public Matrix4x4L GetObj2WorldMatrix()
     {
-        return Matrix4x4.TRS(m_pos, m_rotation, Vector3.one);
+        return Matrix4x4L.TRS(m_pos, m_rotation, Vector3L.one);
     }
 }
 
