@@ -22,15 +22,15 @@ public class AlgorithmsBase
             {
                 outPut += re[i][j] + "   ";
             }
-            Debug.Log(outPut);
+            UnityEngine.Debug.Log(outPut);
         }
 
-        Debug.Log("");
-        Debug.Log("");
+        UnityEngine.Debug.Log("");
+        UnityEngine.Debug.Log("");
 
         StringBuilder str = new StringBuilder();
         AlgorithmsBase.printLCS(re, str1, str2, str1.Length, str2.Length, ref str);
-        Debug.Log(str.ToString());
+        UnityEngine.Debug.Log(str.ToString());
     }
 
     #region 最长公共子序列

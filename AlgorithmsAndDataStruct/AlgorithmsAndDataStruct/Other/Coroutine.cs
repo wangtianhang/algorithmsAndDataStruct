@@ -24,7 +24,7 @@ class TestWWW
         WWW www = new WWW("http://www.baidu.com");
         yield return www;
 
-        Debug.Log("TestWWWCoroutine end");
+        UnityEngine.Debug.Log("TestWWWCoroutine end");
     }
 }
 
@@ -137,7 +137,7 @@ class WWW : AsyncOperation
             || e.Error.Message == "")
         {
             m_text = System.Text.Encoding.UTF8.GetString(e.Result);
-            Debug.Log("UploadDataCompletedEventHandler " + m_text);
+            UnityEngine.Debug.Log("UploadDataCompletedEventHandler " + m_text);
         }
         else
         {
@@ -146,7 +146,7 @@ class WWW : AsyncOperation
             {
                 errorMsg = e.Error.Message;
             }
-            Debug.LogError("UploadDataCompletedEventHandler error " + url + " " + errorMsg);
+            UnityEngine.Debug.LogError("UploadDataCompletedEventHandler error " + url + " " + errorMsg);
         }
 
         m_isDone = true;

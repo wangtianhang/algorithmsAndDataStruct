@@ -3,15 +3,20 @@ using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
 
-namespace FixPoint
-{
+//namespace FixPoint
+//{
+
+    [System.Serializable]
     public struct FloatL
     {
         public const Int32 MaxValue = 2147483647;
         public const Int32 MinValue = -2147483648;
 
+    public static FloatL Epsilon = new FloatL(0.00001d);
+
         public long m_numerator; // 分子
-        public const long m_denominator = 1000L;
+        public const long m_denominator = 1000 * 100L;
+        
         public FloatL(float a)
         {
             m_numerator = (long)(a * m_denominator);
@@ -52,7 +57,14 @@ namespace FixPoint
             return ret;
         }
 
-        public static bool operator !=(FloatL lhs, FloatL rhs)
+    public static FloatL operator +(FloatL a)
+    {
+        //FloatL ret = new FloatL();
+        //ret.m_numerator = -a.m_numerator;
+        return a;
+    }
+
+    public static bool operator !=(FloatL lhs, FloatL rhs)
         {
             return lhs.m_numerator != rhs.m_numerator;
         }
@@ -106,8 +118,26 @@ namespace FixPoint
         public static FloatL operator /(FloatL a, FloatL b)
         {
             FloatL ret = new FloatL();
-            // 可以应对小数除大数时不为0
-            ret.m_numerator = ((a.m_numerator * m_denominator) / b.m_numerator);
+            
+        if(b.m_numerator == 0)
+        {
+            UnityEngine.Debug.LogError("FloatL / 0");
+            if(a.m_numerator >= 0)
+            {
+                return MaxValue;
+            }
+            else if(a.m_numerator < 0)
+            {
+                return MinValue;
+            }
+//             else
+//             {
+//                 return 0;
+//             }
+        }
+
+        // 可以应对小数除大数时不为0
+        ret.m_numerator = ((a.m_numerator * m_denominator) / b.m_numerator);
             return ret;
         }
 
@@ -148,6 +178,6 @@ namespace FixPoint
             return this.m_numerator == otherFloatL.m_numerator;
         }
     }
-}
+//}
 
 

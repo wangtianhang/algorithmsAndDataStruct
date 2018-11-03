@@ -7,7 +7,7 @@ class BitOperation
 {
     public static void Test()
     {
-        Debug.Log(NumberOf1(82).ToString());
+        UnityEngine.Debug.Log(NumberOf1(82).ToString());
     }
 
     //求二进制形式中1的数量

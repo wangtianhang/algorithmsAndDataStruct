@@ -6,8 +6,8 @@ using System.Text;
 using System.Xml.Serialization;
 //using UnityEngine;
 
-//namespace Common
-//{
+namespace UnityEngine
+{
     /// <summary>
     /// 坐标系与unity保持一致 为左手坐标系
     /// </summary>
@@ -619,4 +619,4 @@ using System.Xml.Serialization;
         }
     }
 
-//}
+}

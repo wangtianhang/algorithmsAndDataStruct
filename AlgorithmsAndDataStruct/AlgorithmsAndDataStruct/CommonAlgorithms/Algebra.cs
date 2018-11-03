@@ -9,7 +9,7 @@ public class Algebra
 {
     public static void Test()
     {
-        Debug.Log(InvertFunc((x) => x * x, 3, 1).ToString());
+        UnityEngine.Debug.Log(InvertFunc((x) => x * x, 3, 1).ToString());
     }
 
     /// <summary>

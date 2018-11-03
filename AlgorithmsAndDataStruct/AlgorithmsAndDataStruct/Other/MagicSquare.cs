@@ -18,7 +18,7 @@ public class MagicSquare
             {
                 str += iter2 + "\t";
             }
-            Debug.Log(str);
+            UnityEngine.Debug.Log(str);
         }
     }
 
@@ -28,7 +28,7 @@ public class MagicSquare
     {
         if(n % 2 != 1)
         {
-            Debug.LogError("n必须为奇数");
+            UnityEngine.Debug.LogError("n必须为奇数");
             return null;
         }
         m_array = new int[n + 1][];

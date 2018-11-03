@@ -2,9 +2,9 @@
 using System.Collections;
 using System;
 
-namespace FixPoint
-{
-    public class FixPointMath
+//namespace FixPoint
+//{
+    public partial class FixPointMath
     {
         public const double Deg2Rad = 0.0174533d;
         public const double Epsilon = 1.4013e-045d;
@@ -23,25 +23,7 @@ namespace FixPoint
             return ret;
         }
 
-        public static FloatL Acos(FloatL f)
-        {
-            return Math.Acos(f.ToDouble());
-        }
 
-        public static FloatL Asin(FloatL f)
-        {
-            return Math.Asin(f.ToDouble());
-        }
-
-        public static FloatL Atan(FloatL f)
-        {
-            return Math.Atan(f.ToDouble());
-        }
-
-        public static FloatL Atan2(FloatL y, FloatL x)
-        {
-            return Math.Atan2(y.ToDouble(), x.ToDouble());
-        }
 
         public static int CeilToInt(FloatL f)
         {
@@ -61,6 +43,19 @@ namespace FixPoint
             return value;
         }
 
+        public static int Clamp(int value, int min, int max)
+    {
+        if (value < min)
+        {
+            value = min;
+        }
+        else if (value > max)
+        {
+            value = max;
+        }
+        return value;
+    }
+
         public static FloatL Clamp01(FloatL value)
         {
             if (value < 0)
@@ -74,12 +69,99 @@ namespace FixPoint
             return value;
         }
 
-        public static FloatL Cos(FloatL f)
-        {
-            return Math.Cos(f.ToDouble());
-        }
+    #region 三角函数
 
-        public static FloatL DeltaAngle(FloatL current, FloatL target)
+    public static FloatL Asin(FloatL f)
+    {
+        //return Math.Asin(f.ToDouble());
+        // arcsinX = pi / 2 - arccosX;
+        FloatL arccosX = Acos(f);
+        return FixPointMath.PI / 2 - arccosX;
+    }
+
+    public static FloatL Atan(FloatL f)
+    {
+        //return Math.Atan(f.ToDouble());
+        throw new Exception("不应该使用atan, 考虑用atan2替代");
+    }
+
+    public static FloatL Atan2(FloatL yL, FloatL xL)
+    {
+        //return Math.Atan2(y.ToDouble(), x.ToDouble());
+        long y = yL.m_numerator;
+        long x = xL.m_numerator;
+
+        int num;
+        int num2;
+        if (x < 0)
+        {
+            if (y < 0)
+            {
+                x = -x;
+                y = -y;
+                num = 1;
+            }
+            else
+            {
+                x = -x;
+                num = -1;
+            }
+            num2 = -31416;
+        }
+        else
+        {
+            if (y < 0)
+            {
+                y = -y;
+                num = -1;
+            }
+            else
+            {
+                num = 1;
+            }
+            num2 = 0;
+        }
+        int dIM = Atan2LookupTable.DIM;
+        long num3 = (long)(dIM - 1);
+        long b = (long)((x >= y) ? x : y);
+        int num4 = (int)FixPointMath.Divide((long)x * num3, b);
+        int num5 = (int)FixPointMath.Divide((long)y * num3, b);
+        int num6 = Atan2LookupTable.table[num5 * dIM + num4];
+        return new FloatL((num6 + num2) * num) / new FloatL(10000);
+    }
+
+    public static FloatL Sin(FloatL f)
+    {
+        int index = SinCosLookupTable.getIndex(f.m_numerator, FloatL.m_denominator);
+        return new FloatL(SinCosLookupTable.sin_table[index]) / new FloatL(SinCosLookupTable.FACTOR);
+    }
+
+    public static FloatL Cos(FloatL f)
+        {
+        //return Math.Cos(f.ToDouble());
+        int index = SinCosLookupTable.getIndex(f.m_numerator, FloatL.m_denominator);
+        return new FloatL(SinCosLookupTable.cos_table[index]) / new FloatL(SinCosLookupTable.FACTOR);
+    }
+
+    public static FloatL Acos(FloatL f)
+    {
+        //return Math.Acos(f.ToDouble());
+        int num = (int)FixPointMath.Divide(f.m_numerator * (long)AcosLookupTable.HALF_COUNT, FloatL.m_denominator) + AcosLookupTable.HALF_COUNT;
+        num = FixPointMath.Clamp(num, 0, AcosLookupTable.COUNT);
+        return new FloatL((long)AcosLookupTable.table[num]) / new FloatL(10000);
+    }
+
+    public static FloatL Tan(FloatL f)
+    {
+        //return Math.Tan(f.ToDouble());
+        FloatL sin = Sin(f);
+        FloatL cos = Cos(f);
+        return sin / cos;
+    }
+
+    #endregion
+
+    public static FloatL DeltaAngle(FloatL current, FloatL target)
         {
             FloatL num = FixPointMath.Repeat(target - current, 360f);
             if (num > 180f)
@@ -96,7 +178,8 @@ namespace FixPoint
 
         public static FloatL Floor(FloatL f)
         {
-            return Math.Floor(f.ToDouble());
+            //return Math.Floor(f.ToDouble());
+            return f.ToInt();
         }
 
         public static int FloorToInt(FloatL f)
@@ -196,7 +279,12 @@ namespace FixPoint
             return (a >= b) ? b : a;
         }
 
-        public static FloatL Min(params FloatL[] values)
+        public static int Min(int a, int b)
+    {
+        return (a >= b) ? b : a;
+    }
+
+    public static FloatL Min(params FloatL[] values)
         {
             int num = values.Length;
             if (num == 0)
@@ -247,12 +335,14 @@ namespace FixPoint
 
         public static FloatL Round(FloatL f)
         {
-            return Math.Round(f.ToDouble());
+            //return Math.Round(f.ToDouble());
+            return (f + 0.5d);
         }
 
         public static int RoundToInt(FloatL f)
         {
-            return (int)Math.Round(f.ToDouble());
+            //return (int)Math.Round(f.ToDouble());
+            return (f + 0.5d).ToInt();
         }
 
         public static FloatL Sign(FloatL f)
@@ -260,16 +350,18 @@ namespace FixPoint
             return (f < 0f) ? -1f : 1f;
         }
 
-        public static FloatL Sin(FloatL f)
-        {
-            return Math.Sin(f.ToDouble());
-        }
+
+
+//         public static FloatL SinOld(FloatL f)
+//         {
+//             return Math.Sin(f.ToDouble());
+//         }
         /// <summary>
         /// 牛顿法求平方根
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static FloatL Sqrt(FloatL c)
+        public static FloatL SqrtOld(FloatL c)
         {
             if(c == 0)
             {
@@ -281,26 +373,49 @@ namespace FixPoint
                 return new FloatL(-1);
             }
 
-            FloatL err = new FloatL(0.01f);
+            FloatL err = FloatL.Epsilon;
             FloatL t = c;
             int count = 0;
             while (FixPointMath.Abs(t - c / t) > err * t)
             {
                 count++;
                 t = (c / t + t) / new FloatL(2.0f);
-                if(count >= 100)
+                if(count >= 20)
                 {
-                    Debug.LogError("FixPoint Sqrt " + c);
+                    UnityEngine.Debug.LogWarning("FixPoint Sqrt " + c + " current sqrt " + t);
                     break;
                 }
             }
             return t;
         }
 
-        public static FloatL Tan(FloatL f)
+    public static FloatL Sqrt(FloatL c)
+    {
+        ulong value = Sqrt64((ulong)(c.m_numerator * FloatL.m_denominator));
+        FloatL ret = new FloatL();
+        ret.m_numerator = (long)value;
+        return ret;
+    }
+
+    public static ulong Sqrt64(ulong a)
+    {
+        ulong num = 0uL;
+        ulong num2 = 0uL;
+        for (int i = 0; i < 32; i++)
         {
-            return Math.Tan(f.ToDouble());
+            num2 <<= 1;
+            num <<= 2;
+            num += a >> 62;
+            a <<= 2;
+            if (num2 < num)
+            {
+                num2 += 1uL;
+                num -= num2;
+                num2 += 1uL;
+            }
         }
+        return num2 >> 1 & long.MaxValue;
+    }
 
         public static int ClosestPowerOfTwo(int n)
         {
@@ -328,5 +443,10 @@ namespace FixPoint
                 return (n & (n - 1)) == 0;
             }
         }
+
+        public static bool Approximately(FloatL a, FloatL b)
+    {
+        return a == b;
     }
 }
+//}

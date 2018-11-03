@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.IO;
+using UnityEngine;
 
 public class Maze
 {
@@ -12,8 +13,8 @@ public class Maze
 
         int width = 150;
         int height = 100;
-        
-        string time = Debug.GetTime();
+
+        string time = UnityEngine.Debug.GetTime();
         string fileName = "maze" + time + ".bmp";
         string fullPath = Directory.GetCurrentDirectory() + "/" + fileName;
         string pathFileName = "mazePath" + time + ".bmp";

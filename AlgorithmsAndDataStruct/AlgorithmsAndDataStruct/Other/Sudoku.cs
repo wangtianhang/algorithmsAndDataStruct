@@ -13,7 +13,7 @@ public class Sudoku
         List<int[][]> result = test.GetSudoku(100);
         for (int i = 0; i < result.Count; ++i )
         {
-            Debug.Log("Sudoku result " + (i + 1));
+            UnityEngine.Debug.Log("Sudoku result " + (i + 1));
             test.SodokuPrint(result[i]);
         }
     }
@@ -47,7 +47,7 @@ public class Sudoku
             }
             else
             {
-                Debug.Log("GenerateValidMatrix no result");
+                UnityEngine.Debug.Log("GenerateValidMatrix no result");
             }
         }
 
@@ -161,7 +161,7 @@ public class Sudoku
                 {
                     oneline += iter2 + "\t";
                 }
-                Debug.Log(oneline);
+                UnityEngine.Debug.Log(oneline);
             }
         }
     }

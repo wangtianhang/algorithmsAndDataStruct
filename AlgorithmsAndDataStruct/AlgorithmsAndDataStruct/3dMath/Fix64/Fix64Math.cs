@@ -308,7 +308,7 @@ namespace FixMath.NET
                 t = (c / t + t) / (Fix64)(2.0f);
                 if(count >= 100)
                 {
-                    Debug.LogError("FixPoint Sqrt " + c);
+                    UnityEngine.Debug.LogError("FixPoint Sqrt " + c);
                     break;
                 }
             }

@@ -2,9 +2,10 @@
 using System.Collections;
 using System;
 
-namespace FixPoint
-{
-    public struct Matrix4x4L
+//namespace FixPoint
+//{
+[System.Serializable]
+public struct Matrix4x4L
     {
         public FloatL m00;
 
@@ -599,4 +600,4 @@ namespace FixPoint
             return this.GetColumn(0).Equals(matrix4x.GetColumn(0)) && this.GetColumn(1).Equals(matrix4x.GetColumn(1)) && this.GetColumn(2).Equals(matrix4x.GetColumn(2)) && this.GetColumn(3).Equals(matrix4x.GetColumn(3));
         }
     }
-}
+//}

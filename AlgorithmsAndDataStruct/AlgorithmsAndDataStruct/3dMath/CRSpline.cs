@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Text;
+using UnityEngine;
 
 // copy from itween(Catmull-Rom class)
 public class CRSpline

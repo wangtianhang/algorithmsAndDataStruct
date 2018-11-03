@@ -53,6 +53,8 @@
     <Compile Include="3dMath\Fix64\Fix64SinLut.cs" />
     <Compile Include="3dMath\Fix64\Fix64TanLut.cs" />
     <Compile Include="3dMath\FixPoint\FixPointMath.cs" />
+    <Compile Include="3dMath\FixPoint\FixPointMathHelper.cs" />
+    <Compile Include="3dMath\FixPoint\FixPointMathTest.cs" />
     <Compile Include="3dMath\FixPoint\FloatL.cs" />
     <Compile Include="3dMath\FixPoint\Matrix4x4L.cs" />
     <Compile Include="3dMath\FixPoint\QuaternionL.cs" />

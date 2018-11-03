@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 //using UnityEngine;
 
-//namespace Common
-//{
+namespace UnityEngine
+{
 
     public struct Mathf
     {
@@ -459,4 +459,4 @@ using System.Text;
         }
     }
 
-//}
+}

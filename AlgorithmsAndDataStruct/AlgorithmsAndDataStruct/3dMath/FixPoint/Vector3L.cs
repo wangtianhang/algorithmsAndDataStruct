@@ -2,8 +2,9 @@
 using System.Collections;
 using System;
 
-namespace FixPoint
-{
+//namespace FixPoint
+//{
+    [System.Serializable]
     public struct Vector3L
     {
         public static void Test()
@@ -11,7 +12,7 @@ namespace FixPoint
 
         }
 
-        public static FloatL kEpsilon = new FloatL(0.001f);
+        public static FloatL kEpsilon = FloatL.Epsilon;
 
         public FloatL x;
         public FloatL y;
@@ -38,6 +39,11 @@ namespace FixPoint
             ret.y = -a.y;
             ret.z = -a.z;
             return ret;
+        }
+
+        public static Vector3L operator +(Vector3L a)
+        {
+            return a;
         }
 
         public static Vector3L operator -(Vector3L a, Vector3L b)
@@ -262,7 +268,7 @@ namespace FixPoint
         public void Normalize()
         {
             FloatL num = Vector3L.Magnitude(this);
-            if (num > new FloatL(0.001f))
+            if (num > FloatL.Epsilon)
             {
                 this /= num;
             }
@@ -275,7 +281,7 @@ namespace FixPoint
         public static Vector3L Normalize(Vector3L value)
         {
             FloatL num = Vector3L.Magnitude(value);
-            if (num > new FloatL(0.001f))
+            if (num > FloatL.Epsilon)
             {
                 return value / num;
             }
@@ -285,7 +291,7 @@ namespace FixPoint
         public static Vector3L Project(Vector3L vector, Vector3L onNormal)
         {
             FloatL num = Vector3L.Dot(onNormal, onNormal);
-            if (num < new FloatL(0.001f))
+            if (num < FloatL.Epsilon)
             {
                 return Vector3L.zero;
             }
@@ -409,5 +415,16 @@ namespace FixPoint
             Vector3L vector = (Vector3L)other;
             return this.x.Equals(vector.x) && this.y.Equals(vector.y) && this.z.Equals(vector.z);
         }
+
+    public static implicit operator Vector3L(UnityEngine.Vector3 vec)
+    {
+        return new Vector3L(vec.x, vec.y, vec.z);
     }
-}
+
+    public UnityEngine.Vector3 Convert()
+    {
+        return new UnityEngine.Vector3(x.ToFloat(), y.ToFloat(), z.ToFloat());
+    }
+
+    }
+//}

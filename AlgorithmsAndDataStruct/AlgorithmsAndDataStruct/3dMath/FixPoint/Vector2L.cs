@@ -2,11 +2,12 @@
 using System.Collections;
 using System;
 
-namespace FixPoint
-{
-    public struct Vector2L
+//namespace FixPoint
+//{
+[System.Serializable]
+public struct Vector2L
     {
-        public static FloatL kEpsilon = new FloatL(0.001f);
+        public static FloatL kEpsilon = FloatL.Epsilon;
 
         public FloatL x;
         public FloatL y;
@@ -143,7 +144,7 @@ namespace FixPoint
         public void Normalize()
         {
             FloatL magnitude = this.magnitude;
-            if (magnitude > new FloatL(0.001f))
+            if (magnitude > FloatL.Epsilon)
             {
                 this = this / magnitude;
             }
@@ -266,5 +267,15 @@ namespace FixPoint
             Vector2L vector = (Vector2L)other;
             return this.x.Equals(vector.x) && this.y.Equals(vector.y);
         }
+
+    public static implicit operator Vector2L(UnityEngine.Vector2 vec)
+    {
+        return new Vector2L(vec.x, vec.y);
+    }
+
+    public UnityEngine.Vector2 Convert()
+    {
+        return new UnityEngine.Vector2(x.ToFloat(), y.ToFloat());
     }
 }
+//}

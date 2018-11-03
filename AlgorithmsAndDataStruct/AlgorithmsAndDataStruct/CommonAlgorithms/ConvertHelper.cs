@@ -8,12 +8,12 @@ class ConvertHelper
     public static void Test()
     {
         string tmp = TenToTwo(10);
-        Debug.Log(tmp);
-        Debug.Log(TwoToTen(tmp).ToString());
+        UnityEngine.Debug.Log(tmp);
+        UnityEngine.Debug.Log(TwoToTen(tmp).ToString());
 
         string tmp2 = TenToSixteen(10);
-        Debug.Log(tmp2);
-        Debug.Log(SixteenToTen(tmp2).ToString());
+        UnityEngine.Debug.Log(tmp2);
+        UnityEngine.Debug.Log(SixteenToTen(tmp2).ToString());
     }
 
     /// <summary>

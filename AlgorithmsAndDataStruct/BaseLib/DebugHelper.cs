@@ -10,7 +10,7 @@ public class DebugHelper
         if(value)
         {
             //throw new System.Exception();
-            Debug.LogError("Assert " + str);
+            UnityEngine.Debug.LogError("Assert " + str);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 
-//namespace Common
-//{
+namespace UnityEngine
+{
     public struct Vector4
     {
         public const float kEpsilon = 1E-05f;
@@ -317,4 +317,4 @@
         }
     }
 
-//}
+}

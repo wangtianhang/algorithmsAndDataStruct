@@ -3,11 +3,12 @@ using System.Collections;
 using System;
 using System.Xml.Serialization;
 
-namespace FixPoint
-{
+//namespace FixPoint
+//{
+    [System.Serializable]
     public struct QuaternionL
     {
-        public static FloatL kEpsilon = new FloatL(0.001f);
+        public static FloatL kEpsilon = FloatL.Epsilon;
 
         public FloatL x;
         public FloatL y;
@@ -168,7 +169,8 @@ namespace FixPoint
 
         public static QuaternionL FromToRotation(Vector3L v1, Vector3L v2)
         {
-            return QuaternionL.AngleAxis(Vector3L.Angle(v1, v2), Vector3L.Cross(v1, v2));
+            FloatL angle = Vector3L.Angle(v1, v2);
+            return QuaternionL.AngleAxis(angle, Vector3L.Cross(v1, v2));
         }
 
         public static QuaternionL Inverse(QuaternionL rotation)
@@ -517,5 +519,15 @@ namespace FixPoint
             QuaternionL quaternion = (QuaternionL)other;
             return this.x.Equals(quaternion.x) && this.y.Equals(quaternion.y) && this.z.Equals(quaternion.z) && this.w.Equals(quaternion.w);
         }
+
+    public static implicit operator QuaternionL(UnityEngine.Quaternion qua)
+    {
+        return new QuaternionL(qua.x, qua.y, qua.z, qua.w);
+    }
+
+    public UnityEngine.Quaternion Convert()
+    {
+        return new UnityEngine.Quaternion(x.ToFloat(), y.ToFloat(), z.ToFloat(), w.ToFloat());
     }
 }
+//}

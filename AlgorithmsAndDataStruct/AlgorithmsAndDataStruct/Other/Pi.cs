@@ -7,10 +7,10 @@ public class Pi
 {
     public static void Test()
     {
-        Debug.Log(CalculatePi_BBP_double().ToString());
-        Debug.Log(CalculatePi_BBP_decemal().ToString());
-        Debug.Log(CalculatePi_SuperPi_double().ToString());
-        Debug.Log(CalculatePi_SuperPi_decimal().ToString());
+        UnityEngine.Debug.Log(CalculatePi_BBP_double().ToString());
+        UnityEngine.Debug.Log(CalculatePi_BBP_decemal().ToString());
+        UnityEngine.Debug.Log(CalculatePi_SuperPi_double().ToString());
+        UnityEngine.Debug.Log(CalculatePi_SuperPi_decimal().ToString());
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ public class Pi
         {
             Fraction par1 = new Fraction(1, (long)Math.Pow(16, k));
             pi += par1 * (new Fraction(4, 8 * k + 1) - new Fraction(2, 8 * k + 4) - new Fraction(1, 8 * k + 5) - new Fraction(1, 8 * k + 6));
-            Debug.Log(pi.ToString());
+            UnityEngine.Debug.Log(pi.ToString());
         }
         return pi.ToDouble();
     }

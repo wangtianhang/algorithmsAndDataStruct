@@ -1,7 +1,7 @@
 ﻿using System;
 
-//namespace Common
-//{
+namespace UnityEngine
+{
     public struct Vector2 : IComparable<Vector2>
     {
         public const float kEpsilon = 1E-05f;
@@ -329,4 +329,4 @@
         }
     }
 
-//}
+}
