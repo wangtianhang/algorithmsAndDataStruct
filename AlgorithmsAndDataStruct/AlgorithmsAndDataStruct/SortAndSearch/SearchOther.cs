@@ -160,7 +160,7 @@ class SearchOther
     }
 
     /// <summary>
-    /// 找到一组数中第k小元素
+    /// 找到一组数中第k小元素 最坏时间复杂度O^2 期望时间复杂度O(n)
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="a"></param>
