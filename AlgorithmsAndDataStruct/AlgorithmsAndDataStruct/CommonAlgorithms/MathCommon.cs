@@ -90,6 +90,49 @@ public class MathCommon
         return sum; 
     }
 
+    public static float Ln(float x2, int n = 10)
+    {
+        float sum = 0;
+        float x = x2 - 1;
+        for (int i = 1; i <= n; ++i )
+        {
+            if(i % 2 == 0)
+            {
+                sum += _Pow(x, i) / _Factorial(i);
+            }
+            else
+            {
+                sum -= _Pow(x, i) / _Factorial(i);
+            }
+        }
+        return sum;
+    }
+
+    static float _Pow(float x, int a)
+    {
+        float ret = 1;
+        for (int i = 0; i < a; ++i )
+        {
+            ret *= x;
+        }
+        return ret;
+    }
+
+    static int _Factorial(int n)
+    {
+        int ret = 1;
+        for (int i = 1; i <= n; ++i )
+        {
+            ret *= i;
+        }
+        return ret;
+    }
+
+    public static float Pow(float a, float x, int n = 10)
+    {
+        return Exp(x * Ln(a, n), n);
+    }
+
 //     public static double TestFunc(double x)
 //     {
 //         return 1 / Math.Sqrt(4 - x * x);
