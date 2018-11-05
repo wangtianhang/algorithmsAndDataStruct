@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgorithmsAndDataStruct", "AlgorithmsAndDataStruct\AlgorithmsAndDataStruct.csproj", "{58858C86-0C31-406B-A572-47BC517BC782}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgorithmAndDataStructDotNet4", "AlgorithmAndDataStructDotNet4\AlgorithmAndDataStructDotNet4.csproj", "{AB0DCEA5-6696-46B4-976A-8E4A5C0B4ACC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58858C86-0C31-406B-A572-47BC517BC782} = {58858C86-0C31-406B-A572-47BC517BC782}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseLib", "BaseLib\BaseLib.csproj", "{518322DC-E7A0-4A64-B7C0-1F81A5C6D07C}"
 EndProject

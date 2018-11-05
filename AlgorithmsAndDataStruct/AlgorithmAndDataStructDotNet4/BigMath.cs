@@ -27,7 +27,7 @@ public class BigMath
         Debug.Log(((decimal)result).ToString());
         string piStr = result.ToDecimalString(1000);
         Debug.Log(piStr);
-        string lcsPi = AlgorithmsBase.LCS(piStr, PI);
+        string lcsPi = AlgorithmsMisc.LCS(piStr, PI);
         Debug.Log(lcsPi.Length.ToString());
         Debug.Log("阶乘" + CalculateFactorial(100).ToString());
         Debug.Log("斐波那契" + CalculateFibonacci(100).ToString());

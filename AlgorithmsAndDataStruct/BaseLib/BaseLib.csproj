@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlgorithmsBase.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="DebugHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
