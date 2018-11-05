@@ -16,7 +16,7 @@ class QuickSort<T>
 
     public static void Sort(T[] a)
     {
-        Random.Shuffle<T>(a);
+        RandomAlgorithm.Shuffle<T>(a);
         Sort(a, 0, a.Length - 1);
     }
 

@@ -88,28 +88,13 @@ public class Random
         return ret;
     }
 
-    static int uniform(int n)
-    {
-        Init();
+//     static int uniform(int n)
+//     {
+//         Init();
+// 
+//         return s_ran.Next() % n;
+//     }
 
-        return s_ran.Next() % n;
-    }
 
-    /// <summary>
-    /// 完美洗牌算法
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="a"></param>
-    public static void Shuffle<T>(T[] a)
-    {
-        int n = a.Length;
-        for (int i = 0; i < n; ++i)
-        {
-            int r = i + uniform(n - i);
-            T temp = a[i];
-            a[i] = a[r];
-            a[r] = temp;
-        }
-    }
 }
 

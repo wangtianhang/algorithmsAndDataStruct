@@ -168,7 +168,7 @@ class SearchOther
     /// <returns></returns>
     public static T Select<T>(T[] a, int k)
     {
-        Random.Shuffle<T>(a);
+        RandomAlgorithm.Shuffle<T>(a);
         int lo = 0, hi = a.Length - 1;
         while (hi > lo)
         {
