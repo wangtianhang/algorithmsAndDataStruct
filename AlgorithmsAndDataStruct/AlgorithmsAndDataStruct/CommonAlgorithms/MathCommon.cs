@@ -76,6 +76,19 @@ public class MathCommon
     }
 
 
+    // exponential by  Taylor Series
+    // Function returns approximate value of e^x  
+    // using sum of first n terms of Taylor Series 
+    public static float Exp(float x, int n = 10)
+    {
+        // initialize sum of series 
+        float sum = 1;
+
+        for (int i = n - 1; i > 0; --i)
+            sum = 1 + x * sum / i;
+
+        return sum; 
+    }
 
 //     public static double TestFunc(double x)
 //     {
