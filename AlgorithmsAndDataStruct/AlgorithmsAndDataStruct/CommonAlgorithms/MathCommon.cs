@@ -27,10 +27,10 @@ public class MathCommon
 
 
         Debug.Log("Math.Exp " + Math.Exp(9));
-        Debug.Log("SelfExp " + Exp(9));
+        Debug.Log("SelfExp " + Exp(9, 9 * 2));
 
         Debug.Log("Math.Exp " + Math.Exp(19));
-        Debug.Log("SelfExp " + Exp(19));
+        Debug.Log("SelfExp " + Exp(19, 19 * 2));
 
         Debug.Log("Math.Ln " + Math.Log(1.1f));
         Debug.Log("SelfLn " + Ln(1.1f));
@@ -43,6 +43,12 @@ public class MathCommon
 
         Debug.Log("Math.Ln " + Math.Log(100));
         Debug.Log("SelfLn " + Ln(100));
+
+        Debug.Log("Math.Log " + Math.Log(9.5, 3.2));
+        Debug.Log("SelfLog " + Log(9.5, 3.2));
+
+        Debug.Log("Math.Pow " + Math.Pow(9.5, 3.2));
+        Debug.Log("SelfPow " + Pow(9.5, 3.2, 30));
     }
 
     /// <summary>
@@ -97,15 +103,15 @@ public class MathCommon
     // exponential by  Taylor Series
     // Function returns approximate value of e^x  
     // using sum of first n terms of Taylor Series 
-    public static double Exp(double x, int n = 10)
+    public static double Exp(double x, int n = 30)
     {
         // initialize sum of series 
         double sum = 1;
 
         for (int i = n - 1; i > 0; --i)
             sum = 1 + x * sum / i;
-
-        return sum; 
+ 
+         return sum; 
     }
 
     public static double LnOld(double x2, int n = 10)
@@ -176,9 +182,9 @@ public class MathCommon
     }
 
     // 换底公式
-    public static double Log(double a, double b, int n = 10)
+    public static double Log(double a, double newBase, int n = 10)
     {
-        return Ln(b, n) / Ln(a, n);
+        return Ln(a, n) / Ln(newBase, n);
     }
 
     static double _Pow(double x, int a)
@@ -201,7 +207,7 @@ public class MathCommon
         return ret;
     }
 
-    public static double Pow(double a, double x, int n = 10)
+    public static double Pow(double a, double x, int n = 30)
     {
         return Exp(x * Ln(a, n), n);
     }
