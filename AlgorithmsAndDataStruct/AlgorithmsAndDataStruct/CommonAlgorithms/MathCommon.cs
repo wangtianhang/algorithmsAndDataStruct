@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-
+using UnityEngine;
 
 
 public class MathCommon
@@ -24,7 +24,25 @@ public class MathCommon
 
 
         //TestFuncGraphic();
-        
+
+
+        Debug.Log("Math.Exp " + Math.Exp(9));
+        Debug.Log("SelfExp " + Exp(9));
+
+        Debug.Log("Math.Exp " + Math.Exp(19));
+        Debug.Log("SelfExp " + Exp(19));
+
+        Debug.Log("Math.Ln " + Math.Log(1.1f));
+        Debug.Log("SelfLn " + Ln(1.1f));
+
+        Debug.Log("Math.Ln " + Math.Log(2f));
+        Debug.Log("SelfLn " + Ln(2f));
+
+        Debug.Log("Math.Ln " + Math.Log(10f));
+        Debug.Log("SelfLn " + Ln(10f));
+
+        Debug.Log("Math.Ln " + Math.Log(100));
+        Debug.Log("SelfLn " + Ln(100));
     }
 
     /// <summary>
@@ -79,10 +97,10 @@ public class MathCommon
     // exponential by  Taylor Series
     // Function returns approximate value of e^x  
     // using sum of first n terms of Taylor Series 
-    public static float Exp(float x, int n = 10)
+    public static double Exp(double x, int n = 10)
     {
         // initialize sum of series 
-        float sum = 1;
+        double sum = 1;
 
         for (int i = n - 1; i > 0; --i)
             sum = 1 + x * sum / i;
@@ -90,33 +108,82 @@ public class MathCommon
         return sum; 
     }
 
-    public static float Ln(float x2, int n = 10)
+    public static double LnOld(double x2, int n = 10)
     {
-        float sum = 0;
-        float x = x2 - 1;
+        double sum = 0;
+        double x = x2 - 1;
         for (int i = 1; i <= n; ++i )
         {
-            if(i % 2 == 0)
+            if(i % 2 == 1)
             {
-                sum += _Pow(x, i) / _Factorial(i);
+                sum += _Pow(x, i) / i;
             }
             else
             {
-                sum -= _Pow(x, i) / _Factorial(i);
+                sum -= _Pow(x, i) / i;
             }
         }
         return sum;
     }
 
+    public static double Ln(double x2, int n = 10)
+    {
+//         if(x2 < 2)
+//         {
+//             double sum = 0;
+//             double x = x2 - 1;
+//             for (int i = 1; i <= n; ++i)
+//             {
+//                 if (i % 2 == 1)
+//                 {
+//                     sum += _Pow(x, i) / i;
+//                 }
+//                 else
+//                 {
+//                     sum -= _Pow(x, i) / i;
+//                 }
+//             }
+//             return sum;
+//         }
+        if(x2 < 10)
+        {
+            double sum = 0;
+            double t = (x2 - 1) / (x2 + 1);
+            for (int i = 0; i <= n; ++i)
+            {
+                sum += 2 * (_Pow(t, 2 * i + 1) / (2 * i + 1));
+            }
+            return sum;
+        }
+        else
+        {
+            double ln10 = 2.30258509299404568401;
+            int count = 0;
+            while(x2 > 10)
+            {
+                x2 /= 10;
+                count += 1;
+            }
+            double sum = 0;
+            double t = (x2 - 1) / (x2 + 1);
+            for (int i = 0; i <= n; ++i)
+            {
+                sum += 2 * (_Pow(t, 2 * i + 1) / (2 * i + 1));
+            }
+            sum += count * ln10;
+            return sum;
+        }
+    }
+
     // 换底公式
-    public static float Log(float a, float b, int n = 10)
+    public static double Log(double a, double b, int n = 10)
     {
         return Ln(b, n) / Ln(a, n);
     }
 
-    static float _Pow(float x, int a)
+    static double _Pow(double x, int a)
     {
-        float ret = 1;
+        double ret = 1;
         for (int i = 0; i < a; ++i )
         {
             ret *= x;
@@ -134,7 +201,7 @@ public class MathCommon
         return ret;
     }
 
-    public static float Pow(float a, float x, int n = 10)
+    public static double Pow(double a, double x, int n = 10)
     {
         return Exp(x * Ln(a, n), n);
     }

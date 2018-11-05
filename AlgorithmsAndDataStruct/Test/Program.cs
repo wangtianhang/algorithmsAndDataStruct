@@ -12,8 +12,8 @@ class Program
         //BigMath.Test();
 
         //AlgorithmsBase.Test();
-        IntersectionTest2D.Test();
-        IntersectionTest3D.Test();
+        MathCommon.Test();
+        //IntersectionTest3D.Test();
 
         Console.WriteLine("测试结束");
         Console.ReadLine();
