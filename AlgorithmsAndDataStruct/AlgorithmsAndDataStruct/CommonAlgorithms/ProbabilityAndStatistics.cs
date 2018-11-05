@@ -283,5 +283,37 @@ public class ProbabilityAndStatistics
     {
         return p * Math.Pow(Math.E, r * t);
     }
+
+#region Make a fair coin from a biased coin
+    public static int SubFoo()
+    {
+        float random = Random.Range(0f, 1f);
+        if(random < 0.6f)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    /*
+    You are given a function foo() that represents a biased coin. When foo() is called, it returns 0 with 60% probability, and 1 with 40% probability. Write a new function that returns 0 and 1 with 50% probability each. Your function should use only foo(), no other library method.
+    解法
+     * (0, 1): The probability to get 0 followed by 1 from two calls of foo() = 0.6 * 0.4 = 0.24
+        (1, 0): The probability to get 1 followed by 0 from two calls of foo() = 0.4 * 0.6 = 0.24
+     */
+    public static int GetFoo()
+    {
+        int val1 = SubFoo();
+        int val2 = SubFoo();
+        if (val1 == 0 && val2 == 1)
+            return 0;   // Will reach here with 0.24 probability 
+        if (val1 == 1 && val2 == 0)
+            return 1;   // // Will reach here with 0.24 probability
+        
+        return GetFoo();
+    }
+#endregion
 }
 

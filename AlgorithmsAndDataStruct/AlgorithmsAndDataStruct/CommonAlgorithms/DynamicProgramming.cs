@@ -28,40 +28,69 @@ public class DynamicProgramming
         //Debug.Log("CUT_ROD " + CUT_ROD_Recursion(p.ToArray(), p.Count - 1).ToString());
         Debug.Log("CUT_ROD " + CUT_ROD_DP(p.ToArray(), p.Count - 1).ToString());
 
-        List<Vector2ixy> matrixList = new List<Vector2ixy>();
-        matrixList.Add(new Vector2ixy(30, 35));
-        matrixList.Add(new Vector2ixy(35, 15));
-        matrixList.Add(new Vector2ixy(15, 5));
-        matrixList.Add(new Vector2ixy(5, 10));
-        matrixList.Add(new Vector2ixy(10, 20));
-        matrixList.Add(new Vector2ixy(20, 25));
-        int[][] s = null;
-        int[][] m = null;
-        MATRAIX_CHAIN_ORDER(matrixList, out s, out m);
-        Debug.Log("s matrix");
-        for (int i = 1; i <= matrixList.Count; ++i )
         {
-            string oneLine = "";
-            for (int j = 1; j <= matrixList.Count; ++j)
+            List<Vector2ixy> matrixList = new List<Vector2ixy>();
+            matrixList.Add(new Vector2ixy(30, 35));
+            matrixList.Add(new Vector2ixy(35, 15));
+            matrixList.Add(new Vector2ixy(15, 5));
+            matrixList.Add(new Vector2ixy(5, 10));
+            matrixList.Add(new Vector2ixy(10, 20));
+            matrixList.Add(new Vector2ixy(20, 25));
+            int[][] s = null;
+            int[][] m = null;
+            MATRAIX_CHAIN_ORDER(matrixList, out s, out m);
+            Debug.Log("s matrix");
+            for (int i = 1; i <= matrixList.Count; ++i)
             {
-                oneLine += s[i][j].ToString() + "\t";
+                string oneLine = "";
+                for (int j = 1; j <= matrixList.Count; ++j)
+                {
+                    oneLine += s[i][j].ToString() + "\t";
+                }
+                Debug.Log(oneLine);
             }
-            Debug.Log(oneLine);
+            Debug.Log("m matrix");
+            for (int i = 1; i <= matrixList.Count; ++i)
+            {
+                string oneLine = "";
+                for (int j = 1; j <= matrixList.Count; ++j)
+                {
+                    oneLine += m[i][j].ToString() + "\t";
+                }
+                Debug.Log(oneLine);
+            }
+            Debug.Log("matrix min " + m[1][6]);
+            string str = "";
+            PRINT_OPTIMAL_PARENS(s, 1, matrixList.Count, ref str);
+            Debug.Log("分割 " + str);
         }
-        Debug.Log("m matrix");
-        for (int i = 1; i <= matrixList.Count; ++i)
+
+
         {
-            string oneLine = "";
-            for (int j = 1; j <= matrixList.Count; ++j)
+            String str1 = "fjssharpsword";
+            String str2 = "helloworld";
+
+            //计算lcs递归矩阵  
+            int[][] re = longestCommonSubsequence(str1, str2);
+            //打印矩阵  
+            for (int i = 0; i <= str1.Length; i++)
             {
-                oneLine += m[i][j].ToString() + "\t";
+                string outPut = "";
+                for (int j = 0; j <= str2.Length; j++)
+                {
+                    outPut += re[i][j] + "   ";
+                }
+                UnityEngine.Debug.Log(outPut);
             }
-            Debug.Log(oneLine);
+
+            UnityEngine.Debug.Log("");
+            UnityEngine.Debug.Log("");
+
+            StringBuilder str = new StringBuilder();
+            printLCS(re, str1, str2, str1.Length, str2.Length, ref str);
+            UnityEngine.Debug.Log(str.ToString());
         }
-        Debug.Log("matrix min " + m[1][6]);
-        string str = "";
-        PRINT_OPTIMAL_PARENS(s, 1, matrixList.Count, ref str);
-        Debug.Log("分割 " + str);
+
 
     }
 
@@ -163,6 +192,102 @@ public class DynamicProgramming
             PRINT_OPTIMAL_PARENS(s, s[i][j] + 1, j, ref str);
             str += (")");
         }
+    }
+
+    #region 最长公共子序列
+
+    public static string LCS(String str1, String str2)
+    {
+        int[][] re = longestCommonSubsequence(str1, str2);
+        StringBuilder str = new StringBuilder();
+        printLCS(re, str1, str2, str1.Length, str2.Length, ref str);
+        return str.ToString();
+    }
+
+    /// <summary>
+    /// 最长公共子序列
+    /// </summary>
+    /// <returns></returns>
+    // 假如返回两个字符串的最长公共子序列的长度  
+    static int[][] longestCommonSubsequence(String str1, String str2)
+    {
+        int[][] matrix = new int[str1.Length + 1][];//建立二维矩阵  
+        for (int i = 0; i < str1.Length + 1; ++i)
+        {
+            matrix[i] = new int[str2.Length + 1];
+        }
+        // 初始化边界条件  
+        for (int i = 0; i <= str1.Length; i++)
+        {
+            matrix[i][0] = 0;//每行第一列置零  
+        }
+        for (int j = 0; j <= str2.Length; j++)
+        {
+            matrix[0][j] = 0;//每列第一行置零  
+        }
+        // 填充矩阵  
+        for (int i = 1; i <= str1.Length; i++)
+        {
+            for (int j = 1; j <= str2.Length; j++)
+            {
+                if (str1[i - 1] == str2[j - 1])
+                {
+                    matrix[i][j] = matrix[i - 1][j - 1] + 1;
+                }
+                else
+                {
+                    matrix[i][j] = (matrix[i - 1][j] >= matrix[i][j - 1] ? matrix[i - 1][j]
+                                    : matrix[i][j - 1]);
+                }
+            }
+        }
+        return matrix;
+    }
+
+    //根据矩阵输出LCS  
+    static void printLCS(int[][] opt, String X, String Y, int i, int j, ref StringBuilder outStr)
+    {
+        if (i == 0 || j == 0)
+        {
+            return;
+        }
+        if (X[i - 1] == Y[j - 1])
+        {
+            printLCS(opt, X, Y, i - 1, j - 1, ref outStr);
+            outStr.Append(X[i - 1]);
+        }
+        else if (opt[i - 1][j] >= opt[i][j])
+        {
+            printLCS(opt, X, Y, i - 1, j, ref outStr);
+        }
+        else
+        {
+            printLCS(opt, X, Y, i, j - 1, ref outStr);
+        }
+    }
+    #endregion
+
+    /// <summary>
+    /// 最大子序列和
+    /// </summary>
+    /// <param name="a"></param>
+    /// <returns></returns>
+    public static int maxSubSum4(int[] nums)
+    {
+        int maxsum, maxhere;
+        maxsum = maxhere = nums[0];   //初始化最大和为a【0】  
+        for (int i = 1; i < nums.Length; i++)
+        {
+            if (maxhere <= 0)
+                maxhere = nums[i];  //如果前面位置最大连续子序列和小于等于0，则以当前位置i结尾的最大连续子序列和为a[i]  
+            else
+                maxhere += nums[i]; //如果前面位置最大连续子序列和大于0，则以当前位置i结尾的最大连续子序列和为它们两者之和  
+            if (maxhere > maxsum)
+            {
+                maxsum = maxhere;  //更新最大连续子序列和  
+            }
+        }
+        return maxsum;
     }
 }
 
