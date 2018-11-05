@@ -108,6 +108,12 @@ public class MathCommon
         return sum;
     }
 
+    // 换底公式
+    public static float Log(float a, float b, int n = 10)
+    {
+        return Ln(b, n) / Ln(a, n);
+    }
+
     static float _Pow(float x, int a)
     {
         float ret = 1;
@@ -132,6 +138,11 @@ public class MathCommon
     {
         return Exp(x * Ln(a, n), n);
     }
+
+//     public static float Log(float x2)
+//     {
+//         float x = x2 - 1;
+//     }
 
 //     public static double TestFunc(double x)
 //     {
