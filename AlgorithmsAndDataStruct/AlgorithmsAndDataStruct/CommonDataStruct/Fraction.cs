@@ -35,29 +35,7 @@ struct Fraction
         Console.WriteLine(0.1d + (double)b);
     }
 
-    /// <summary>
-    /// 最大公约数，辗转相除法
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static long GCD(long a, long b)
-    {
-        long temp;          /*定义整型变量*/
-        if (a < b)             /*通过比较求出两个数中的最大值和最小值*/
-        {
-            temp = a;
-            a = b;
-            b = temp;
-        } /*设置中间变量进行两数交换*/
-        while (b != 0)           /*通过循环求两数的余数，直到余数为0*/
-        {
-            temp = a % b;
-            a = b;              /*变量数值交换*/
-            b = temp;
-        }
-        return a;            /*返回最大公约数到调用函数处*/
-    }
+
 
 //     public Fraction()
 //     {
@@ -76,7 +54,7 @@ struct Fraction
 
     public Fraction(long numerator, long denominator)
     {
-        long GreatestCommonDivisor = GCD(numerator, denominator);
+        long GreatestCommonDivisor = NumberTheory.GCD(numerator, denominator);
         m_numerator = numerator / GreatestCommonDivisor;
         m_denominator = denominator / GreatestCommonDivisor;
     }

@@ -29,9 +29,33 @@ class NumberTheory
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static int GCD(int a, int b)
+//     public static int GCD(int a, int b)
+//     {
+//         int temp;          /*定义整型变量*/
+//         if (a < b)             /*通过比较求出两个数中的最大值和最小值*/
+//         {
+//             temp = a;
+//             a = b;
+//             b = temp;
+//         } /*设置中间变量进行两数交换*/
+//         while (b != 0)           /*通过循环求两数的余数，直到余数为0*/
+//         {
+//             temp = a % b;
+//             a = b;              /*变量数值交换*/
+//             b = temp;
+//         }
+//         return a;            /*返回最大公约数到调用函数处*/
+//     }
+
+    /// <summary>
+    /// 最大公约数，辗转相除法
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static long GCD(long a, long b)
     {
-        int temp;          /*定义整型变量*/
+        long temp;          /*定义整型变量*/
         if (a < b)             /*通过比较求出两个数中的最大值和最小值*/
         {
             temp = a;
@@ -56,7 +80,7 @@ class NumberTheory
     public static int LCM(int a, int b)
     {
         int temp;
-        temp = GCD(a, b);  /*调用自定义函数，求出最大公约数*/
+        temp = (int)GCD(a, b);  /*调用自定义函数，求出最大公约数*/
         return (a * b / temp); /*返回最小公倍数到主调函数处进行输出*/
     }
 
