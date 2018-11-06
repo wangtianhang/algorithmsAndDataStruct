@@ -273,7 +273,7 @@ public class Maze
         while (historyStack.Count != 0)
         {
             //random choose a candidata cell from the cell set histroy
-            int random = Random.Range(0, historyStack.Count);
+            int random = Custom.Random.Range(0, historyStack.Count);
             r = historyStack[random].m_r;
             c = historyStack[random].m_c;
             historyStack[random].m_isVisited = 1;
@@ -333,7 +333,7 @@ public class Maze
             // select one of these edges at random.
             if(check.Length != 0)
             {
-                int random2 = Random.Range(0, check.Length);
+                int random2 = Custom.Random.Range(0, check.Length);
                 char move_direction = check[random2];
                 if(move_direction == 'L')
                 {

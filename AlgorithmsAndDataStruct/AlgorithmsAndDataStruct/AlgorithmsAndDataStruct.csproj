@@ -118,6 +118,7 @@
     <Compile Include="CommonAlgorithms\BitOperation.cs" />
     <Compile Include="CommonAlgorithms\ConvertHelper.cs" />
     <Compile Include="CommonAlgorithms\RandomAlgorithm.cs" />
+    <Compile Include="CommonDataStruct\SkipList.cs" />
     <Compile Include="Other\Coroutine.cs" />
     <Compile Include="3dMath\unityScene\GameObject.cs" />
     <Compile Include="3dMath\unityMath\Mathf.cs" />

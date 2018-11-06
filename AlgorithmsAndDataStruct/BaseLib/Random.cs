@@ -42,60 +42,63 @@ namespace Common
 //     }
 }
 
-public class Random
+namespace Custom
 {
-    //static System.Random s_ran = null;
-    static System.Random s_ran = null;
-    static void Init()
+    public class Random
     {
-        if (s_ran == null)
+        //static System.Random s_ran = null;
+        static System.Random s_ran = null;
+        static void Init()
         {
-            long tick = System.DateTime.Now.Ticks;
-            s_ran = new System.Random((int)(tick & 0xffffffffL) | (int)(tick >> 32));
+            if (s_ran == null)
+            {
+                long tick = System.DateTime.Now.Ticks;
+                s_ran = new System.Random((int)(tick & 0xffffffffL) | (int)(tick >> 32));
+            }
         }
+
+        public static void SetSeed(int seed)
+        {
+            s_ran = new System.Random(seed);
+        }
+
+        /// <summary>
+        /// 左闭右开区间 与unity一致
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        public static int Range(int min, int max)
+        {
+            Init();
+
+            return s_ran.Next(min, max);
+        }
+
+        /// <summary>
+        /// 左闭右闭区间 与unity一致
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        public static float Range(float minInclusive, float maxInclusive)
+        {
+            Init();
+
+            int randomInteger = s_ran.Next(0, int.MaxValue);
+            float randomFloat = (float)randomInteger / (float)int.MaxValue;
+            float range = maxInclusive - minInclusive;
+            float ret = minInclusive + randomFloat * range;
+            //Debug.Log("Range float Index " + s_index + " " + ret);
+            return ret;
+        }
+
+        //     static int uniform(int n)
+        //     {
+        //         Init();
+        // 
+        //         return s_ran.Next() % n;
+        //     }
+
+
     }
-
-    public static void SetSeed(int seed)
-    {
-        s_ran = new System.Random(seed);
-    }
-
-    /// <summary>
-    /// 左闭右开区间 与unity一致
-    /// </summary>
-    /// <param name="min"></param>
-    /// <param name="max"></param>
-    public static int Range(int min, int max)
-    {
-        Init();
-
-        return s_ran.Next(min, max);
-    }
-
-    /// <summary>
-    /// 左闭右闭区间 与unity一致
-    /// </summary>
-    /// <param name="min"></param>
-    /// <param name="max"></param>
-    public static float Range(float minInclusive, float maxInclusive)
-    {
-        Init();
-
-        int randomInteger = s_ran.Next(0, int.MaxValue);
-        float randomFloat = (float)randomInteger / (float)int.MaxValue;
-        float range = maxInclusive - minInclusive;
-        float ret = minInclusive + randomFloat * range;
-        //Debug.Log("Range float Index " + s_index + " " + ret);
-        return ret;
-    }
-
-//     static int uniform(int n)
-//     {
-//         Init();
-// 
-//         return s_ran.Next() % n;
-//     }
-
-
 }
 
