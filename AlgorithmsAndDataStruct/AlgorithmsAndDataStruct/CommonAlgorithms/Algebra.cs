@@ -139,5 +139,42 @@ public class Algebra
         }
         return ret;
     }
+
+    // 二分法求根 需要单调连续区间
+    // Prints root of func(x)  
+    // with error of EPSILON 
+    static void BisectionMethod(double left, double right, System.Func<double, double> func)
+    {
+        if (func(left) * func(right) >= 0)
+        {
+            Console.WriteLine("You have not assumed" +
+                                    " right a and b");
+            return;
+        }
+
+        double c = left;
+        while ((right - left) >= float.Epsilon)
+        {
+            // Find middle point 
+            c = (left + right) / 2;
+
+            // Check if middle  
+            // point is root 
+            if (func(c) == 0.0)
+                break;
+
+            // Decide the side  
+            // to repeat the steps 
+            else if (func(c) * func(left) < 0)
+                right = c;
+            else
+                left = c;
+        }
+
+        // prints value of c  
+        // upto 4 decimal places 
+        Console.WriteLine("The value of " +
+                          "root is : " + c);
+    } 
 }
 
