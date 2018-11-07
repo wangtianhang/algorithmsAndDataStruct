@@ -118,6 +118,8 @@
     <Compile Include="CommonAlgorithms\BitOperation.cs" />
     <Compile Include="CommonAlgorithms\ConvertHelper.cs" />
     <Compile Include="CommonAlgorithms\RandomAlgorithm.cs" />
+    <Compile Include="CommonDataStruct\146 LRU Cache.cs" />
+    <Compile Include="CommonDataStruct\460 LFU Cache.cs" />
     <Compile Include="CommonDataStruct\SkipList.cs" />
     <Compile Include="Other\Calculator.cs" />
     <Compile Include="Other\Coroutine.cs" />
