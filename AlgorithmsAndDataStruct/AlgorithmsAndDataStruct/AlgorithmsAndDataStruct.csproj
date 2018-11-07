@@ -120,6 +120,7 @@
     <Compile Include="CommonAlgorithms\RandomAlgorithm.cs" />
     <Compile Include="CommonDataStruct\146 LRU Cache.cs" />
     <Compile Include="CommonDataStruct\460 LFU Cache.cs" />
+    <Compile Include="CommonDataStruct\Deque.cs" />
     <Compile Include="CommonDataStruct\SkipList.cs" />
     <Compile Include="Other\Calculator.cs" />
     <Compile Include="Other\Coroutine.cs" />
