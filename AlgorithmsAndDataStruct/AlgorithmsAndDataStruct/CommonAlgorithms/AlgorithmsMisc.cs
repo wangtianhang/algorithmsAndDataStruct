@@ -98,5 +98,20 @@ public class AlgorithmsMisc
     } 
 
     #endregion
+
+    /* getMissingNo takes array and size of array as arguments*/
+    /*
+    Example :
+        I/P    [1, 2, 4, ,6, 3, 7, 8]
+        O/P    5
+     * */
+    int getMissingNo (int[] a, int n) 
+    { 
+        int i, total; 
+        total  = (n+1)*(n+2)/2;    
+        for ( i = 0; i< n; i++) 
+           total -= a[i]; 
+        return total; 
+    } 
 }
 

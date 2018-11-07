@@ -11,7 +11,7 @@ class Program
         //BigMath.Test();
 
         //AlgorithmsBase.Test();
-        MathCommon.Test();
+        Calculator.Test();
         //IntersectionTest3D.Test();
 
         Console.WriteLine("测试结束");
