@@ -22,6 +22,7 @@ namespace UnityEngine
         public const float NegativeInfinity = -1.0f / 0.0f;
         public const float PI = 3.14159f;
         public const float Rad2Deg = 57.2958f;
+        public const float E = 2.71828f;
 
 
         public static float Abs(float f)
@@ -203,9 +204,19 @@ namespace UnityEngine
             return num;
         }
 
+        // 以2为底的指数 汇编层有对应指令FXTRACT
+        static float FXTRACT(float x)
+        {
+            return Mathf.Pow(2, x);
+        }
+
+        // 已完善
         public static float Exp(float power)
         {
-            return (float)Math.Exp((double)power);
+            //Multiplying the input by a specially prepared representation of log2e, to transform the problem from ex to 2y, where y = x • log2e.
+            //return (float)Math.Exp((double)power);
+            float y = power * FYL2X(Mathf.E);
+            return FXTRACT(y);
         }
 
         public static float Floor(float f)
@@ -284,19 +295,30 @@ namespace UnityEngine
             return a + num * Mathf.Clamp01(t);
         }
 
-        public static float Log(float f)
+        public static float FYL2X(float f)
         {
             return (float)Math.Log((double)f);
         }
 
-        public static float Log(float f, float p)
+        // 已完善
+        public static float Log(float f)
         {
-            return (float)Math.Log((double)f, (double)p);
+            // 求以2为底的对数 汇编层有支持 FYL2X
+            return FYL2X(f);
         }
 
+        // 已完善
+        public static float Log(float f, float p)
+        {
+            //return (float)Math.Log((double)f, (double)p);
+            return Mathf.Log(p) / Mathf.Log(f);
+        }
+
+        // 已完善
         public static float Log10(float f)
         {
-            return (float)Math.Log10((double)f);
+            //return (float)Math.Log10((double)f);
+            return Mathf.Log(f) / Mathf.Log(10);
         }
 
         public static float Max(float a, float b)
@@ -412,9 +434,16 @@ namespace UnityEngine
             return length - Mathf.Abs(t - length);
         }
 
+        /// <summary>
+        /// 已完善
+        /// </summary>
+        /// <param name="f"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public static float Pow(float f, float p)
         {
-            return (float)Math.Pow((double)f, (double)p);
+            //return (float)Math.Pow((double)f, (double)p);
+            return Mathf.Exp(f * Mathf.Log(p));
         }
 
         public static float Repeat(float t, float length)
@@ -486,7 +515,8 @@ namespace UnityEngine
 
         public static float Tan(float f)
         {
-            return (float)Math.Tan((double)f);
+            //return (float)Math.Tan((double)f);
+            return Mathf.Sin(f) / Mathf.Cos(f);
         }
 
         public static int ClosestPowerOfTwo(int n)
@@ -519,6 +549,46 @@ namespace UnityEngine
         public static float Cosh(float x)
         {
             return 0.5f * (Mathf.Exp(x) + Mathf.Exp(-x));
+        }
+
+        public static float RSqrt(float a)
+        {
+            if(true)
+            {
+                return Mathf.Pow(a, -0.5f);
+            }
+            else
+            {
+                return 1 / Mathf.Sqrt(a);
+            }
+        }
+
+        public unsafe static float Quake_RSqrt(float number)
+        {
+            long i;
+            float x2, y;
+            const float threehalfs = 1.5F;
+
+            x2 = number * 0.5F;
+            y = number;
+            i = *(long*)&y;                       // evil floating point bit level hacking
+            i = 0x5f3759df - (i >> 1);               // what the fuck?
+            y = *(float*)&i;
+            y = y * (threehalfs - (x2 * y * y));   // 1st iteration
+            //      y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+            return y;
+        }
+
+        public static float Sinh(float x)
+        {
+            return 0.5f * (Mathf.Exp(x) - Mathf.Exp(-x));
+        }
+
+        public float Tanh(float x)
+        {
+            float exp2x = Mathf.Exp(2 * x);
+            return (exp2x - 1) / (exp2x + 1);
         }
     }
 
