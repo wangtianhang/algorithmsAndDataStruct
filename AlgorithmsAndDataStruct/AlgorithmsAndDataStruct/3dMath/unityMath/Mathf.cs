@@ -33,28 +33,83 @@ namespace UnityEngine
             return Math.Abs(value);
         }
 
-        public static float Acos(float f)
+        public static float Acos(float x)
         {
-            return (float)Math.Acos((double)f);
+            //return (float)Math.Acos((double)f);
+            float negate = 0; //float(x < 0);
+            if (x < 0)
+            {
+                negate = 1;
+            }
+              x = Mathf.Abs(x);
+              float ret = -0.0187293f;
+              ret = ret * x;
+              ret = ret + 0.0742610f;
+              ret = ret * x;
+              ret = ret - 0.2121144f;
+              ret = ret * x;
+              ret = ret + 1.5707288f;
+              ret = ret * Mathf.Sqrt(1.0f-x);
+              ret = ret - 2 * negate * ret;
+              return negate * 3.14159265358979f + ret;
         }
 
         public static bool Approximately(float a, float b)
         {
             return Mathf.Abs(b - a) < Mathf.Max(1E-06f * Mathf.Max(Mathf.Abs(a), Mathf.Abs(b)), 1.121039E-44f);
         }
-        public static float Asin(float f)
+        public static float Asin(float x)
         {
-            return (float)Math.Asin((double)f);
+            //return (float)Math.Asin((double)f);
+              float negate = 0; //float(x < 0);
+              if(x < 0)
+              {
+                  negate = 1;
+              }
+              x = Math.Abs(x);
+              float ret = -0.0187293f;
+              ret *= x;
+              ret += 0.0742610f;
+              ret *= x;
+              ret -= 0.2121144f;
+              ret *= x;
+              ret += 1.5707288f;
+              ret = 3.14159265358979f*0.5f - Mathf.Sqrt(1.0f - x)*ret;
+              return ret - 2 * negate * ret;
         }
 
-        public static float Atan(float f)
+        public static float Atan(float x)
         {
-            return (float)Math.Atan((double)f);
+            //return (float)Math.Atan((double)f);
+             return Mathf.Atan2(x, 1f);
         }
 
         public static float Atan2(float y, float x)
         {
-            return (float)Math.Atan2((double)y, (double)x);
+            //return (float)Math.Atan2((double)y, (double)x);
+              float t0, t1, t2, t3, t4;
+
+              t3 = Mathf.Abs(x);
+              t1 = Mathf.Abs(y);
+              t0 = Mathf.Max(t3, t1);
+              t1 = Mathf.Min(t3, t1);
+              t3 = 1f / t0;
+              t3 = t1 * t3;
+
+              t4 = t3 * t3;
+              t0 =         - (0.013480470f);
+              t0 = t0 * t4 + (0.057477314f);
+              t0 = t0 * t4 - (0.121239071f);
+              t0 = t0 * t4 + (0.195635925f);
+              t0 = t0 * t4 - (0.332994597f);
+              t0 = t0 * t4 + (0.999995630f);
+              t3 = t0 * t3;
+
+              t3 = (Mathf.Abs(y) > Mathf.Abs(x)) ? (1.570796327f) - t3 : t3;
+              t3 = (x < 0) ?  (3.141592654f) - t3 : t3;
+              t3 = (y < 0) ? -t3 : t3;
+
+              return t3;
         }
 
         public static float Ceil(float f)
@@ -134,6 +189,7 @@ namespace UnityEngine
 
         public static float Cos(float f)
         {
+            // 汇编层有fcos
             return (float)Math.Cos((double)f);
         }
 
@@ -383,6 +439,7 @@ namespace UnityEngine
 
         public static float Sin(float f)
         {
+            // 汇编层有fsin
             return (float)Math.Sin((double)f);
         }
 
@@ -423,6 +480,7 @@ namespace UnityEngine
 
         public static float Sqrt(float f)
         {
+            // sqrt底层可以通过汇编实现 x87的fsqrt sse指令集的sqrtss等
             return (float)Math.Sqrt((double)f);
         }
 
@@ -456,6 +514,11 @@ namespace UnityEngine
             {
                 return (n & (n - 1)) == 0;
             }
+        }
+
+        public static float Cosh(float x)
+        {
+            return 0.5f * (Mathf.Exp(x) + Mathf.Exp(-x));
         }
     }
 
