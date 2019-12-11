@@ -289,5 +289,55 @@ public class DynamicProgramming
         }
         return maxsum;
     }
+
+    /// <summary>
+    /// 卡特兰数
+    /// </summary>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public static long CatlanDP(int n)
+    {
+        // Table to store results of subproblems 
+        long[] catalan = new long[n + 1]; 
+  
+        // Initialize first two values in table 
+        catalan[0] = catalan[1] = 1; 
+  
+        // Fill entries in catalan[] using recursive formula 
+        for (int i=2; i<=n; i++) 
+        { 
+            catalan[i] = 0; 
+            for (int j=0; j<i; j++) 
+                catalan[i] += catalan[j] * catalan[i-j-1]; 
+        } 
+  
+        // Return last entry 
+        return catalan[n];
+    }
+
+    #region 上楼梯问题
+
+    // A recursive function used by  
+    // countWays 
+    static int countWaysUtil(int n, int m)
+    {
+        if (n <= 1)
+            return n;
+        int res = 0;
+
+        for (int i = 1; i <= m && i <= n; i++)
+            res += countWaysUtil(n - i, m);
+        return res;
+    }
+
+    // Returns number of ways to reach 
+    // s'th stair 
+    // m 一步能跨越的阶梯数
+    static int countWays(int s, int m)
+    {
+        return countWaysUtil(s + 1, m);
+    } 
+
+    #endregion
 }
 

@@ -95,7 +95,7 @@ public class Sudoku
         // 添加随机性?
         for (int i = 0; i < 9; ++i )
         {
-            int tmp = Random.Range(0, 81);
+            int tmp = Custom.Random.Range(0, 81);
             matrix[tmp / 9][tmp % 9] = i + 1;
         }
 

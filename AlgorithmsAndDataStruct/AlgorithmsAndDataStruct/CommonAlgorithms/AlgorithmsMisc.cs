@@ -10,9 +10,10 @@ public class AlgorithmsMisc
     public static void Test()
     {
         Console.WriteLine(JosephRing(10, 2));
+
+        // A, B and C are names of rods 
+        towerOfHanoi(4, 'A', 'C', 'B');  
     }
-
-
 
     /// <summary>
     /// 约瑟夫环问题
@@ -77,6 +78,40 @@ public class AlgorithmsMisc
 
     }
 
+    #region 汉诺塔
 
+    // C# recursive function to solve  
+    // tower of hanoi puzzle 
+    static void towerOfHanoi(int n, char from_rod,
+                             char to_rod, char aux_rod)
+    {
+        if (n == 1)
+        {
+            Console.WriteLine("Move disk 1 from rod " + from_rod
+                                           + " to rod " + to_rod);
+            return;
+        }
+        towerOfHanoi(n - 1, from_rod, aux_rod, to_rod);
+        Console.WriteLine("Move disk " + n + " from rod "
+                          + from_rod + " to rod " + to_rod);
+        towerOfHanoi(n - 1, aux_rod, to_rod, from_rod);
+    } 
+
+    #endregion
+
+    /* getMissingNo takes array and size of array as arguments*/
+    /*
+    Example :
+        I/P    [1, 2, 4, ,6, 3, 7, 8]
+        O/P    5
+     * */
+    int getMissingNo (int[] a, int n) 
+    { 
+        int i, total; 
+        total  = (n+1)*(n+2)/2;    
+        for ( i = 0; i< n; i++) 
+           total -= a[i]; 
+        return total; 
+    } 
 }
 

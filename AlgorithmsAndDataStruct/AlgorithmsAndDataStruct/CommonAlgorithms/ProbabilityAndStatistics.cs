@@ -287,7 +287,7 @@ public class ProbabilityAndStatistics
 #region Make a fair coin from a biased coin
     public static int SubFoo()
     {
-        float random = Random.Range(0f, 1f);
+        float random = Custom.Random.Range(0f, 1f);
         if(random < 0.6f)
         {
             return 0;

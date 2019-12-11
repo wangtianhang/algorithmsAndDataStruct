@@ -15,7 +15,7 @@ class RandomAlgorithm
         int n = a.Length;
         for (int i = 0; i < n; ++i)
         {
-            int random = Random.Range(0, n - i);
+            int random = Custom.Random.Range(0, n - i);
             //int r = i + uniform(n - i);
             int r = i + random;
             T temp = a[i];
